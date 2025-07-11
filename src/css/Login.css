@@ -156,6 +156,42 @@ button:hover {
     text-decoration: underline;
 }
 
+.owner-link {
+    margin-top: 15px;
+    display: flex;
+    text-align: left;
+    margin-left: 115px;
+}
+
+.owner-link a {
+    font-size: 15px;
+    color: black;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.owner-link a:hover {
+    text-decoration: underline;
+}
+
+.login-link {
+    margin-top: 15px;
+    display: flex;
+    text-align: left;
+    margin-left: 150px;
+}
+
+.login-link a {
+    font-size: 15px;
+    color: black;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
 .password-wrapper {
     position: relative;
 }
@@ -163,7 +199,7 @@ button:hover {
 .error {
     color: red;
     text-align: left;
-    opacity: 0;
+    opacity: 100;
     padding-left: 34px;
     font-size: 15px;
 
@@ -176,6 +212,35 @@ button:hover {
     transform: translateY(-50%);
     cursor: pointer;
     font-size: 16px;
+}
+.PhoneInputCountryIconImg {
+    position: absolute;
+    width: 24px;
+    height: 16px;
+    z-index: 5;
+    top: 14.5px;
+    left: 55px;
+}
+.PhoneInputCountrySelect{
+    width: 30px;
+    height: 30px;
+    opacity: 0;
+    margin-left: 50px;
+    margin-top: 7px;
+    z-index: 6;
+    position: absolute;
+    cursor: pointer;
+}
+.PhoneInputInput{
+    padding-left: 90px;
+}
+.PhoneInputCountry{
+    position: absolute;
+    z-index: 5;
+}
+.custom-phone-input{
+    z-index: 3;
+    position: relative;
 }
 @media (max-width: 830px){
     .login-container{
