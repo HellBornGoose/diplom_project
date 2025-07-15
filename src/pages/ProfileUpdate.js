@@ -10,6 +10,7 @@ import UpdateStyles from '../css/ProfileUpdate.module.css';
 import { useNavigate } from 'react-router-dom';
 import LanguageSelector from '../components/LanguageSelector';
 import AvatarChange from '../components/AvatarChange';
+import defaultAvatar from '../img/default-avatar.jpg';
 
 const ProfileUpdate = () => {
     const [profile, setProfile] = useState({
@@ -23,10 +24,8 @@ const ProfileUpdate = () => {
     const [phone, setPhone] = useState('');
     const [languages, setLanguages] = useState([]);
     const [photoUrl, setPhotoUrl] = useState('');
-    const [previewImage, setPreviewImage] = useState('');
     const navigate = useNavigate();
     const refreshTimeout = useRef(null);
-    const defaultAvatar = 'https://via.placeholder.com/150';
 
     const handlePhotoUrlChange = (newUrl) => {
         setPhotoUrl(newUrl);
@@ -124,7 +123,6 @@ const ProfileUpdate = () => {
                 telegram: data.telegram || '',  
                 photoUrl: photo
             });
-            setPreviewImage('');
             setPhone(data.phone || '');
             setLanguages(data.languages.map(lang => lang.code));
         } catch (err) {

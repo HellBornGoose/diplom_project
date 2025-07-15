@@ -12,7 +12,7 @@ const ProfileInfo = () => {
   return (
     <div className={style.profileCard}>
         <div className={style.editIcon}>
-            <Link to="/registerUser"><img src={EditIcon} alt="" /></Link>
+            <Link to="/profile/edit"><img src={EditIcon} alt="" /></Link>
         </div>
       <div className={style.profileImage}>
         <img src="" alt="Олег Гончар" />

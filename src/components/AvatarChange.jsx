@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import UpdateStyles from '../css/ProfileUpdate.module.css';
+import defaultAvatar from '../img/default-avatar.jpg';
 
-// Можно импортировать или указать путь к дефолтному аватару
-const defaultAvatar = '/default-avatar.png'; 
-
-// Адрес сервера (замени на актуальный)
 const ngrokLink = 'http://your-ngrok-address';
 
 function AvatarChange({ serverFilePath, onPhotoUrlChange }) {
