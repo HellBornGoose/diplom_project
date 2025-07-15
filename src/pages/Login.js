@@ -41,7 +41,7 @@ function Login(){
       localStorage.setItem('refreshToken', data.refreshToken);
       localStorage.setItem('tokenExpires', data.expires);
       const jwt = localStorage.getItem("jwtToken");
-      const profileResponse = await fetch('https://your-api.com/api/Profile/get', {
+      const profileResponse = await fetch('https://4db1eec56caf.ngrok-free.app/api/Profile/get', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${jwt}`,
@@ -54,14 +54,14 @@ function Login(){
       }
 
       const profileData = await profileResponse.json();
+      const roles = profileData.roles;
+      
+      const isLandLord = roles.includes("Landlord");
 
-      const isLandLord = profileData.isLandLord;
-
-      // Перенаправление по роли
       if (isLandLord) {
-        navigate('/profile/landlord');
+        navigate('/profile/Lord');
       } else {
-        navigate('/profile/user');
+        navigate('/profile/User');
       }
     } catch (error) {
       setError('Щось пішло не так. Спробуйте ще раз.');

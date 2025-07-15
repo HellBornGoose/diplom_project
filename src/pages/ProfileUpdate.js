@@ -8,16 +8,19 @@ import TelegramDarkLogo from '../img/TelegramDarkLogo.svg';
 import CustomPhoneInput from '../components/CustomPhoneInput';
 import UpdateStyles from '../css/ProfileUpdate.module.css';
 import { useNavigate } from 'react-router-dom';
+import LanguageSelector from '../components/LanguageSelector';
 
 const ProfileUpdate = () => {
     const [profile, setProfile] = useState({
         firstName: '', lastName: '', surname: '', gender: '', phone: '', location: '',
         email: '', dateOfBirth: { day: '', month: '', year: '' }, instagram: '',
-        facebook: '', telegram: '', photoUrl: ''
+        facebook: '', telegram: '', languages: '', photoUrl: ''
     });
+    
     const [errorMsg, setErrorMsg] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [phone, setPhone] = useState('');
+    const [selectedLanguages, setSelectedLanguages] = useState([]);
     const [previewImage, setPreviewImage] = useState('');
     const navigate = useNavigate();
     let refreshTimeout;
@@ -43,7 +46,7 @@ const ProfileUpdate = () => {
         }
 
         const data = await response.json();
-        const { jwtToken, refreshToken: newRefreshToken, expiresIn } = data;
+        const { jwtToken, refreshToken: newRefreshToken, expires } = data;
 
         localStorage.setItem('jwtToken', jwtToken);
         localStorage.setItem('refreshToken', newRefreshToken);
@@ -78,7 +81,7 @@ const ProfileUpdate = () => {
     const loadProfile = async () => {
         const token = localStorage.getItem('jwtToken');
         if (!token) {
-            navigate('/login');
+        //    navigate('/login');
             return;
         }
 
@@ -108,6 +111,7 @@ const ProfileUpdate = () => {
                 telegram: data.telegram || '',   
                 photoUrl: data.photoUrl || ''
             });
+            setPhone(data.phone || '');
         } catch (err) {
             console.error('Error loading profile:', err);
         }
@@ -164,11 +168,16 @@ const ProfileUpdate = () => {
         };
 
         try {
+            const token = localStorage.getItem('jwtToken');
+
             const response = await fetch(`${ngrokLink}/api/Profile/update`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+                headers: {
+                'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`  // ← добавлен JWT
+    },
+    body: JSON.stringify(payload)
+});
 
             if (!response.ok) {
                 const error = await response.json();
@@ -321,11 +330,16 @@ const ProfileUpdate = () => {
                     </div>
                     <div className="formGroup">
                     <CustomPhoneInput
-          value={phone}
-          onChange={setPhone}
-          placeholder="Номер телефона"
-          defaultCountry="UA"
-        />
+                        value={phone}
+                        onChange={setPhone}
+                        placeholder="Номер телефона"
+                        defaultCountry="UA"
+                    />
+                    </div>
+                    <div className='formGroup'>
+                        <label htmlFor="language" className="text-sm font-medium mb-1">Язики</label>
+                        <LanguageSelector id="language" selectedLanguages={selectedLanguages} setSelectedLanguages={setSelectedLanguages} />
+
                     </div>
                     <div className="formGroup">
                         <label className="text-sm font-medium mb-1">Посилання на соціальні мережі</label>
