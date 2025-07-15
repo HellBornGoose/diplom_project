@@ -1,5 +1,6 @@
 body {
     background: linear-gradient(135deg, #f8e1e1 0%, #e1e1f8 100%);
+    background-repeat: no-repeat;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -13,6 +14,7 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
+    margin-top: 60px;
 }
 .login-container {
     background: rgba(255, 255, 255, 0.95);
@@ -20,7 +22,7 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    padding: 30px 40px 40px 40px;
+    padding: 80px 40px 40px 40px;
     border-radius: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     width: 1115px;
@@ -31,17 +33,16 @@ body {
 }
 
 .form-bar{
-    margin-top: 30px;
+    margin-top: 70px;
 }
 
 .h1 {
-    font-size: 2rem;
     font-weight: 700;
     color: #1a1a3d;
     margin-bottom: 10px;
-    text-align: left;
-    margin-left: 30px;
-    font-size: 90px;
+    text-align: center;
+    margin-right: 630px;
+    font-size: 64px;
 }
 
 .input-group {
@@ -155,7 +156,6 @@ button:hover {
 .registration-link a:hover {
     text-decoration: underline;
 }
-
 .password-wrapper {
     position: relative;
 }
@@ -163,7 +163,7 @@ button:hover {
 .error {
     color: red;
     text-align: left;
-    opacity: 0;
+    opacity: 100;
     padding-left: 34px;
     font-size: 15px;
 
@@ -177,12 +177,24 @@ button:hover {
     cursor: pointer;
     font-size: 16px;
 }
+@media (max-width: 1010px) {
+    .h1{
+        margin-right: 500px;
+    }
+}
+@media (max-width: 890px) {
+    .h1{
+        margin-right: 400px;
+    }
+}
 @media (max-width: 830px){
     .login-container{
         height: 487px;
         width: 305px;
         background-image: none;
-        
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     .h1{
         text-align: center;
@@ -194,14 +206,20 @@ button:hover {
         font-size: 10px;
     }
     .form-bar{
+        display: flex;
         margin-top: 20px;
-        margin-left: 22px;
+        justify-content: center;
+        flex-wrap: wrap;
     }
     .registration-link{
-        margin-left: 65px;
+        position: absolute;
+        top: 345px;
+        margin-left: 0;
+        
     }
     .forgot-password{
-        margin-left: 90px;
+        margin-left: 0px;
+        margin-top: 25px;
     }
     .registration-link a{
         font-size: 10px;
@@ -238,9 +256,18 @@ button:hover {
     }
     .main-content{
         margin-top: 50px;
+        
     }
     .login-container{
     padding: 30px 0px 40px 0px;
+    }
+    
+}
+@media (max-width: 400px) {
+    
+    .main-content{
+        position: relative;
+        height: 100%;
     }
     
 }

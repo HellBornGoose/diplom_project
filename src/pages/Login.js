@@ -24,7 +24,7 @@ function Login(){
     setError('');
 
     try {
-      const response = await fetch('https://82cf-78-30-214-177.ngrok-free.app/api/Auth/login', {
+      const response = await fetch('https://4db1eec56caf.ngrok-free.app/api/Auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -40,6 +40,7 @@ function Login(){
       localStorage.setItem('jwtToken', data.jwtToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       localStorage.setItem('tokenExpires', data.expires);
+      const jwt = localStorage.getItem("jwtToken");
       const profileResponse = await fetch('https://your-api.com/api/Profile/get', {
         method: 'GET',
         headers: {
@@ -48,7 +49,7 @@ function Login(){
       });
 
       if (!profileResponse.ok) {
-        setErrorMsg('Не вдалося отримати дані профілю');
+        setError('Не вдалося отримати дані профілю');
         return;
       }
 
@@ -63,7 +64,7 @@ function Login(){
         navigate('/profile/user');
       }
     } catch (error) {
-      setErrorMsg('Щось пішло не так. Спробуйте ще раз.');
+      setError('Щось пішло не так. Спробуйте ще раз.');
     }
     
   };
@@ -92,9 +93,9 @@ function Login(){
             </div>
             <div className="forgot-password">
                 <Link to="#">Забули пароль?</Link>
-            </div>
+            </div> 
             <div className="registration-link">
-                <Link to="./registration.html">Немає акаунту? Створити</Link>
+                <Link to="/registerUser">Немає акаунту? Створити</Link>
             </div>
         </form>
         

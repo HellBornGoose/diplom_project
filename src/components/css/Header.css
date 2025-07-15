@@ -129,6 +129,6 @@
   @media (max-width: 830px) {
 
       header {
-          opacity: 0;
+          display: none;
       }
   }

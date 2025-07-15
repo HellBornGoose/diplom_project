@@ -1,0 +1,56 @@
+.PhoneInputCountryIconImg {
+    position: absolute;
+    width: 24px;
+    height: 16px;
+    z-index: 5;
+    top: 14.5px;
+    left: 75px;
+}
+.PhoneInputCountrySelect{
+    width: 53px;
+    height: 30px;
+    opacity: 0;
+    margin-left: 52px;
+    margin-top: 7px;
+    z-index: 6;
+    position: absolute;
+    cursor: pointer;
+}
+.PhoneInputInput{
+    padding-left: 110px;
+}
+.PhoneInputCountry{
+    position: absolute;
+    z-index: 5;
+}
+.customphoneinput{
+    z-index: 3;
+    position: relative;
+}
+.PhoneInputImgIconArrow{
+    position: absolute;
+    left: 55px;
+    top: 18px;
+    color: #f28c38;
+    
+    z-index: 5;
+}
+@media (max-width: 830px){
+    .PhoneInputCountryIconImg{
+        top: 12px;
+        left: 68px;
+        
+    }
+    .PhoneInputInput{
+        padding-left: 105px;
+    }
+    .PhoneInputCountrySelect{
+        margin-left: 45px;
+        width: 53px;
+        margin-top: 4.5px;
+    }
+    .PhoneInputImgIconArrow{
+        top: 16px;
+        left: 49px;
+    }
+}
