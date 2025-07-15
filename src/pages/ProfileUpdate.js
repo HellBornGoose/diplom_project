@@ -9,21 +9,28 @@ import CustomPhoneInput from '../components/CustomPhoneInput';
 import UpdateStyles from '../css/ProfileUpdate.module.css';
 import { useNavigate } from 'react-router-dom';
 import LanguageSelector from '../components/LanguageSelector';
+import AvatarChange from '../components/AvatarChange';
 
 const ProfileUpdate = () => {
     const [profile, setProfile] = useState({
         firstName: '', lastName: '', surname: '', gender: '', phone: '', location: '',
         email: '', dateOfBirth: { day: '', month: '', year: '' }, instagram: '',
-        facebook: '', telegram: '', languages: '', photoUrl: ''
+        facebook: '', telegram: '', languages: [], photoUrl: ''
     });
     
     const [errorMsg, setErrorMsg] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [phone, setPhone] = useState('');
     const [languages, setLanguages] = useState([]);
+    const [photoUrl, setPhotoUrl] = useState('');
     const [previewImage, setPreviewImage] = useState('');
     const navigate = useNavigate();
     const refreshTimeout = useRef(null);
+    const defaultAvatar = 'https://via.placeholder.com/150';
+
+    const handlePhotoUrlChange = (newUrl) => {
+        setPhotoUrl(newUrl);
+      };
 
     const handlePhoneChange = (newPhone) => {
         setPhone(newPhone);
@@ -101,6 +108,7 @@ const ProfileUpdate = () => {
             }
 
             const data = await res.json();
+            const photo = data.photoUrl && data.photoUrl.trim() !== '' ? data.photoUrl : defaultAvatar;
             const [year, month, day] = data.dateOfBirth ? data.dateOfBirth.split("T")[0].split("-") : ['', '', ''];
             setProfile({
                 firstName: data.firstName || '',
@@ -113,12 +121,12 @@ const ProfileUpdate = () => {
                 dateOfBirth: { day, month, year },
                 instagram: data.instagram || '', 
                 facebook: data.facebook || '',   
-                telegram: data.telegram || '',
-                languages: data.languageCodes || [],  
-                photoUrl: data.photoUrl || ''
+                telegram: data.telegram || '',  
+                photoUrl: photo
             });
+            setPreviewImage('');
             setPhone(data.phone || '');
-            setLanguages(data.languageCodes || []);
+            setLanguages(data.languages.map(lang => lang.code));
         } catch (err) {
             console.error('Error loading profile:', err);
         }
@@ -150,19 +158,6 @@ const ProfileUpdate = () => {
     const handleSuggestionClick = (suggestion) => {
         setProfile({ ...profile, location: suggestion });
         setSuggestions([]);
-    };
-
-    // Предпросмотр
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                setPreviewImage(e.target.result);
-                setProfile({ ...profile, photoUrl: e.target.result });
-            };
-            reader.readAsDataURL(file);
-        }
     };
 
     // Формирование запроса и отправка данных
@@ -218,8 +213,10 @@ const ProfileUpdate = () => {
                 <form onSubmit={handleSubmit}>
                     <div className="formGroup">
                         <label htmlFor="avatar" className="text-sm font-medium mb-1">Аватарка:</label>
-                        <input type="file" id="avatar" accept="image/*" onChange={handleFileChange} className="border rounded p-2" />
-                        {previewImage && <img src={previewImage} alt="Попередній перегляд" className={UpdateStyles.Preview} />}
+                        <AvatarChange
+                            serverFilePath={photoUrl} // передаем текущий URL для отображения
+                            onPhotoUrlChange={handlePhotoUrlChange} // колбек для обновления URL
+                        />
                     </div>
                     <div className="formGroup">
                         <label htmlFor="firstName" className="text-sm font-medium mb-1">Ім'я*</label>
