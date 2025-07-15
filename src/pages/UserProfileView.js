@@ -1,8 +1,9 @@
 import React from "react";
+import ProfileInfo from "../components/profileComponents/ProfileInfo";
 
 function UserProfileView(){
 return(
-    <h1>User profile</h1>
+    <ProfileInfo />
 )
 }
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-function LanguageSelector({ selectedLanguages, setSelectedLanguages }) {
+function LanguageSelector({ languages = [], setLanguages }) {
   const [languagesList, setLanguagesList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -56,10 +56,12 @@ function LanguageSelector({ selectedLanguages, setSelectedLanguages }) {
   }, []);
 
   const toggleLanguage = (code) => {
-    if (selectedLanguages.includes(code)) {
-      setSelectedLanguages(selectedLanguages.filter(c => c !== code));
+    if (!Array.isArray(languages) || typeof setLanguages !== 'function') return;
+
+    if (languages.includes(code)) {
+      setLanguages(languages.filter(c => c !== code));
     } else {
-      setSelectedLanguages([...selectedLanguages, code]);
+      setLanguages([...languages, code]);
     }
   };
 
@@ -67,11 +69,10 @@ function LanguageSelector({ selectedLanguages, setSelectedLanguages }) {
   if (error) return <p style={{ color: 'red' }}>Ошибка: {error}</p>;
 
   // Для отображения выбраны названия, а не коды
-  const selectedNames = selectedLanguages
-    .map(code => {
-      const lang = languagesList.find(l => l.code === code);
-      return lang ? lang.name : code;
-    });
+  const selectedNames = languages.map(code => {
+    const lang = languagesList.find(l => l.code === code);
+    return lang ? lang.name : code;
+  });
 
   const selectedText = selectedNames.length > 0 ? selectedNames.join(', ') : 'Выберите языки';
 
@@ -99,7 +100,7 @@ function LanguageSelector({ selectedLanguages, setSelectedLanguages }) {
             <label key={code} style={{ display: 'block', padding: '4px 8px' }}>
               <input
                 type="checkbox"
-                checked={selectedLanguages.includes(code)}
+                checked={languages.includes(code)}
                 onChange={() => toggleLanguage(code)}
                 style={{ marginRight: 8 }}
               />

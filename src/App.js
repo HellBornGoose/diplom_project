@@ -20,11 +20,13 @@ function App() {
 
         {/* Защищённые маршруты */}
         <Route
-          path="/profile/edit" element={<ProfileUpdate /> } />
+          path="/profile/edit"
+          element={<ProfileUpdate />}
+        />
           
         <Route path="/" element={<Login />} />
         <Route path="/profile/Lord" element={isAuthenticated ? <LandLordProfile /> : <Navigate to="/login" replace />} />
-        <Route path="/profile/User" element={isAuthenticated ? <UserProfile /> : <Navigate to="/login" replace />} />
+        <Route path="/profile/User" element= {<UserProfile />} />
 
         {/* Главная или редирект */}
         <Route path="*" element={<Navigate to={isAuthenticated ? "/profile" : "/login"} replace />} />

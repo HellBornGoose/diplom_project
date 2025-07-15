@@ -1,0 +1,105 @@
+.profileCard {
+    position: relative;
+  display: flex;
+  align-items: center;
+  background: #ffe9f0;
+  border-radius: 16px;
+  padding: 20px;
+  max-width: 940px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  font-family: 'Monteserrat', sans-serif;
+  }
+  
+  .editIcon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    color: #692b7e;
+    cursor: pointer;
+  }
+
+  .profileImage{
+    flex-shrink: 0;
+  }
+
+  .profileImage img {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .profileInfo {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    color: #2e1b3f;
+  }
+  
+  .profileInfo h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: bold;
+    color: #221F50;
+  }
+  
+  .birthdate,
+  .location {
+    font-size: 18px;
+    color: #5D589A;
+    font-weight: 500;
+    margin: 2px 0;
+  }
+  
+  .role {
+    color: #E07B3B;
+    font-weight: 500;
+    margin: 4px 0 12px;
+    font-size: 18px;
+  }
+  
+  .contact {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 18px;
+    margin-bottom: 50px;
+  }
+  
+  .contact div {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    color: #5D589A;
+    
+  }
+  .email{
+    position: absolute;
+    bottom: 35px;
+  }
+
+  .phone{
+    position: absolute;
+    bottom: 35px;
+    left: 385px;
+  }
+  
+  .social {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+    color: #f26522;
+    cursor: pointer;
+    
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+  }
+  
+  .social a img:hover {
+    transition: 0.5s;
+    scale: 1.1;
+    opacity: 0.8;
+  }
+  
