@@ -20,10 +20,15 @@ const ProfileUpdate = () => {
     const [errorMsg, setErrorMsg] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [phone, setPhone] = useState('');
-    const [selectedLanguages, setSelectedLanguages] = useState([]);
+    const [languages, setLanguages] = useState([]);
     const [previewImage, setPreviewImage] = useState('');
     const navigate = useNavigate();
-    let refreshTimeout;
+    const refreshTimeout = useRef(null);
+
+    const handlePhoneChange = (newPhone) => {
+        setPhone(newPhone);
+        setProfile(prev => ({ ...prev, phone: newPhone }));
+    };
 
     const apiKey = 'b4c12022c2c846d6a7bdeb5e79d87424';
     const ngrokLink = 'https://4db1eec56caf.ngrok-free.app';
@@ -66,9 +71,9 @@ const ProfileUpdate = () => {
         const refreshBeforeSec = 120;
         const timeoutMs = Math.max((expiresInSec - refreshBeforeSec) * 1000, 10000);
 
-        if (refreshTimeout) clearTimeout(refreshTimeout);
+        if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
 
-        refreshTimeout = setTimeout(async () => {
+        refreshTimeout.current = setTimeout(async () => {
             try {
                 await refreshJWT();
             } catch (err) {
@@ -96,7 +101,7 @@ const ProfileUpdate = () => {
             }
 
             const data = await res.json();
-            const [year, month, day] = data.dateOfBirth ? data.dateOfBirth.split('-') : ['', '', ''];
+            const [year, month, day] = data.dateOfBirth ? data.dateOfBirth.split("T")[0].split("-") : ['', '', ''];
             setProfile({
                 firstName: data.firstName || '',
                 lastName: data.lastName || '',
@@ -108,10 +113,12 @@ const ProfileUpdate = () => {
                 dateOfBirth: { day, month, year },
                 instagram: data.instagram || '', 
                 facebook: data.facebook || '',   
-                telegram: data.telegram || '',   
+                telegram: data.telegram || '',
+                languages: data.languageCodes || [],  
                 photoUrl: data.photoUrl || ''
             });
             setPhone(data.phone || '');
+            setLanguages(data.languageCodes || []);
         } catch (err) {
             console.error('Error loading profile:', err);
         }
@@ -164,7 +171,7 @@ const ProfileUpdate = () => {
         const { firstName, lastName, surname, gender, phone, location, email, dateOfBirth, instagram, facebook, telegram, photoUrl } = profile;
         const dateOfBirthStr = `${dateOfBirth.year}-${dateOfBirth.month}-${dateOfBirth.day}`;
         const payload = {
-            firstName, lastName, surname, gender, phone, location, email, dateOfBirth: dateOfBirthStr, instagram, facebook, telegram, photoUrl
+            firstName, lastName, surname, gender, phone, location, email, dateOfBirth: dateOfBirthStr, instagram, facebook, telegram, languageCodes: languages, photoUrl
         };
 
         try {
@@ -195,6 +202,11 @@ const ProfileUpdate = () => {
     useEffect(() => {
         refreshJWT();
         loadProfile();
+        return () => {
+            if (refreshTimeout.current) {
+                clearTimeout(refreshTimeout.current);
+            }
+        };
     }, []);
 
     return (
@@ -250,7 +262,7 @@ const ProfileUpdate = () => {
                             className="border rounded p-2"
                         >
                             <option value="Male">Чоловіча</option>
-                            <option value="Women">Жіноча</option>
+                            <option value="Female">Жіноча</option>
                             <option value="Other">Інше</option>
                         </select>
                     </div>
@@ -338,7 +350,7 @@ const ProfileUpdate = () => {
                     </div>
                     <div className='formGroup'>
                         <label htmlFor="language" className="text-sm font-medium mb-1">Язики</label>
-                        <LanguageSelector id="language" selectedLanguages={selectedLanguages} setSelectedLanguages={setSelectedLanguages} />
+                        <LanguageSelector id="language" languages={languages} setLanguages={setLanguages} />
 
                     </div>
                     <div className="formGroup">
