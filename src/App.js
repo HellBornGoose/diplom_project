@@ -23,8 +23,8 @@ function App() {
           path="/profile/edit" element={<ProfileUpdate /> } />
           
         <Route path="/" element={<Login />} />
-        <Route path="/profile/landlord" element={isAuthenticated ? <LandLordProfile /> : <Navigate to="/login" replace />} />
-        <Route path="/profile/user" element={isAuthenticated ? <UserProfile /> : <Navigate to="/login" replace />} />
+        <Route path="/profile/Lord" element={isAuthenticated ? <LandLordProfile /> : <Navigate to="/login" replace />} />
+        <Route path="/profile/User" element={isAuthenticated ? <UserProfile /> : <Navigate to="/login" replace />} />
 
         {/* Главная или редирект */}
         <Route path="*" element={<Navigate to={isAuthenticated ? "/profile" : "/login"} replace />} />
