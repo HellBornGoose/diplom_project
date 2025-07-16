@@ -6,6 +6,7 @@ import FacebookLogo from '../../img/FacebookOrange.svg';
 import TelegramLogo from '../../img/TelegramOrange.svg';
 import EditIcon from '../../img/EditIcon.svg';
 import { Link } from 'react-router-dom';
+import DefaultAvatar from '../../img/default-avatar.jpg'
  
 
 const ProfileInfo = () => {
@@ -15,7 +16,7 @@ const ProfileInfo = () => {
             <Link to="/profile/edit"><img src={EditIcon} alt="" /></Link>
         </div>
       <div className={style.profileImage}>
-        <img src="" alt="Олег Гончар" />
+        <img src={DefaultAvatar} alt="Олег Гончар" />
       </div>
       <div className={style.profileInfo}>
         <h2>Олег Гончар</h2>

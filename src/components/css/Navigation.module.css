@@ -1,0 +1,24 @@
+.sidebar {
+    width: 260px;
+    background-color: #5D589A;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  height: 100%;
+  font-family: 'MyFont', sans-serif;
+}
+.sidelink li{
+    display: flex;
+    color: white;
+    margin-top: 30px;
+    list-style-type: none;
+    margin-left: 135px;
+}
+.sidelink{
+    text-decoration: none;
+}
+.links{
+    margin-top: 40px;
+}
+  

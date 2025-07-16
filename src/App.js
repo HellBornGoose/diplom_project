@@ -5,6 +5,7 @@ import LandLordProfile from './pages/LandLordProfileView.js'
 import UserProfile from './pages/UserProfileView.js'
 import ProfileUpdate from './pages/ProfileUpdate.js';
 import RegisterLandLord from './pages/RegisterLandLord.js';
+import './css/fonts.css';
 
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('jwtToken')); // простой пример авторизации

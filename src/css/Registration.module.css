@@ -5,6 +5,7 @@ body {
     flex-direction: column;
     position: relative;
     overflow-x: hidden;
+    font-family: 'Myfont', sans-serif;
 } 
 
 .maincontent {

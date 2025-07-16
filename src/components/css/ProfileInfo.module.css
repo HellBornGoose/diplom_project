@@ -7,7 +7,7 @@
   padding: 20px;
   max-width: 940px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  font-family: 'Monteserrat', sans-serif;
+  font-family: 'MyFont', sans-serif;
   }
   
   .editIcon {
@@ -82,7 +82,7 @@
   .phone{
     position: absolute;
     bottom: 35px;
-    left: 385px;
+    left: 455px;
   }
   
   .social {
