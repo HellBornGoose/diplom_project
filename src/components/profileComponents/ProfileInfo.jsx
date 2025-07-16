@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import style from '../css/ProfileInfo.module.css';
 import EmailIcon from '../../img/ProfileEmail.svg';
 import PhoneIcon from '../../img/ProfilePhone.svg';
@@ -6,37 +7,108 @@ import FacebookLogo from '../../img/FacebookOrange.svg';
 import TelegramLogo from '../../img/TelegramOrange.svg';
 import EditIcon from '../../img/EditIcon.svg';
 import { Link } from 'react-router-dom';
-import DefaultAvatar from '../../img/default-avatar.jpg'
- 
+import defaultAvatar from '../../img/default-avatar.jpg'; 
 
+
+
+const ngrokLink = "https://4db1eec56caf.ngrok-free.app";
 const ProfileInfo = () => {
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      const token = localStorage.getItem('jwtToken');
+      if (!token) return;
+
+      try {
+        const res = await fetch(`${ngrokLink}/api/Profile/get`, {
+          method: 'GET',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+        }
+
+        const data = await res.json();
+        setProfile(data);
+      } catch (err) {
+        console.error('Ошибка загрузки профиля:', err);
+      }
+    };
+
+    loadProfile();
+  }, []);
+
+//   if (!profile) {
+//     return <div>Завантаження...</div>;
+//   }
+
+  const {
+    firstName,
+    lastName,
+    surname,
+    dateOfBirth,
+    location,
+    phone,
+    email,
+    instagram,
+    facebook,
+    telegram,
+    photoUrl
+  } = profile;
+
+  const avatarUrl = photoUrl && photoUrl.trim() !== ''
+    ? `${ngrokLink}/api/Profile/get-avatar/${encodeURIComponent(photoUrl)}`
+    : defaultAvatar;
+
   return (
     <div className={style.profileCard}>
-        <div className={style.editIcon}>
-            <Link to="/profile/edit"><img src={EditIcon} alt="" /></Link>
-        </div>
-      <div className={style.profileImage}>
-        <img src={DefaultAvatar} alt="Олег Гончар" />
+      <div className={style.editIcon}>
+        <Link to="/registerUser">
+          <img src={EditIcon} alt="Edit" />
+        </Link>
       </div>
+
+      <div className={style.profileImage}>
+        <img src={avatarUrl} alt={`${firstName} ${lastName}`} />
+      </div>
+
       <div className={style.profileInfo}>
-        <h2>Олег Гончар</h2>
-        <p className={style.birthdate}>07.09.1997</p>
-        <p className={style.location}>Україна, Карпати</p>
+        <h2>{`${firstName || ''} ${surname || ''}`}</h2>
+        <p className={style.birthdate}>
+          {dateOfBirth ? new Date(dateOfBirth).toLocaleDateString('uk-UA') : ''}
+        </p>
+        <p className={style.location}>{location || ''}</p>
         <p className={style.role}>Мандрівник</p>
+
         <div className={style.contact}>
           <div className={style.email}>
             <img src={EmailIcon} alt="Email icon" />
-            <span>oleggon4ar@gmail.com</span>
+            <span>{email || ''}</span>
           </div>
           <div className={style.phone}>
             <img src={PhoneIcon} alt="Phone icon" />
-            <span>+38 (069) 23 26 754</span>
+            <span>{phone || ''}</span>
           </div>
         </div>
+
         <div className={style.social}>
-          <a href=''><img src={InstLogo} alt="Instagram logo" /></a>
-          <a href=''><img src={FacebookLogo} className={style.FacebookIcon} alt="Facebook logo" /></a>
-          <a href=''><img src={TelegramLogo} alt="Telegram logo" /></a>
+          {instagram && (
+            <a href={`https://www.instagram.com/${instagram}`} target="_blank" rel="noopener noreferrer">
+              <img src={InstLogo} alt="Instagram" />
+            </a>
+          )}
+          {facebook && (
+            <a href={`https://www.facebook.com/${facebook}`} target="_blank" rel="noopener noreferrer">
+              <img src={FacebookLogo} className={style.FacebookIcon} alt="Facebook" />
+            </a>
+          )}
+          {telegram && (
+            <a href={`https://t.me/${telegram}`} target="_blank" rel="noopener noreferrer">
+              <img src={TelegramLogo} alt="Telegram" />
+            </a>
+          )}
         </div>
       </div>
     </div>
