@@ -10,7 +10,7 @@ import UpdateStyles from '../css/ProfileUpdate.module.css';
 import { useNavigate } from 'react-router-dom';
 import LanguageSelector from '../components/LanguageSelector';
 import AvatarChange from '../components/AvatarChange';
-import defaultAvatar from '../img/default-avatar.jpg';
+
 
 const ProfileUpdate = () => {
     const [profile, setProfile] = useState({

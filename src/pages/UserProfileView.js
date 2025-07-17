@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect, useState } from 'react';
 import ProfileInfo from "../components/profileComponents/ProfileInfo";
 import Header from "../components/Header";
 import WalletCard from "../components/profileComponents/Wallet";
@@ -8,6 +9,7 @@ import styles from "../css/UserProfile.module.css"
 
 function UserProfileView(){
     const ngrokLink = 'http://localhost:5197';
+    const refreshTimeout = useRef(null);
     const refreshJWT = async () => {
         const refreshToken = localStorage.getItem('refreshToken');
          if (!refreshToken) {

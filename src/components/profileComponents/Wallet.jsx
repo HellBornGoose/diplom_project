@@ -15,7 +15,7 @@ const WalletCard = () => {
     const fetchBalance = async () => {
       try {
         const token = localStorage.getItem('jwtToken');
-        const res = await fetch(`${ngrokLink}/api/Wallet/get-balance`, {
+        const res = await fetch(`${ngrokLink}/api/Profile/get-balance`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -44,7 +44,7 @@ const WalletCard = () => {
 
         <p className={styles.balanceLabel}>Баланс</p>
         <p className={styles.balance}>
-            {/* {balance !== null ? `${balance.toLocaleString()} ₴` : 'Завантаження...'}  */}
+             {balance !== null ? `${balance.toLocaleString()} ₴` : 'Завантаження...'}  
             3500 <span className={styles.currency}>$</span>
         </p>
 
