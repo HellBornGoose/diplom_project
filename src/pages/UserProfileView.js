@@ -7,6 +7,7 @@ import Navigation from "../components/profileComponents/Navigation";
 import styles from "../css/UserProfile.module.css"
 
 function UserProfileView(){
+    const ngrokLink = 'http://localhost:5197';
     const refreshJWT = async () => {
         const refreshToken = localStorage.getItem('refreshToken');
          if (!refreshToken) {

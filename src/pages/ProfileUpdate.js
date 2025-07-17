@@ -37,7 +37,7 @@ const ProfileUpdate = () => {
     };
 
     const apiKey = 'b4c12022c2c846d6a7bdeb5e79d87424';
-    const ngrokLink = 'https://4db1eec56caf.ngrok-free.app';
+    const ngrokLink = 'http://localhost:5197';
 
     // Обнова дживити
     const refreshJWT = async () => {
@@ -107,7 +107,7 @@ const ProfileUpdate = () => {
             }
 
             const data = await res.json();
-            const photo = data.photoUrl && data.photoUrl.trim() !== '' ? data.photoUrl : defaultAvatar;
+            // const photo = data.photoUrl && data.photoUrl.trim() !== '' ? data.photoUrl : defaultAvatar;
             const [year, month, day] = data.dateOfBirth ? data.dateOfBirth.split("T")[0].split("-") : ['', '', ''];
             setProfile({
                 firstName: data.firstName || '',
@@ -121,7 +121,6 @@ const ProfileUpdate = () => {
                 instagram: data.instagram || '', 
                 facebook: data.facebook || '',   
                 telegram: data.telegram || '',  
-                photoUrl: photo
             });
             setPhone(data.phone || '');
             setLanguages(data.languages.map(lang => lang.code));
@@ -161,10 +160,10 @@ const ProfileUpdate = () => {
     // Формирование запроса и отправка данных
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { firstName, lastName, surname, gender, phone, location, email, dateOfBirth, instagram, facebook, telegram, photoUrl } = profile;
+        const { firstName, lastName, surname, gender, phone, location, email, dateOfBirth, instagram, facebook, telegram } = profile;
         const dateOfBirthStr = `${dateOfBirth.year}-${dateOfBirth.month}-${dateOfBirth.day}`;
         const payload = {
-            firstName, lastName, surname, gender, phone, location, email, dateOfBirth: dateOfBirthStr, instagram, facebook, telegram, languageCodes: languages, photoUrl
+            firstName, lastName, surname, gender, phone, location, email, dateOfBirth: dateOfBirthStr, instagram, facebook, telegram, languageCodes: languages
         };
 
         try {

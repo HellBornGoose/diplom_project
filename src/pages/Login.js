@@ -24,7 +24,7 @@ function Login(){
     setError('');
 
     try {
-      const response = await fetch('https://4db1eec56caf.ngrok-free.app/api/Auth/login', {
+      const response = await fetch('http://localhost:5197/api/Auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -41,7 +41,7 @@ function Login(){
       localStorage.setItem('refreshToken', data.refreshToken);
       localStorage.setItem('tokenExpires', data.expires);
       const jwt = localStorage.getItem("jwtToken");
-      const profileResponse = await fetch('https://4db1eec56caf.ngrok-free.app/api/Profile/get', {
+      const profileResponse = await fetch('http://localhost:5197/api/Profile/get', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${jwt}`,

@@ -5,7 +5,7 @@ import mastercard from '../../img/MastercardIcon.svg';
 import gpay from '../../img/GPay.svg';
 import purse from '../../img/Purse.svg'; // иконка кошелька с монетками
 
-const ngrokLink = 'https://your-ngrok-link.com'; // замени на свой адрес
+const ngrokLink = 'http://localhost:5197'; // замени на свой адрес
 
 const WalletCard = () => {
   const [balance, setBalance] = useState(null);

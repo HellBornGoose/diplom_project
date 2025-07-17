@@ -54,7 +54,7 @@ const RegisterUser = () => {
     
 
     try {
-      const response = await fetch('https://4db1eec56caf.ngrok-free.app/api/Auth/registration', {
+      const response = await fetch('http://localhost:5197/api/Auth/registration', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, phone, password, isLandlord: true })

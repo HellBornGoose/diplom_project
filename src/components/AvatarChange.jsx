@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import UpdateStyles from '../css/ProfileUpdate.module.css';
 import defaultAvatar from '../img/default-avatar.jpg';
 
-const ngrokLink = 'http://your-ngrok-address';
+const ngrokLink = 'http://localhost:5197';
 
 function AvatarChange({ serverFilePath, onPhotoUrlChange }) {
   const [localFile, setLocalFile] = useState(null);
@@ -55,13 +55,12 @@ function AvatarChange({ serverFilePath, onPhotoUrlChange }) {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
-          // Content-Type не ставим, браузер сам выставит multipart/form-data
         },
         body: formData,
       });
 
       if (!res.ok) {
-        // Попробуем прочитать ошибку в формате JSON или текстом
+        // Попробуем прочитать ошибку в формате JSON
         let errorMessage = 'Ошибка загрузки файла.';
         try {
           const errorData = await res.json();
@@ -74,8 +73,8 @@ function AvatarChange({ serverFilePath, onPhotoUrlChange }) {
 
       const data = await res.json();
       if (data.photoUrl) {
-        onPhotoUrlChange(data.photoUrl); // сообщаем родителю про новый URL
-        setLocalFile(null); // сбрасываем локальный файл (превью заменится серверным)
+        onPhotoUrlChange(data.photoUrl); // если есть что-то на сервере
+        setLocalFile(null); // превью от серверного изображения
       }
     } catch (err) {
       setError(err.message);

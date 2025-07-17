@@ -9,7 +9,7 @@ import EditIcon from '../../img/EditIcon.svg';
 import { Link } from 'react-router-dom';
 import defaultAvatar from '../../img/default-avatar.jpg'; 
 
-const ngrokLink = "https://4db1eec56caf.ngrok-free.app";
+const ngrokLink = "http://localhost:5197";
 
 const ProfileInfo = () => {
   const [profile, setProfile] = useState({
