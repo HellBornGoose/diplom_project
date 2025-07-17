@@ -5,9 +5,10 @@
   background: #ffe9f0;
   border-radius: 16px;
   padding: 20px;
-  max-width: 940px;
+  width: 940px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   font-family: 'MyFont', sans-serif;
+  height: 260px;
   }
   
   .editIcon {

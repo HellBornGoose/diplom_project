@@ -28,7 +28,7 @@ const WalletCard = () => {
         setBalance(data.balance); // предполагаем, что сервер возвращает { balance: 3550 }
       } catch (err) {
         console.error('Error fetching balance:', err);
-        setError('Помилка при завантаженні балансу');
+        //setError('Помилка при завантаженні балансу');
       }
     };
 
@@ -44,7 +44,8 @@ const WalletCard = () => {
 
         <p className={styles.balanceLabel}>Баланс</p>
         <p className={styles.balance}>
-          {balance !== null ? `${balance.toLocaleString()} ₴` : 'Завантаження...'}
+            {/* {balance !== null ? `${balance.toLocaleString()} ₴` : 'Завантаження...'}  */}
+            3500 <span className={styles.currency}>$</span>
         </p>
 
         {error && <p style={{ color: 'red' }}>{error}</p>}

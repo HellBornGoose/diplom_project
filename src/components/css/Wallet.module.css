@@ -70,10 +70,10 @@
     font-size: 18px;
     cursor: pointer;
     width: 140px;
-    height: 28px;
+    height: 35px;
   }
   .topUpBtn:hover {
-    scale: 1.1;
+    scale: 1.05;
     opacity: 90;
     transition: 0.4s;
   }
@@ -84,6 +84,8 @@
     flex-direction: column;
     align-items: flex-end;
     gap: 12px;
+    margin-left: 20px;
+    margin-bottom: 35px;
   }
   
   .payIcons {

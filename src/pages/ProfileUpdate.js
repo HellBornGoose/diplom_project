@@ -92,7 +92,7 @@ const ProfileUpdate = () => {
     const loadProfile = async () => {
         const token = localStorage.getItem('jwtToken');
         if (!token) {
-        //    navigate('/login');
+            navigate('/login');
             return;
         }
 
@@ -386,7 +386,7 @@ const ProfileUpdate = () => {
                             </div>
                         </div>
                     </div>
-                    <div>
+                    {/* <div>
                         <button type="button" className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
                             Додати фото паспорта
                         </button>
@@ -398,7 +398,7 @@ const ProfileUpdate = () => {
                             className="h-4 w-4"
                         />
                         <label htmlFor="consent" className="text-sm">Надавати повідомлення про оновлення та рекламні пропозиції на мою пошту</label>
-                    </div>
+                    </div> */}
                     <button
                         type="submit"
                         className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
