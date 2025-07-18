@@ -4,70 +4,78 @@ import arrowLeft from '../../img/arrowLeft.svg';
 import arrowRight from '../../img/arrorRight.svg';
 
 const Day = ({ date, bookings }) => {
-  const day = date.getDate();
-  const month = date.getMonth();
-  const year = date.getFullYear();
-
-  const dayBookings = bookings.filter((booking) => {
-    const from = booking.dateFrom;
-    const to = booking.dateTo;
-
-    // Проверяем, попадает ли день в диапазон бронирования (начало или конец)
+    const day = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+  
+    const dayBookings = bookings.filter((booking) => {
+      const from = new Date(booking.dateFrom);
+      const to = new Date(booking.dateTo);
+  
+      return (
+        (from.getDate() === day && from.getMonth() === month && from.getFullYear() === year) ||
+        (to.getDate() === day && to.getMonth() === month && to.getFullYear() === year)
+      );
+    });
+  
+    const bookingsPerRow = 1;
+    const rows = [];
+  
+    for (let i = 0; i < dayBookings.length; i += bookingsPerRow) {
+      rows.push(dayBookings.slice(i, i + bookingsPerRow));
+    }
+  
     return (
-      (from.getDate() === day && from.getMonth() === month && from.getFullYear() === year) ||
-      (to.getDate() === day && to.getMonth() === month && to.getFullYear() === year)
+      <div>
+        <div className={styles.dayNumber}>
+          {day}{' '}
+          <span className={styles.weekDay}>
+            {date.toLocaleDateString('uk-UA', {
+              weekday: 'long',
+            }).replace(/^./, (c) => c.toUpperCase())}
+          </span>
+        </div>
+        <div className={styles.dayIcon}>
+          {rows.map((row, rowIndex) => (
+            <div key={rowIndex} className={styles.bookingRow}>
+              {row.map((booking) => {
+                const from = new Date(booking.dateFrom);
+                const to = new Date(booking.dateTo);
+  
+                const isArrival =
+                  from.getDate() === day &&
+                  from.getMonth() === month &&
+                  from.getFullYear() === year;
+  
+                const isDeparture =
+                  to.getDate() === day &&
+                  to.getMonth() === month &&
+                  to.getFullYear() === year;
+  
+                const bgColor = isArrival ? '#AFB06A' : isDeparture ? '#FFE8D9' : 'transparent';
+                const time = isArrival ? booking.checkInTime : isDeparture ? booking.checkOutTime : '';
+  
+                return (
+                  <div
+                    key={`${booking.listingId}-${rowIndex}`}
+                    className={styles.booking}
+                    style={{ backgroundColor: bgColor }}
+                  >
+                    <p style={{ color: '#221F50' }}>Бронювання №{booking.listingId}</p>
+                    <p style={{ color: '#221F50' }}>
+                      {isArrival ? "В'їзд о" : isDeparture ? 'Виїзд о' : ''} {time?.slice(0, 5)}
+                    </p>
+                    <p style={{ color: '#221F50' }}>{booking.listingName}</p>
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      </div>
     );
-  });
-
-  const bookingsPerRow = 1;
-
-  const rows = [];
-  for (let i = 0; i < dayBookings.length; i += bookingsPerRow) {
-    rows.push(dayBookings.slice(i, i + bookingsPerRow));
-  }
-
-  return (
-    <div>
-      <div className={styles.dayNumber}>
-        {day}{' '}
-        <span className={styles.weekDay}>
-          {date.toLocaleDateString('uk-UA', { weekday: 'long' }).replace(/^./, (c) => c.toUpperCase())}
-        </span>
-      </div>
-      <div className={styles.dayIcon}>
-        {rows.map((row, rowIndex) => (
-          <div key={rowIndex} className={styles.bookingRow}>
-            {row.map((booking) => {
-              const isArrival =
-                booking.dateFrom.getDate() === day &&
-                booking.dateFrom.getMonth() === month &&
-                booking.dateFrom.getFullYear() === year;
-
-              const isDeparture =
-                booking.dateTo.getDate() === day &&
-                booking.dateTo.getMonth() === month &&
-                booking.dateTo.getFullYear() === year;
-
-              const bgColor = isArrival ? '#AFB06A' : isDeparture ? '#FFE8D9' : 'transparent';
-
-              return (
-                <div
-                  key={booking.listingId}
-                  className={styles.booking}
-                  style={{ backgroundColor: bgColor }}
-                >
-                  <p>Бронювання №{booking.listingId}</p>
-                  <p>{booking.dateFrom.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                  <p>{booking.listingName}</p>
-                </div>
-              );
-            })}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
+  };
+  
 
 const Calendar = () => {
 const now = new Date();
@@ -87,7 +95,20 @@ const now = new Date();
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await fetch(`${ngrokLink}/api/listing/get-landlord-bookingsDate`);
+        const token = localStorage.getItem('jwtToken');
+  
+        const response = await fetch(`${ngrokLink}/api/listing/get-landlord-bookingsDate`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+  
         const data = await response.json();
         const formattedBookings = data.map((item) => ({
           ...item,
@@ -99,20 +120,21 @@ const now = new Date();
         console.error('Помилка завантаження бронювань:', error);
       }
     };
-
+  
     fetchBookings();
-
+  
     const updateWidths = () => {
       if (containerRef.current) {
         setCalendarWidth(containerRef.current.scrollWidth);
         setContainerWidth(containerRef.current.parentElement.offsetWidth);
       }
     };
-
+  
     updateWidths();
     window.addEventListener('resize', updateWidths);
     return () => window.removeEventListener('resize', updateWidths);
-  }, [currentMonth, currentYear]);
+  }, []);
+  
 
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const days = Array.from({ length: daysInMonth }, (_, i) => new Date(currentYear, currentMonth, i + 1));
