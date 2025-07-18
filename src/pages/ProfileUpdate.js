@@ -184,7 +184,28 @@ const ProfileUpdate = () => {
                 return;
             }
 
-            navigate('/profile/user');
+            const profileResponse = await fetch('http://localhost:5197/api/Profile/get', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+
+      if (!profileResponse.ok) {
+        setErrorMsg('Не вдалося отримати дані профілю');
+        return;
+      }
+
+      const profileData = await profileResponse.json();
+      const roles = profileData.roles;
+      
+      const isLandLord = roles.includes("Landlord");
+
+      if (isLandLord) {
+        navigate('/profile/Lord');
+      } else {
+        navigate('/profile/User');
+      }
         } catch (error) {
             setErrorMsg(error.message);
         }

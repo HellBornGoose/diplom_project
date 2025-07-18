@@ -70,6 +70,7 @@ const Day = ({ date, bookings }) => {
 };
 
 const Calendar = () => {
+const now = new Date();
   const [bookings, setBookings] = useState([]);
   const [currentOffset, setCurrentOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -78,10 +79,8 @@ const Calendar = () => {
   const containerRef = useRef(null);
   const [calendarWidth, setCalendarWidth] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
-
-  // Месяц: 0 — январь, 6 — июль
-  const [currentMonth, setCurrentMonth] = useState(6);
-  const [currentYear, setCurrentYear] = useState(2025);
+  const [currentYear, setCurrentYear] = useState(now.getFullYear());
+  const [currentMonth, setCurrentMonth] = useState(now.getMonth());
 
   const ngrokLink = "http://localhost:5197";
 
@@ -180,7 +179,7 @@ const Calendar = () => {
     setCurrentOffset(0);
     setCurrentMonth((prev) => {
       if (prev === 0) {
-        setCurrentYear((y) => y - 1);
+        setCurrentYear(currentYear - 1);
         return 11;
       }
       return prev - 1;
@@ -191,7 +190,7 @@ const Calendar = () => {
     setCurrentOffset(0);
     setCurrentMonth((prev) => {
       if (prev === 11) {
-        setCurrentYear((y) => y + 1);
+        setCurrentYear(currentYear + 1);
         return 0;
       }
       return prev + 1;
