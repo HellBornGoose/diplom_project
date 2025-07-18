@@ -1,0 +1,114 @@
+.container {
+    margin: 1rem auto;
+    padding: 1rem;
+    max-width: 1443px;
+    background-color: #ffff;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .title {
+    font-size: 35px;
+    font-weight: bold;
+    color: #221F50;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .calendar {
+    display: flex;
+    justify-content: flex-start;
+    /* background-color: #fad2e1; */
+    padding: 1rem;
+    border-radius: 0.5rem;
+    user-select: none;
+    touch-action: none;
+    transition: transform 0.2s ease; /* Плавная анимация перемещения */
+    cursor: grab;
+  }
+  
+  .calendar.dragging {
+    transition: none;
+    cursor: grabbing;
+  }
+  
+  .dayNumber {
+    font-size: 28px;
+    font-weight: bold;
+    color: #6b46c1;
+    margin-bottom: 0.25rem;
+    text-align: center;
+  }
+  .dayIcon {
+    border: 3px solid #FFE8D9;
+    
+    margin: 6px;
+    padding-left: 0px;
+    padding-right: 0px;
+    min-height: 120px;
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 6px;
+    box-sizing: border-box;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  
+  .bookingRow {
+  display: flex;
+  gap: 4px;
+  
+  padding: 4px;
+  height: 100px;
+  border: 1.5px solid #FFE8D9;
+  background-color: #f9f9f9;
+}
+
+  .weekDay{
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .booking {
+    background-color: #e3f2fd;
+    padding: 4px;
+    border-radius: 4px;
+    font-size: 10px;
+    flex: 1;
+  }
+  
+  .bookingColumn {
+    margin-top: 0.25rem;
+  }
+  .arrowButtonLeft {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 22px;
+    height: 35px;
+    margin-right: 50px;
+  }
+  .arrowButtonRight {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 22px;
+    height: 35px;
+    margin-left: 50px;
+  }
+  
+  
+  .booking {
+    background-color: #d69e2e;
+    color: white;
+    margin-top: 0.25rem;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    width: 100%;
+    transition: background-color 0.2s ease;
+  }
+  
+  .booking:hover {
+    background-color: #b07d23;
+  }

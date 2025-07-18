@@ -5,6 +5,7 @@ import LandLordProfile from './pages/LandLordProfileView.js'
 import UserProfile from './pages/UserProfileView.js'
 import ProfileUpdate from './pages/ProfileUpdate.js';
 import RegisterLandLord from './pages/RegisterLandLord.js';
+import ListingProfile from './pages/ListingProfile.js';
 import './css/fonts.css';
 
 function App() {
@@ -26,8 +27,9 @@ function App() {
         />
           
         <Route path="/" element={<Login />} />
-        <Route path="/profile/Lord" element={isAuthenticated ? <LandLordProfile /> : <Navigate to="/login" replace />} />
+        <Route path="/profile/Lord" element={<LandLordProfile />} />
         <Route path="/profile/User" element= {<UserProfile />} />
+        <Route path="/profile/Lord/Listing" element= {<ListingProfile />} />
 
         {/* Главная или редирект */}
         <Route path="*" element={<Navigate to={isAuthenticated ? "/profile" : "/login"} replace />} />

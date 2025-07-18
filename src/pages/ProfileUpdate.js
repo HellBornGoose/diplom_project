@@ -337,7 +337,7 @@ const ProfileUpdate = () => {
                     <div className="formGroup">
                     <CustomPhoneInput
                         value={phone}
-                        onChange={setPhone}
+                        onChange={(e) => handlePhoneChange(e.target.value)}
                         placeholder="Номер телефона"
                         defaultCountry="UA"
                     />

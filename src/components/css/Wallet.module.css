@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #ffe9f0;
+    background: #FFE8D9;
     border-radius: 16px;
     padding: 24px;
     max-width: 504px;
@@ -11,13 +11,13 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     color: #221F50;
     position: relative;
+    border: #5D589A 1px solid;
   }
   
   /* Левая часть */
   .walletLeft {
     display: flex;
     flex-direction: column;
-    gap: px;
   }
   
   .walletLeft h2 {
@@ -84,7 +84,7 @@
     flex-direction: column;
     align-items: flex-end;
     gap: 12px;
-    margin-left: 20px;
+    margin-left: 15px;
     margin-bottom: 35px;
   }
   

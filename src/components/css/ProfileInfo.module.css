@@ -2,25 +2,35 @@
     position: relative;
   display: flex;
   align-items: center;
-  background: #ffe9f0;
+  background: #FFE8D9;
   border-radius: 16px;
   padding: 20px;
+  padding-top: 0px;
   width: 940px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   font-family: 'MyFont', sans-serif;
   height: 260px;
+  border: #5D589A 1px solid;
   }
   
   .editIcon {
     position: absolute;
     top: 12px;
     right: 12px;
-    color: #692b7e;
     cursor: pointer;
+  }
+  .editLink svg{
+    fill: #5D589A;
+  }
+  .editIcon:hover{
+    transition: 0.5s;
+    scale: 1.1;
+    opacity: 0.8;
   }
 
   .profileImage{
     flex-shrink: 0;
+    padding-top: 20px;
   }
 
   .profileImage img {
@@ -34,7 +44,7 @@
     margin-left: 20px;
     display: flex;
     flex-direction: column;
-    color: #2e1b3f;
+    color: #2e1b3f; 
   }
   
   .profileInfo h2 {
@@ -72,18 +82,23 @@
     align-items: center;
     gap: 6px;
     font-weight: 500;
-    color: #5D589A;
+    color: #5D589A; 
     
   }
   .email{
     position: absolute;
     bottom: 35px;
   }
-
+  .email svg{
+    fill: #5D589A;
+  }
   .phone{
     position: absolute;
     bottom: 35px;
     left: 455px;
+  }
+  .phone svg{
+    stroke: #5D589A;
   }
   
   .social {

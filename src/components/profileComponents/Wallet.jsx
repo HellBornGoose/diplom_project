@@ -7,7 +7,7 @@ import purse from '../../img/Purse.svg'; // иконка кошелька с м�
 
 const ngrokLink = 'http://localhost:5197'; // замени на свой адрес
 
-const WalletCard = () => {
+const WalletCard = ({landLordBorderStyle, landLordStyle}) => {
   const [balance, setBalance] = useState(null);
   const [error, setError] = useState(null);
 
@@ -25,7 +25,7 @@ const WalletCard = () => {
         if (!res.ok) throw new Error(`HTTP error ${res.status}`);
 
         const data = await res.json();
-        setBalance(data.balance); // предполагаем, что сервер возвращает { balance: 3550 }
+        setBalance(data.balance); 
       } catch (err) {
         console.error('Error fetching balance:', err);
         //setError('Помилка при завантаженні балансу');
@@ -36,16 +36,16 @@ const WalletCard = () => {
   }, []);
 
   return (
-    <div className={styles.walletCard}>
+    <div className={styles.walletCard} style={landLordBorderStyle}>
       <div className={styles.walletLeft}>
         <h2>Мій гаманець</h2>
-        <p className={styles.cardLabel}>Номер картки</p>
-        <div className={styles.cardNumber}>3332 **** **** 2211</div>
+        <p className={styles.cardLabel} style={landLordStyle}>Номер картки</p>
+        <div className={styles.cardNumber} style={landLordStyle}>3332 **** **** 2211</div>
 
-        <p className={styles.balanceLabel}>Баланс</p>
-        <p className={styles.balance}>
-             {balance !== null ? `${balance.toLocaleString()} ₴` : 'Завантаження...'}  
-            3500 <span className={styles.currency}>$</span>
+        <p className={styles.balanceLabel} style={landLordStyle}>Баланс</p>
+        <p className={styles.balance} style={landLordStyle}>
+            {balance !== null ? `${balance.toLocaleString()} ₴` : 'Завантаження...'}
+            {/* 3500 <span className={styles.currency} style={landLordStyle}>$</span> */}
         </p>
 
         {error && <p style={{ color: 'red' }}>{error}</p>}
