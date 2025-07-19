@@ -18,24 +18,14 @@ const ListingInfo = ({ onFormDataChange }) => {
   const [price, setPrice] = useState('4 800 ₴');
   const [showParameterSelector, setShowParameterSelector] = useState(false);
   const [countries, setCountries] = useState([]);
+  const [allParameters, setAllParameters] = useState([]); // <-- состояние для параметров из API
   const [loading, setLoading] = useState(true);
+  const [parametersLoading, setParametersLoading] = useState(true); // загрузка параметров
   const [addressLoading, setAddressLoading] = useState(false);
   const apiKey = 'b4c12022c2c846d6a7bdeb5e79d87424';
   const timeoutRef = useRef(null);
 
-  const allParameters = [
-    'Тераса',
-    'Новий ремонт',
-    'Зона паркування',
-    'Басейн',
-    'Гімнастичний зал',
-    'Сад',
-    'Балкон',
-    'Кондиціонер',
-    'Інтернет',
-    'Телевізор'
-  ];
-
+  // Загрузка стран
   useEffect(() => {
     const fetchCountries = async () => {
       try {
@@ -54,6 +44,26 @@ const ListingInfo = ({ onFormDataChange }) => {
     fetchCountries();
   }, []);
 
+  // Загрузка параметров из API main-features
+  useEffect(() => {
+    const fetchMainFeatures = async () => {
+      setParametersLoading(true);
+      try {
+        const response = await fetch('http://localhost:5197/api/listing/main-features'); // или полный URL, если нужно
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        setAllParameters(data.map(item => typeof item === 'string' ? item : item.name));
+      } catch (error) {
+        console.error('Error fetching main features:', error);
+        setAllParameters([]);
+      } finally {
+        setParametersLoading(false);
+      }
+    };
+    fetchMainFeatures();
+  }, []);
+
+  // Обработка автозаполнения адреса
   useEffect(() => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
@@ -82,6 +92,7 @@ const ListingInfo = ({ onFormDataChange }) => {
     };
   }, [address]);
 
+  // Передаем данные наверх при изменениях
   useEffect(() => {
     onFormDataChange({
       name,
@@ -108,7 +119,7 @@ const ListingInfo = ({ onFormDataChange }) => {
 
   return (
     <div className={styles.bookingForm}>
-      {/* Заголовок, країна та тип житла */}
+      {/* Заголовок, страна и тип жилья */}
       <div className={styles.headerSection}>
         <div className={styles.title}>
           <label htmlFor='name'>Назва</label>
@@ -190,19 +201,23 @@ const ListingInfo = ({ onFormDataChange }) => {
           {showParameterSelector && (
             <div className={styles.parameterSelector}>
               <h3>Виберіть параметри</h3>
-              {allParameters
-                .filter((param) => !selectedParameters.includes(param))
-                .map((param) => (
-                  <label htmlFor='showParameters' key={param} className={styles.parameterLabel}>
-                    <input
-                      type="checkbox"
-                      onChange={() => handleAddParameter(param)}
-                      disabled={selectedParameters.length >= 5}
-                      id='showParameters'
-                    />
-                    {param}
-                  </label>
-                ))}
+              {parametersLoading ? (
+                <p>Завантаження параметрів...</p>
+              ) : (
+                allParameters
+                  .filter((param) => !selectedParameters.includes(param))
+                  .map((param) => (
+                    <label htmlFor='showParameters' key={param} className={styles.parameterLabel}>
+                      <input
+                        type="checkbox"
+                        onChange={() => handleAddParameter(param)}
+                        disabled={selectedParameters.length >= 5}
+                        id='showParameters'
+                      />
+                      {param}
+                    </label>
+                  ))
+              )}
               <button onClick={() => setShowParameterSelector(false)} className={styles.ParameterButton}>Закрити</button>
             </div>
           )}

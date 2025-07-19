@@ -1,51 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../css/AmenitiesSet.module.css';
 
-const AmenitiesSet = ({onAmenitiesChange}) => {
+const AmenitiesSet = ({ onAmenitiesChange }) => {
   const [selectedItems, setSelectedItems] = useState([]);
-  const [showSelector, setShowSelector] = useState(false);
+  const [allItems, setAllItems] = useState([]);
 
-  const allItems = [
-    'Тераса',
-    'Новий ремонт',
-    'Зона паркування',
-    'Басейн',
-    'Гімнастичний зал',
-    'Сад',
-    'Балкон',
-    'Кондиціонер',
-    'Інтернет',
-    'Телевізор',
-    'Кухня',
-    'Гараж',
-    'Тренувальний зал',
-    'Гриль',
-    'Кавамашина',
-    'Джакузі',
-    'Вана',
-    'Духовка',
-    'Посудомийна машина',
-    'Пральня',
-    'Аудіо система',
-    'Столові прибори',
-    'Ігрова консоль',
-    'Міні-бар',
-    'Фен',
-    'Холодильник',
-    'Детектор чадного газу',
-    'Детектор диму',
-    'Шампунь',
-    'Гель для душу',
-    'Праска',
-    'Сушка для одягу'
-
-  ];
+  useEffect(() => {
+    async function fetchAmenities() {
+      try {
+        const response = await fetch('http://localhost:5197/api/listing/amenities'); 
+        if (!response.ok) {
+          throw new Error('Ошибка загрузки данных');
+        }
+        const data = await response.json();
+        setAllItems(data.map(item => typeof item === 'string' ? item : item.name));
+      } catch (error) {
+        console.error('Ошибка загрузки удобств:', error);
+      }
+    }
+    fetchAmenities();
+  }, []);
 
   const handleSelectItem = (item) => {
     if (!selectedItems.includes(item)) {
-        const newSelectedItems = [...selectedItems, item];
-        setSelectedItems(newSelectedItems);
-        onAmenitiesChange(newSelectedItems);
+      const newSelectedItems = [...selectedItems, item];
+      setSelectedItems(newSelectedItems);
+      onAmenitiesChange(newSelectedItems);
     }
   };
 
