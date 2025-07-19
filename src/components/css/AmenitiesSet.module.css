@@ -1,0 +1,80 @@
+.multiSelect {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 2px solid #E07B3B;
+    border-radius: 8px;
+    width: 730px;
+    height: 253px;
+  }
+  
+  .selectedItems {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 5px 0;
+  }
+  
+  .itemTag {
+    background-color: #E07B3B;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+  
+  .itemTag button {
+    margin-left: 5px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .availableItems {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 5px 0;
+  }
+  
+  .availableItems::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .availableItems::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+  
+  .availableItems::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+  
+  .availableItems::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  
+  .selectableItem {
+    padding: 5px 10px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    white-space: nowrap;
+  }
+  
+  .selectableItem:hover {
+    background-color: #f0f0f0;
+  }
+  .AmenitiesLabel{
+    font-size: 28px;
+    margin-left: 20px;
+  }

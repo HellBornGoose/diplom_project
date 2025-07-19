@@ -30,14 +30,31 @@ body{
   .content {
     flex-grow: 1;
     padding: 30px;
-    padding-left: 30px;
+    
     overflow-y: auto;
     display: flex;
     gap: 15px;
-    position: absolute;
+    
     left: 265px;
     top: 100px;
     
+  }
+  .mainContent{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .ListingButton{
+    width: 253px;
+    height: 52px;
+    font-size: 28px;
+    color: #FFFF;
+    background-color: #E07B3B;
+    border-radius: 20px;
+    border: none;
+    font-family: 'Myfont', sans-serif;
+    margin-bottom: 30px;
+    margin-left: 1230px;
   }
   
   

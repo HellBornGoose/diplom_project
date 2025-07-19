@@ -61,7 +61,7 @@ const Day = ({ date, bookings }) => {
                     className={styles.booking}
                     style={{ backgroundColor: bgColor }}
                   >
-                    <p style={{ color: '#221F50' }}>Бронювання №{booking.listingId}</p>
+                    <p style={{ color: isArrival ? '#FFE8D9' : isDeparture ? '#E07B3B' : '#221F50', }}> Бронювання №{booking.listingId} </p>
                     <p style={{ color: '#221F50' }}>
                       {isArrival ? "В'їзд о" : isDeparture ? 'Виїзд о' : ''} {time?.slice(0, 5)}
                     </p>

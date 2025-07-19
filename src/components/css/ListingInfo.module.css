@@ -1,0 +1,283 @@
+.bookingForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding: 25px;
+    background-color: #FFFF;
+    border: 2px solid #E07B3B;
+    border-radius: 10px;
+    width: 940px;
+    font-family: 'Myfont', sans-serif;
+    padding-bottom: 50px;
+  }
+  
+  .headerSection {
+    grid-column: 1 / 3;
+    display: flex;
+    align-items: center;
+  }
+  
+  .title{
+    
+    display: flex;
+    flex-direction: column;
+  }
+  .title input{
+    width: 645px;
+    height: 47px;
+    border: 1px solid #5D589A;
+    border-radius: 10px;
+    color: #5D589A;
+    font-size: 18px;
+    font-family: 'Myfont', sans-serif;
+    padding: 8px;
+    padding-left: 20px;
+  }
+  .typeDropdown {
+    
+    display: flex;
+    flex-direction: column;
+    margin-left: 15px;
+  }
+  .typeDropdown select{
+    color: #5D589A;
+    width: 232px;
+    height: 47px;
+    border: 1px solid #5D589A;
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: 'Myfont', sans-serif;
+    padding: 8px;
+  }
+  
+  .addressSection {
+    color: #5D589A;
+    grid-column: 1 / 3;
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .parametersSection {
+    grid-column: 1 / 3;
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .selectedParameters {
+    width: 645px; 
+    height: 59px;
+    border: 1px solid #5D589A;
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: 'Myfont', sans-serif;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 5px;
+    overflow-x: auto;
+  }
+  .selectedParameters::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .selectedParameters::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+  
+  .selectedParameters::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+  
+  .selectedParameters::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  .parameterTag {
+    background-color: #E07B3B;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .parameterTag button {
+    margin-left: 5px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .addParameterButton {
+    padding: 5px 10px;
+    background-color: #E07B3B;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .parameterSelector {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 10;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .parameterLabel {
+    display: block;
+    margin-bottom: 5px;
+  }
+  .ParameterButton{
+    border: none;
+    background-color: #E07B3B;
+    color: #FFFF;
+    font-family: 'Myfont';
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 7px;
+  }
+  .ParameterButton:hover{
+    scale: 1.1;
+    transition: 0.3s;
+    opacity: 80;
+  }
+  .timeSection {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .timeGroup {
+    width: 313px;
+    height: 47px;
+    display: flex;
+    flex-direction: column;
+  }
+  .timeGroup input{
+    color: #5D589A;
+    border: 1px solid #5D589A;
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: 'Myfont', sans-serif;
+    padding: 8px;
+  }
+  .timeGroupRight {
+    width: 313px;
+    height: 47px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+  }
+  .timeGroupRight input{
+    color: #5D589A;
+    border: 1px solid #5D589A;
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: 'Myfont', sans-serif;
+    padding: 8px;
+  }
+  .rightSide{
+    display: flex;
+  }
+  .priceCapacitySection {
+    /* grid-column: 1 / 3; */
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .priceGroup {
+    
+    margin-left: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+  .capacityGroup{
+    
+    margin-left: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+  .capacityGroup input{
+    color: #5D589A;
+    width: 232px;
+    height: 47px;
+    border: 1px solid #5D589A;
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: 'Myfont', sans-serif;
+    padding: 8px;
+    padding-left: 15px;
+    
+  }
+  .priceGroup input{
+    color: #5D589A;
+    width: 232px;
+    height: 47px;
+    border: 1px solid #5D589A;
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: 'Myfont', sans-serif;
+    padding: 8px;
+    padding-left: 15px;
+  }
+  .Country select{
+    color: #5D589A;
+    width: 255px;
+    height: 47px;
+    border: 1px solid #5D589A;
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: 'Myfont', sans-serif;
+    padding: 8px;
+    padding-left: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+  .Adress{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+  }
+  .Adress input{
+    color: #5D589A;
+    width: 371px;
+    height: 47px;
+    border: 1px solid #5D589A;
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: 'Myfont', sans-serif;
+    padding: 8px;
+  }
+  
+  label {
+    font-weight: bold;
+  }
+  .DescriptionContainer{
+    width: 663px;
+    height: 253px;
+    background-color: #FFFF;
+    border: 2px solid #E07B3B;
+    border-radius: 10px;
+  }
+  .DescriptionInput{
+    border: none;
+    font-size: 18px;
+    color: #221F50;
+    width: 597px;
+    font-family: 'Myfont', sans-serif;
+    resize: none;
+    outline: none;
+    margin-left: 30px;
+  }
+  .DescriptionLabel{
+    font-size: 28px;
+    margin-top: 10px;
+    margin-left: 35px;
+  }

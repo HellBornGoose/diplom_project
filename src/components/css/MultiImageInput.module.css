@@ -1,0 +1,98 @@
+.wrapper {
+    position: relative;
+    width: 506px;
+    height: 340px;
+    border: 2px solid #E07B3B;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #FFFF;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  }
+  
+  /* Картинка на всю площадь */
+  .image {
+    position: absolute; /* поверх всего */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* заполняет всю область, можно заменить на contain, если нужно */
+    pointer-events: none;
+    border-radius: 16px;
+    z-index: 1;
+  }
+  
+  /* Пустое состояние — плюс по центру */
+  .emptyState {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 2; /* поверх картинки */
+  }
+  
+  .bigPlusIcon {
+    width: 60px;
+    height: 60px;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+  }
+  
+  .emptyState:hover .bigPlusIcon,
+  .emptyState:focus .bigPlusIcon {
+    opacity: 1;
+  }
+  
+  .input {
+    display: none;
+  }
+  
+  /* Контейнер для точек: по центру, поверх картинки */
+  .dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10; /* чтобы точки были поверх */
+    user-select: none;
+  }
+  
+  /* Точки */
+  .dot {
+    width: 15px;
+    height: 6px;
+    border-radius: 4px;
+    background-color: #FFE8D9;
+    border: 1px solid #E07B3B;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  
+  .dotActive {
+    background-color: #E07B3B;
+  }
+  
+  /* Кастомный скролл для WebKit */
+  .dotsWrapper::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .dotsWrapper::-webkit-scrollbar-thumb {
+    background-color: #E07B3B;
+    border-radius: 3px;
+  }
+  
+  .dotsWrapper::-webkit-scrollbar-track {
+    background-color: #FFE8D9;
+    border-radius: 3px;
+  }
+  

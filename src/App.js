@@ -7,6 +7,7 @@ import ProfileUpdate from './pages/ProfileUpdate.js';
 import RegisterLandLord from './pages/RegisterLandLord.js';
 import ListingProfile from './pages/ListingProfile.js';
 import './css/fonts.css';
+import ListingCreate from './pages/ListingCreate.js';
 
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('jwtToken')); // простой пример авторизации
@@ -30,6 +31,7 @@ function App() {
         <Route path="/profile/Lord" element={<LandLordProfile />} />
         <Route path="/profile/User" element= {<UserProfile />} />
         <Route path="/profile/Lord/Listing" element= {<ListingProfile />} />
+        <Route path="/listing/create" element= {<ListingCreate />} />
 
         {/* Главная или редирект */}
         <Route path="*" element={<Navigate to={isAuthenticated ? "/profile" : "/login"} replace />} />

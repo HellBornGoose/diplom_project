@@ -88,11 +88,14 @@ return(
             <aside className={styles.sidebar}>
                 <NavigationLord landLordNavigationStyle={landLordNavigationStyle}/>
             </aside>
+            <div className={styles.mainContent}>
             <h1 className={styles.h1} style={landLordStyle}>Мій Профіль</h1>
             <section className={styles.content}>
                 <ProfileInfo landLordStyle={landLordStyle} landLordPhoneIconStyle={landLordPhoneIconStyle}/>
                 <WalletCard landLordBorderStyle={landLordBorderStyle} landLordStyle={landLordStyle}/>
             </section>
+            </div>
+            
         </main>
 
     

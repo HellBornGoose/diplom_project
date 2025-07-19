@@ -88,6 +88,13 @@
     width: 22px;
     height: 35px;
     margin-right: 50px;
+    background-color: #fff;
+  }
+  .arrowButtonLeft:hover{
+    scale: 1.1;
+    opacity: 80;
+    transition: 0.3s;
+    background-color: #fff;
   }
   .arrowButtonRight {
     background: none;
@@ -97,7 +104,12 @@
     height: 35px;
     margin-left: 50px;
   }
-  
+  .arrowButtonRight:hover{
+    scale: 1.1;
+    opacity: 80;
+    transition: 0.3s;
+    background-color: #fff;
+  }
   
   .booking {
     background-color: #d69e2e;

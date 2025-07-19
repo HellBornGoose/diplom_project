@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import NavigationLord from "../components/profileComponents/NavigationLord";
 import Calendar from "../components/listingComponents/Calendar";
 import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
 function ListingProfile(){
     const ngrokLink = 'http://localhost:5197';
@@ -73,24 +74,27 @@ function ListingProfile(){
         fill: '#E07B3B',
     };
     return(
-        <div className={styles.layout}>
+    <div className={styles.layout}>
         <Header />
-        
 
         <main className={styles.main}>
-            
+        <Link className={styles.topUpBtn} to="/listing/create">
+              Створити
+            </Link>
             <aside className={styles.sidebar}>
-                <NavigationLord />
+                <NavigationLord landLordNavigationStyle={landLordNavigationStyle}/>
             </aside>
+            <div className={styles.mainContent}>
             <h1 className={styles.h1} style={landLordStyle}>Оголошення</h1>
-                <section className={styles.content}>
-                    
-                </section>
-            </main>
-            <Calendar />
+            <section className={styles.content}>
+                
+            </section>
+            </div>
+        </main>
+        <Calendar />
     
-            <Footer />
-        </div>
+    <Footer />
+    </div>
     )
 }
 

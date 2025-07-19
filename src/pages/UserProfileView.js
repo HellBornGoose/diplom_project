@@ -76,11 +76,13 @@ return(
             <aside className={styles.sidebar}>
                 <Navigation />
             </aside>
+            <div className={styles.mainContent}>
             <h1 className={styles.h1}>Мій Профіль</h1>
             <section className={styles.content}>
                 <ProfileInfo />
                 <WalletCard />
             </section>
+            </div>
         </main>
 
     

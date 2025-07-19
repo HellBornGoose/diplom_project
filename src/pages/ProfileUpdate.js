@@ -187,7 +187,7 @@ const ProfileUpdate = () => {
             const profileResponse = await fetch('http://localhost:5197/api/Profile/get', {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${jwt}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
