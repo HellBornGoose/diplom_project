@@ -49,7 +49,7 @@ const ListingInfo = ({ onFormDataChange }) => {
     const fetchMainFeatures = async () => {
       setParametersLoading(true);
       try {
-        const response = await fetch('http://localhost:5197/api/listing/main-features'); // или полный URL, если нужно
+        const response = await fetch('http://localhost:5197/api/listing/main-features'); 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
         setAllParameters(data.map(item => typeof item === 'string' ? item : item.name));
@@ -134,10 +134,10 @@ const ListingInfo = ({ onFormDataChange }) => {
         <div className={styles.typeDropdown}>
           <label htmlFor='HousingType'>Тип житла</label>
           <select value={housingType} onChange={(e) => setHousingType(e.target.value)} id='HousingType'>
-            <option value="Квартира">Квартира</option>
-            <option value="Будинок">Будинок</option>
-            <option value="Вілла">Вілла</option>
-            <option value="Готель">Готель</option>
+            <option value="1">Квартира</option>
+            <option value="2">Будинок</option>
+            <option value="3">Вілла</option>
+            <option value="4">Готель</option>
           </select>
         </div>
       </div>

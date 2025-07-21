@@ -24,12 +24,12 @@ function App() {
         {/* Защищённые маршруты */}
         <Route
           path="/profile/edit"
-          element={<ProfileUpdate />}
+          element={isAuthenticated ? <ProfileUpdate /> : <Navigate to="/login" replace />}
         />
           
         <Route path="/" element={<Login />} />
         <Route path="/profile/Lord" element={<LandLordProfile />} />
-        <Route path="/profile/User" element= {<UserProfile />} />
+        <Route path="/profile/User" element={<UserProfile />} />
         <Route path="/profile/Lord/Listing" element= {<ListingProfile />} />
         <Route path="/listing/create" element= {<ListingCreate />} />
 

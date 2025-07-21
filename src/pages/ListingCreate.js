@@ -140,14 +140,19 @@ const ParentComponent = () => {
     };
 
     try {
-      const response = await fetch('https://your-server-endpoint.com/submit', {
+      const token = localStorage.getItem('jwtToken');
+      const response = await fetch(`${ngrokLink}/Api/Listing`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(allData),
       });
 
       if (response.ok) {
         alert('Дані успішно відправлено на сервер!');
+        nav
       } else {
         alert('Помилка при відправці.');
       }

@@ -6,6 +6,7 @@ import NavigationLord from "../components/profileComponents/NavigationLord";
 import Calendar from "../components/listingComponents/Calendar";
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import ListingSort from "../components/listingComponents/ListingSort";
 
 function ListingProfile(){
     const ngrokLink = 'http://localhost:5197';
@@ -87,12 +88,13 @@ function ListingProfile(){
             <div className={styles.mainContent}>
             <h1 className={styles.h1} style={landLordStyle}>Оголошення</h1>
             <section className={styles.content}>
-                
+                <ListingSort />
             </section>
             </div>
         </main>
+        <div className={styles.calendarContainer}>
         <Calendar />
-    
+        </div>
     <Footer />
     </div>
     )

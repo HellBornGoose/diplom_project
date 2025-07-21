@@ -19,7 +19,7 @@ const NavigationLord = ({landLordNavigationStyle}) => {
                     <svg className={styles.navigationLink} width="17" height="15" viewBox="0 0 17 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M4.75 1C2.67925 1 1 2.61546 1 4.60854C1 6.21744 1.65625 10.0359 8.116 13.896C8.23185 13.964 8.36464 14 8.5 14C8.63536 14 8.76815 13.964 8.884 13.896C15.3445 10.0359 16 6.21744 16 4.60854C16 2.61546 14.3207 1 12.25 1C10.1793 1 8.5 3.187 8.5 3.187C8.5 3.187 6.82075 1 4.75 1Z" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                    Збережене
+                    Оголошення
                 </li>
             </Link>
             <Link className={styles.sidelink}>

@@ -1,0 +1,90 @@
+.propertyGridContainer {
+    padding: 20px;
+    padding-left: 60px;
+    width: 1439px;
+    min-height: 430px;
+    background-color: #fff;
+    border-radius: 30px;
+    border: 1px solid #AFB06A;
+  }
+  
+  .sortControls {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+  }
+  .sortControls h2{
+    color: #5D589A;
+    font-size: 28px;
+  }
+  .sortBtn {
+    padding: 8px 16px;
+    border: 2px solid #5D589A;
+    background-color: #FFE8D9;
+    color: #5D589A;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .sortBtn:hover {
+    background-color: #5D589A;
+    color: #FFE8D9;
+  }
+  
+  .sortBtn.active {
+    background-color: #5D589A;
+    color: #FFE8D9;
+  }
+  
+  .propertyGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 0px;
+    width: 100%;
+  }
+  
+  .propertyCard {
+    border: 1px solid #FFE8D9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+    width: 416px;
+    height: 339px;
+    margin-bottom: 25px;
+  }
+  
+  .propertyImage {
+    width: 100%;
+    height: auto;
+  }
+  
+  .rating {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  
+  .propertyInfo {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .propertyName {
+    color: #f97316; /* Оранжевый цвет */
+    font-size: 1.2rem;
+    margin: 0;
+  }
+  
+  .propertySubtitle {
+    color: #6b7280; /* Серый цвет */
+    font-size: 0.9rem;
+    margin: 0;
+  }
