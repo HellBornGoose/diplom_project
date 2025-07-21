@@ -13,10 +13,11 @@ const ListingSort = () => {
     { id: 22, title: 'City Loft', country: 'Germany', isModerated: true, isOccupied: false, averageRating: 4.9, photoUrl: 'https://via.placeholder.com/300x200' },
   ]);
   const [sortBy, setSortBy] = useState('none'); // По умолчанию все свойства
+  const ngrokLink = 'http://localhost:5197';
 
   // Эффект для загрузки данных с сервера при монтировании компонента
   useEffect(() => {
-    fetch('/api/properties')
+    fetch(`${ngrokLink}/api/Listing/get-landlord-listings`)
       .then(response => response.json())
       .then(data => setProperties(data))
       .catch(error => console.error('Ошибка при загрузке свойств:', error));
