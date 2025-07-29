@@ -8,10 +8,11 @@ import RegisterLandLord from './pages/RegisterLandLord.js';
 import ListingProfile from './pages/ListingProfile.js';
 import './css/fonts.css';
 import ListingCreate from './pages/ListingCreate.js';
+import {useAuthRefresh} from './Hooks/useAuthRefresh.js';
 
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('jwtToken')); // простой пример авторизации
-
+  useAuthRefresh(isAuthenticated);
 
   return (
     <Router>
@@ -28,10 +29,10 @@ function App() {
         />
           
         <Route path="/" element={<Login />} />
-        <Route path="/profile/Lord" element={<LandLordProfile />} />
-        <Route path="/profile/User" element={<UserProfile />} />
-        <Route path="/profile/Lord/Listing" element= {<ListingProfile />} />
-        <Route path="/listing/create" element= {<ListingCreate />} />
+        <Route path="/profile/Lord" element={isAuthenticated ? <LandLordProfile /> : <Navigate to="/login" replace />} />
+        <Route path="/profile/User" element={isAuthenticated ? <UserProfile /> : <Navigate to="/login" replace />} />
+        <Route path="/profile/Lord/Listing" element= {isAuthenticated ? <ListingProfile /> : <Navigate to="/login" replace />} />
+        <Route path="/listing/create" element= {isAuthenticated ? <ListingCreate /> : <Navigate to="/login" replace />} />
 
         {/* Главная или редирект */}
         <Route path="*" element={<Navigate to={isAuthenticated ? "/profile" : "/login"} replace />} />

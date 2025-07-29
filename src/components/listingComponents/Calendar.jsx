@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styles from '../css/Calendar.module.css';
 import arrowLeft from '../../img/arrowLeft.svg';
 import arrowRight from '../../img/arrorRight.svg';
+import { NGROK_URL } from '../../Hooks/config';
 
 const Day = ({ date, bookings }) => {
     const day = date.getDate();
@@ -90,14 +91,12 @@ const now = new Date();
   const [currentYear, setCurrentYear] = useState(now.getFullYear());
   const [currentMonth, setCurrentMonth] = useState(now.getMonth());
 
-  const ngrokLink = "http://localhost:5197";
-
   useEffect(() => {
     const fetchBookings = async () => {
       try {
         const token = localStorage.getItem('jwtToken');
   
-        const response = await fetch(`${ngrokLink}/api/listing/get-landlord-bookingsDate`, {
+        const response = await fetch(`${NGROK_URL}/api/listing/get-landlord-bookingsDate`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

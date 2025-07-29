@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../css/ListingSort.module.css';
+import { NGROK_URL } from '../../Hooks/config';
 
 // Компонент для отображения сетки свойств
 const ListingSort = () => {
@@ -13,11 +14,17 @@ const ListingSort = () => {
     { id: 22, title: 'City Loft', country: 'Germany', isModerated: true, isOccupied: false, averageRating: 4.9, photoUrl: 'https://via.placeholder.com/300x200' },
   ]);
   const [sortBy, setSortBy] = useState('none'); // По умолчанию все свойства
-  const ngrokLink = 'http://localhost:5197';
 
   // Эффект для загрузки данных с сервера при монтировании компонента
   useEffect(() => {
-    fetch(`${ngrokLink}/api/Listing/get-landlord-listings`)
+    const jwtToken = localStorage.getItem('jwtToken');
+    fetch(`${NGROK_URL}/api/Listing/get-landlord-listings`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwtToken}`
+      }
+    })
       .then(response => response.json())
       .then(data => setProperties(data))
       .catch(error => console.error('Ошибка при загрузке свойств:', error));
@@ -72,7 +79,7 @@ const ListingSort = () => {
       <div className={styles.propertyGrid}>
         {filteredProperties.map(property => (
           <div key={property.id} className={styles.propertyCard}>
-            <img src={property.photoUrl || '/path/to/placeholder.jpg'} alt={property.title} className={styles.propertyImage} />
+            <img src={property.photoUrl ? `${NGROK_URL}/api/Listing/get-photo/${encodeURIComponent(property.photoUrl)}` : '/path/to/placeholder.jpg'} alt={property.title} className={styles.propertyImage} />
             {property.averageRating ? (
               <div className={styles.rating}>
                 <span>★</span> {property.averageRating}

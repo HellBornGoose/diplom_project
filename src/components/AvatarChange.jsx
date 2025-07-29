@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import UpdateStyles from '../css/ProfileUpdate.module.css';
 import defaultAvatar from '../img/default-avatar.jpg';
-
-const ngrokLink = 'http://localhost:5197';
+import { NGROK_URL } from '../Hooks/config';
 
 function AvatarChange({ serverFilePath, onPhotoUrlChange }) {
   const [localFile, setLocalFile] = useState(null);
@@ -23,7 +22,7 @@ function AvatarChange({ serverFilePath, onPhotoUrlChange }) {
 
   // Формируем URL аватара с сервера, если он есть
   const serverImageUrl = serverFilePath
-    ? `${ngrokLink}/api/Profile/get-avatar/${encodeURIComponent(serverFilePath)}`
+    ? `${NGROK_URL}/api/Profile/get-avatar/${encodeURIComponent(serverFilePath)}`
     : null;
 
   // Обработчик выбора файла
@@ -51,7 +50,7 @@ function AvatarChange({ serverFilePath, onPhotoUrlChange }) {
       const formData = new FormData();
       formData.append('file', file);
 
-      const res = await fetch(`${ngrokLink}/api/Profile/upload-avatar`, {
+      const res = await fetch(`${NGROK_URL}/api/Profile/upload-avatar`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

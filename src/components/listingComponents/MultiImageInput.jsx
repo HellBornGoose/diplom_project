@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import styles from '../css/MultiImageInput.module.css';
 import plusIcon from '../../img/plusIcon.svg';
 
-const MultiImageInput = ({ images = [], setImages }) => {
+const MultiImageInput = ({ images = [], setImages, onFilesChange }) => {
   const [activeIndex, setActiveIndex] = useState(0); // 0 — пустой экран, 1..N — картинки
   const inputRef = useRef(null);
 
@@ -12,11 +12,18 @@ const MultiImageInput = ({ images = [], setImages }) => {
       file,
       url: URL.createObjectURL(file),
     }));
+
     setImages(prev => [...prev, ...newImages]);
+
+    if (typeof onFilesChange === 'function') {
+      onFilesChange(files);
+    }
+
     if (activeIndex === 0 && newImages.length > 0) {
       setActiveIndex(1);
     }
-    e.target.value = null;
+
+    e.target.value = null; // очищаем input, чтобы можно было загрузить те же файлы снова
   };
 
   const handleDotClick = (index) => {
@@ -24,9 +31,7 @@ const MultiImageInput = ({ images = [], setImages }) => {
   };
 
   const handleBigPlusClick = () => {
-    if (inputRef.current) {
-      inputRef.current.click();
-    }
+    inputRef.current?.click();
   };
 
   return (
@@ -60,7 +65,6 @@ const MultiImageInput = ({ images = [], setImages }) => {
       />
 
       <div className={styles.dots}>
-        {/* Точка для пустого состояния */}
         <span
           onClick={() => handleDotClick(0)}
           className={`${styles.dot} ${activeIndex === 0 ? styles.dotActive : ''}`}
@@ -69,8 +73,6 @@ const MultiImageInput = ({ images = [], setImages }) => {
           onKeyDown={e => e.key === 'Enter' && handleDotClick(0)}
           aria-label="Показать пустое поле с загрузкой"
         />
-
-        {/* Точки для картинок */}
         {images.map((_, index) => (
           <span
             key={index + 1}

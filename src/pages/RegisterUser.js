@@ -7,6 +7,7 @@ import showPasswordIcon from '../img/showpassword.svg';
 import 'intl-tel-input/build/css/intlTelInput.css';
 import CustomPhoneInput from '../components/CustomPhoneInput';
 import styles from '../css/Registration.module.css';
+import { NGROK_URL } from '../Hooks/config';
 
 const RegisterUser = () => {
   const [email, setEmail] = useState('');
@@ -54,7 +55,7 @@ const RegisterUser = () => {
     
 
     try {
-      const response = await fetch('http://localhost:5197/api/Auth/registration', {
+      const response = await fetch(`${NGROK_URL}/api/Auth/registration`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, phone, password, isLandlord: false })

@@ -4,8 +4,7 @@ import visa from '../../img/VisaIcon.svg';
 import mastercard from '../../img/MastercardIcon.svg';
 import gpay from '../../img/GPay.svg';
 import purse from '../../img/Purse.svg'; // иконка кошелька с монетками
-
-const ngrokLink = 'http://localhost:5197'; // замени на свой адрес
+import { NGROK_URL } from '../../Hooks/config';
 
 const WalletCard = ({landLordBorderStyle, landLordStyle}) => {
   const [balance, setBalance] = useState(null);
@@ -15,7 +14,7 @@ const WalletCard = ({landLordBorderStyle, landLordStyle}) => {
     const fetchBalance = async () => {
       try {
         const token = localStorage.getItem('jwtToken');
-        const res = await fetch(`${ngrokLink}/api/Profile/get-balance`, {
+        const res = await fetch(`${NGROK_URL}/api/Profile/get-balance`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`

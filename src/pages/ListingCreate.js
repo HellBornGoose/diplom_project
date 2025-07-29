@@ -7,83 +7,76 @@ import ListingInfo from '../components/listingComponents/ListingInfo.jsx';
 import styles from '../css/UserProfile.module.css';
 import AmenitiesSet from '../components/listingComponents/AmenitiesSet';
 import ListingDescription from '../components/listingComponents/ListingDescription';
-
-const ngrokLink = 'http://localhost:5197';
+import { NGROK_URL } from '../Hooks/config';
 
 const ParentComponent = () => {
-  const [filesToUpload, setFilesToUpload] = useState([]);
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]); // [{ file, url }]
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
   const [description, setDescription] = useState('');
   const [amenities, setAmenities] = useState([]);
   const [listingInfoData, setListingInfoData] = useState({});
 
-  const refreshTimeout = useRef(null);
+  // const refreshTimeout = useRef(null);
 
-  const refreshJWT = async () => {
-    const refreshToken = localStorage.getItem('refreshToken');
-    if (!refreshToken) throw new Error('No refresh token available');
+  // const refreshJWT = async () => {
+  //   const refreshToken = localStorage.getItem('refreshToken');
+  //   if (!refreshToken) throw new Error('No refresh token available');
 
-    const response = await fetch(`${ngrokLink}/api/Auth/refresh`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refreshToken }),
-    });
+  //   const response = await fetch(`${NGROK_URL}/api/Auth/refresh`, {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ refreshToken }),
+  //   });
 
-    if (!response.ok) throw new Error('Failed to refresh token');
+  //   if (!response.ok) throw new Error('Failed to refresh token');
 
-    const data = await response.json();
-    const { jwtToken, refreshToken: newRefreshToken, expires } = data;
+  //   const data = await response.json();
+  //   const { jwtToken, refreshToken: newRefreshToken, expires } = data;
 
-    localStorage.setItem('jwtToken', jwtToken);
-    localStorage.setItem('refreshToken', newRefreshToken);
-    localStorage.setItem('expireToken', expires);
+  //   localStorage.setItem('jwtToken', jwtToken);
+  //   localStorage.setItem('refreshToken', newRefreshToken);
+  //   localStorage.setItem('expireToken', expires);
 
-    startTokenRefreshTimer();
-  };
+  //   startTokenRefreshTimer();
+  // };
 
-  const startTokenRefreshTimer = () => {
-    const expiresInStr = localStorage.getItem('expireToken');
-    if (!expiresInStr) return;
+  // const startTokenRefreshTimer = () => {
+  //   const expiresInStr = localStorage.getItem('expireToken');
+  //   if (!expiresInStr) return;
 
-    const expiresInSec = parseInt(expiresInStr, 10);
-    if (isNaN(expiresInSec) || expiresInSec <= 0) return;
+  //   const expiresInSec = parseInt(expiresInStr, 10);
+  //   if (isNaN(expiresInSec) || expiresInSec <= 0) return;
 
-    const refreshBeforeSec = 120;
-    const timeoutMs = Math.max((expiresInSec - refreshBeforeSec) * 1000, 10000);
+  //   const refreshBeforeSec = 120;
+  //   const timeoutMs = Math.max((expiresInSec - refreshBeforeSec) * 1000, 10000);
 
-    if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
+  //   if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
 
-    refreshTimeout.current = setTimeout(async () => {
-      try {
-        await refreshJWT();
-      } catch (err) {
-        console.error('Error refreshing token:', err);
-      }
-    }, timeoutMs);
-  };
+  //   refreshTimeout.current = setTimeout(async () => {
+  //     try {
+  //       await refreshJWT();
+  //     } catch (err) {
+  //       console.error('Error refreshing token:', err);
+  //     }
+  //   }, timeoutMs);
+  // };
 
-  useEffect(() => {
-    refreshJWT();
-    return () => {
-      if (refreshTimeout.current) {
-        clearTimeout(refreshTimeout.current);
-      }
-    };
-  }, []);
-
-  const handleFilesChange = (files) => {
-    setFilesToUpload(files);
-    const newImageUrls = files.map((file) => URL.createObjectURL(file));
-    setImages(newImageUrls);
-  };
+  // useEffect(() => {
+  //   refreshJWT();
+  //   return () => {
+  //     if (refreshTimeout.current) {
+  //       clearTimeout(refreshTimeout.current);
+  //     }
+  //   };
+  // }, []);
 
   const handleFormDataChange = (data) => {
     setListingInfoData(data);
   };
 
-  const uploadPhotos = async () => {
+  const uploadPhotos = async (listingId) => {
+    const filesToUpload = images.map(img => img.file);
     if (filesToUpload.length === 0) return;
 
     setUploading(true);
@@ -94,13 +87,13 @@ const ParentComponent = () => {
       if (!token) throw new Error('Пользователь не авторизован');
 
       const formData = new FormData();
-      formData.append('listingId', '123'); // заменить при необходимости
+      formData.append('listingId', listingId);
 
       filesToUpload.forEach((file) => {
         formData.append('files', file);
       });
 
-      const res = await fetch(`${ngrokLink}/api/Profile/upload-photos`, {
+      const res = await fetch(`${NGROK_URL}/api/listing/upload-photos`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -121,7 +114,6 @@ const ParentComponent = () => {
 
       const data = await res.json();
       console.log('Загружено:', data.photoUrls);
-      setFilesToUpload([]);
       setImages([]);
     } catch (err) {
       setError(err.message);
@@ -131,8 +123,6 @@ const ParentComponent = () => {
   };
 
   const handleSubmit = async () => {
-    await uploadPhotos();
-
     const allData = {
       description,
       amenities,
@@ -141,7 +131,7 @@ const ParentComponent = () => {
 
     try {
       const token = localStorage.getItem('jwtToken');
-      const response = await fetch(`${ngrokLink}/Api/Listing`, {
+      const response = await fetch(`${NGROK_URL}/Api/Listing`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -150,12 +140,17 @@ const ParentComponent = () => {
         body: JSON.stringify(allData),
       });
 
-      if (response.ok) {
-        alert('Дані успішно відправлено на сервер!');
-        nav
-      } else {
+      if (!response.ok) {
         alert('Помилка при відправці.');
+        return;
       }
+
+      const data = await response.json();
+      const listingId = data.id;
+
+      await uploadPhotos(listingId);
+
+      alert('Дані успішно відправлено на сервер!');
     } catch (error) {
       console.error('Ошибка:', error);
       alert('Сталася помилка при відправці.');
@@ -188,7 +183,6 @@ const ParentComponent = () => {
             <MultiImageInput
               images={images}
               setImages={setImages}
-              onFilesChange={handleFilesChange}
             />
             <ListingInfo onFormDataChange={handleFormDataChange} />
             {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -202,7 +196,7 @@ const ParentComponent = () => {
           <button
             className={styles.ListingButton}
             onClick={handleSubmit}
-            disabled={uploading || filesToUpload.length === 0}
+            disabled={uploading || images.length === 0}
           >
             {uploading ? 'Загрузка...' : 'Зберегти'}
           </button>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../css/AmenitiesSet.module.css';
+import { NGROK_URL } from '../../Hooks/config';
 
 const AmenitiesSet = ({ onAmenitiesChange }) => {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -8,7 +9,7 @@ const AmenitiesSet = ({ onAmenitiesChange }) => {
   useEffect(() => {
     async function fetchAmenities() {
       try {
-        const response = await fetch('http://localhost:5197/api/listing/amenities'); 
+        const response = await fetch(`${NGROK_URL}/api/listing/amenities`); 
         if (!response.ok) {
           throw new Error('Ошибка загрузки данных');
         }

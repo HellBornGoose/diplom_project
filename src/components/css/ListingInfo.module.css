@@ -281,3 +281,27 @@
     margin-top: 10px;
     margin-left: 35px;
   }
+
+  .suggestionsList {
+    position: absolute;
+    top: 100%; /* появляется под инпутом */
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .suggestionItem {
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  
+  .suggestionItem:hover {
+    background-color: #f0f0f0;
+  }
+  

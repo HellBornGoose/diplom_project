@@ -1,0 +1,1 @@
+export const NGROK_URL = 'http://localhost:5197';

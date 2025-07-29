@@ -7,65 +7,65 @@ import Calendar from "../components/listingComponents/Calendar";
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import ListingSort from "../components/listingComponents/ListingSort";
+import { NGROK_URL } from '../Hooks/config';
 
 function ListingProfile(){
-    const ngrokLink = 'http://localhost:5197';
-    const refreshTimeout = useRef(null);
-    const refreshJWT = async () => {
-        const refreshToken = localStorage.getItem('refreshToken');
-         if (!refreshToken) {
-             throw new Error('No refresh token available');
-         }
+    // const refreshTimeout = useRef(null);
+    // const refreshJWT = async () => {
+    //     const refreshToken = localStorage.getItem('refreshToken');
+    //      if (!refreshToken) {
+    //          throw new Error('No refresh token available');
+    //      }
 
-        const response = await fetch(`${ngrokLink}/api/Auth/refresh`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ refreshToken })
-        });
+    //     const response = await fetch(`${NGROK_URL}/api/Auth/refresh`, {
+    //         method: 'POST',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify({ refreshToken })
+    //     });
 
-         if (!response.ok) {
-             throw new Error('Failed to refresh token');
-        }
+    //      if (!response.ok) {
+    //          throw new Error('Failed to refresh token');
+    //     }
 
-        const data = await response.json();
-        const { jwtToken, refreshToken: newRefreshToken, expires } = data;
+    //     const data = await response.json();
+    //     const { jwtToken, refreshToken: newRefreshToken, expires } = data;
 
-        localStorage.setItem('jwtToken', jwtToken);
-        localStorage.setItem('refreshToken', newRefreshToken);
-        localStorage.setItem('expireToken', expires);
+    //     localStorage.setItem('jwtToken', jwtToken);
+    //     localStorage.setItem('refreshToken', newRefreshToken);
+    //     localStorage.setItem('expireToken', expires);
 
-        startTokenRefreshTimer();
-    };
+    //     startTokenRefreshTimer();
+    // };
 
-    // Start token refresh timer
-    const startTokenRefreshTimer = () => {
-        const expiresInStr = localStorage.getItem('expireToken');
-        if (!expiresInStr) return;
+    // // Start token refresh timer
+    // const startTokenRefreshTimer = () => {
+    //     const expiresInStr = localStorage.getItem('expireToken');
+    //     if (!expiresInStr) return;
 
-        const expiresInSec = parseInt(expiresInStr, 10);
-        if (isNaN(expiresInSec) || expiresInSec <= 0) return;
+    //     const expiresInSec = parseInt(expiresInStr, 10);
+    //     if (isNaN(expiresInSec) || expiresInSec <= 0) return;
 
-        const refreshBeforeSec = 120;
-        const timeoutMs = Math.max((expiresInSec - refreshBeforeSec) * 1000, 10000);
+    //     const refreshBeforeSec = 120;
+    //     const timeoutMs = Math.max((expiresInSec - refreshBeforeSec) * 1000, 10000);
 
-        if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
+    //     if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
 
-        refreshTimeout.current = setTimeout(async () => {
-            try {
-                await refreshJWT();
-            } catch (err) {
-                console.error('Error refreshing token:', err);
-            }
-        }, timeoutMs);
-    };
-    useEffect(() => {
-        refreshJWT();
-        return () => {
-            if (refreshTimeout.current) {
-                clearTimeout(refreshTimeout.current);
-            }
-        };
-    }, []);
+    //     refreshTimeout.current = setTimeout(async () => {
+    //         try {
+    //             await refreshJWT();
+    //         } catch (err) {
+    //             console.error('Error refreshing token:', err);
+    //         }
+    //     }, timeoutMs);
+    // };
+    // useEffect(() => {
+    //     refreshJWT();
+    //     return () => {
+    //         if (refreshTimeout.current) {
+    //             clearTimeout(refreshTimeout.current);
+    //         }
+    //     };
+    // }, []);
     const landLordNavigationStyle = {
         backgroundColor: '#E07B3B',
     }

@@ -4,9 +4,8 @@ import InstLogo from '../../img/InstOrange.svg';
 import FacebookLogo from '../../img/FacebookOrange.svg';
 import TelegramLogo from '../../img/TelegramOrange.svg';
 import { Link } from 'react-router-dom';
-import defaultAvatar from '../../img/default-avatar.jpg'
- 
-const ngrokLink = "http://localhost:5197";
+import defaultAvatar from '../../img/default-avatar.jpg';
+import { NGROK_URL } from '../../Hooks/config';
 
 const ProfileInfo = ({landLordStyle, landLordPhoneIconStyle}) => {
   const [profile, setProfile] = useState({
@@ -21,7 +20,7 @@ const ProfileInfo = ({landLordStyle, landLordPhoneIconStyle}) => {
   } = profile;
 
   const avatarUrl = photoUrl && photoUrl !== defaultAvatar
-    ? `${ngrokLink}/api/Profile/get-avatar/${encodeURIComponent(photoUrl)}`
+    ? `${NGROK_URL}/api/Profile/get-avatar/${encodeURIComponent(photoUrl)}`
     : defaultAvatar;
 
   const loadProfile = async () => {
@@ -29,7 +28,7 @@ const ProfileInfo = ({landLordStyle, landLordPhoneIconStyle}) => {
     if (!token) return;
 
     try {
-      const res = await fetch(`${ngrokLink}/api/Profile/get`, {
+      const res = await fetch(`${NGROK_URL}/api/Profile/get`, {
         method: 'GET',
         headers: { 'Authorization': `Bearer ${token}` }
       });

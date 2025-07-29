@@ -1,26 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import 'intl-tel-input/build/css/intlTelInput.css';
-
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import AvatarChange from '../components/AvatarChange';
 import CustomPhoneInput from '../components/CustomPhoneInput';
 import LanguageSelector from '../components/LanguageSelector';
-
 import InstDarkLogo from '../img/InstDarkLogo.svg';
 import FacebookDarkLogo from '../img/FacebookDarkLogo.svg';
 import TelegramDarkLogo from '../img/TelegramDarkLogo.svg';
-
 import UpdateStyles from '../css/ProfileUpdate.module.css';
+import { NGROK_URL } from '../Hooks/config';
 
-const API_BASE_URL = 'http://localhost:5197'; // поменяйте если нужно
 const GEO_API_KEY = 'b4c12022c2c846d6a7bdeb5e79d87424';
 
 const ProfileUpdate = () => {
   const navigate = useNavigate();
-  const refreshTimeout = useRef(null);
+  // const refreshTimeout = useRef(null);
 
   const [profile, setProfile] = useState({
     firstName: '',
@@ -83,47 +79,47 @@ const ProfileUpdate = () => {
   };
 
   // Обновление JWT токена
-  const refreshJWT = async () => {
-    const refreshToken = localStorage.getItem('refreshToken');
-    if (!refreshToken) throw new Error('No refresh token available');
+  // const refreshJWT = async () => {
+  //   const refreshToken = localStorage.getItem('refreshToken');
+  //   if (!refreshToken) throw new Error('No refresh token available');
 
-    const response = await fetch(`${API_BASE_URL}/api/Auth/refresh`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refreshToken }),
-    });
+  //   const response = await fetch(`${NGROK_URL}/api/Auth/refresh`, {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ refreshToken }),
+  //   });
 
-    if (!response.ok) throw new Error('Failed to refresh token');
+  //   if (!response.ok) throw new Error('Failed to refresh token');
 
-    const data = await response.json();
-    localStorage.setItem('jwtToken', data.jwtToken);
-    localStorage.setItem('refreshToken', data.refreshToken);
-    localStorage.setItem('expireToken', data.expires);
+  //   const data = await response.json();
+  //   localStorage.setItem('jwtToken', data.jwtToken);
+  //   localStorage.setItem('refreshToken', data.refreshToken);
+  //   localStorage.setItem('expireToken', data.expires);
 
-    startTokenRefreshTimer();
-  };
+  //   startTokenRefreshTimer();
+  // };
 
-  // Таймер обновления токена
-  const startTokenRefreshTimer = () => {
-    const expiresInStr = localStorage.getItem('expireToken');
-    if (!expiresInStr) return;
+  // // Таймер обновления токена
+  // const startTokenRefreshTimer = () => {
+  //   const expiresInStr = localStorage.getItem('expireToken');
+  //   if (!expiresInStr) return;
 
-    const expiresInSec = parseInt(expiresInStr, 10);
-    if (isNaN(expiresInSec) || expiresInSec <= 0) return;
+  //   const expiresInSec = parseInt(expiresInStr, 10);
+  //   if (isNaN(expiresInSec) || expiresInSec <= 0) return;
 
-    const refreshBeforeSec = 120;
-    const timeoutMs = Math.max((expiresInSec - refreshBeforeSec) * 1000, 10000);
+  //   const refreshBeforeSec = 120;
+  //   const timeoutMs = Math.max((expiresInSec - refreshBeforeSec) * 1000, 10000);
 
-    if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
+  //   if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
 
-    refreshTimeout.current = setTimeout(async () => {
-      try {
-        await refreshJWT();
-      } catch (err) {
-        console.error('Error refreshing token:', err);
-      }
-    }, timeoutMs);
-  };
+  //   refreshTimeout.current = setTimeout(async () => {
+  //     try {
+  //       await refreshJWT();
+  //     } catch (err) {
+  //       console.error('Error refreshing token:', err);
+  //     }
+  //   }, timeoutMs);
+  // };
 
   // Загрузка профиля с сервера
   const loadProfile = async () => {
@@ -134,7 +130,7 @@ const ProfileUpdate = () => {
     }
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/Profile/get`, {
+      const res = await fetch(`${NGROK_URL}/api/Profile/get`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -197,7 +193,7 @@ const ProfileUpdate = () => {
     };
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/Profile/update`, {
+      const response = await fetch(`${NGROK_URL}/api/Profile/update`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -216,7 +212,7 @@ const ProfileUpdate = () => {
     
     const newToken = localStorage.getItem('jwtToken'); // Берём обновлённый токен из localStorage
       // После обновления профиля повторно получить данные для проверки ролей
-      const profileRes = await fetch(`${API_BASE_URL}/api/Profile/get`, {
+      const profileRes = await fetch(`${NGROK_URL}/api/Profile/get`, {
         headers: { Authorization: `Bearer ${newToken}` },
       });
 
@@ -240,12 +236,12 @@ const ProfileUpdate = () => {
 
   // Инициализация при монтировании компонента
   useEffect(() => {
-    refreshJWT();
+    // refreshJWT();
     loadProfile();
 
-    return () => {
-      if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
-    };
+    // return () => {
+    //   if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
+    // };
   }, []);
 
   return (

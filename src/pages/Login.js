@@ -7,6 +7,7 @@ import emailIcon from "../img/email-icon.svg";
 import passwordIcon from '../img/password-icon.svg';
 import showPasswordIcon from '../img/showpassword.svg';
 import { Link } from 'react-router-dom';
+import { NGROK_URL } from '../Hooks/config';
 
 function Login(){
   const [email, setEmail] = useState('');
@@ -24,7 +25,7 @@ function Login(){
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5197/api/Auth/login', {
+      const response = await fetch(`${NGROK_URL}/api/Auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -41,7 +42,7 @@ function Login(){
       localStorage.setItem('refreshToken', data.refreshToken);
       localStorage.setItem('tokenExpires', data.expires);
       const jwt = localStorage.getItem("jwtToken");
-      const profileResponse = await fetch('http://localhost:5197/api/Profile/get', {
+      const profileResponse = await fetch(`${NGROK_URL}/api/Profile/get`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${jwt}`,
