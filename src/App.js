@@ -8,14 +8,14 @@ import RegisterLandLord from './pages/RegisterLandLord.js';
 import ListingProfile from './pages/ListingProfile.js';
 import './css/fonts.css';
 import ListingCreate from './pages/ListingCreate.js';
-import {useAuthRefresh} from './Hooks/useAuthRefresh.js';
+import AuthRefresher from './Hooks/AuthRefresh.js';
 
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('jwtToken')); // простой пример авторизации
-  useAuthRefresh(isAuthenticated);
 
   return (
     <Router>
+      <AuthRefresher isAuthenticated={isAuthenticated} />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/registerUser" element={<RegisterUser />} />

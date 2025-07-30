@@ -1,56 +1,57 @@
 import { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { NGROK_URL } from './config';
+import { useLocation } from 'react-router-dom';
 
-export function useAuthRefresh() {
+export function useAuthRefresh(isAuthenticated) {
+  const location = useLocation();
   const refreshTimeout = useRef(null);
-  const navigate = useNavigate();
 
   const refreshJWT = async () => {
     const refreshToken = localStorage.getItem('refreshToken');
-    if (!refreshToken) {
-      console.warn('No refresh token available');
-      return;
-    }
+    if (!refreshToken) return;
 
-    try {
-      const response = await fetch(`${NGROK_URL}/api/Auth/refresh`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ refreshToken }),
-      });
+    const response = await fetch('/api/Auth/refresh', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken }),
+    });
 
-      if (!response.ok) {
-        throw new Error('Failed to refresh token');
+    if (!response.ok) throw new Error('Failed to refresh');
+
+    const data = await response.json();
+    const { jwtToken, refreshToken: newToken, expires } = data;
+
+    localStorage.setItem('jwtToken', jwtToken);
+    localStorage.setItem('refreshToken', newToken);
+    localStorage.setItem('tokenExpires', expires);
+
+    startTokenRefreshTimer();
+  };
+
+  const maybeRefresh = async () => { // СКОЛЬКО ОСТАЛОСЬ ДО КОНЦА JWT
+    const expiresStr = localStorage.getItem('tokenExpires');
+    if (!expiresStr) return;
+
+    const now = Date.now();
+    const expiresAt = new Date(expiresStr).getTime();
+    if (expiresAt - now < 2 * 60 * 1000) {
+      try {
+        await refreshJWT();
+      } catch (e) {
+        console.error('Token refresh failed:', e);
       }
-
-      const data = await response.json();
-      const { jwtToken, refreshToken: newRefreshToken, expires } = data;
-
-      localStorage.setItem('jwtToken', jwtToken);
-      localStorage.setItem('refreshToken', newRefreshToken);
-      localStorage.setItem('expireToken', expires);
-
-      startTokenRefreshTimer();
-    } catch (error) {
-      console.error('Error refreshing JWT:', error);
-      navigate('/login');
     }
   };
 
-  const startTokenRefreshTimer = () => {
-    const expiresInStr = localStorage.getItem('expireToken');
-    if (!expiresInStr) return;
+  const startTokenRefreshTimer = () => { //СТАРТ ТАЙМЕРА
+    const expiresStr = localStorage.getItem('tokenExpires');
+    if (!expiresStr) return;
 
-    const expiresInSec = parseInt(expiresInStr, 10);
-    if (isNaN(expiresInSec) || expiresInSec <= 0) return;
+    const expiresAt = new Date(expiresStr).getTime();
+    const now = Date.now();
+    const refreshBeforeMs = 2 * 60 * 1000;
+    const timeoutMs = Math.max(expiresAt - now - refreshBeforeMs, 10000);
 
-    const refreshBeforeSec = 120; // обновляем за 2 минуты до окончания
-    const timeoutMs = Math.max((expiresInSec - refreshBeforeSec) * 1000 - Date.now(), 10000);
-
-    if (refreshTimeout.current) {
-      clearTimeout(refreshTimeout.current);
-    }
+    if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
 
     refreshTimeout.current = setTimeout(() => {
       refreshJWT();
@@ -58,11 +59,18 @@ export function useAuthRefresh() {
   };
 
   useEffect(() => {
-    refreshJWT(); 
+    if (!isAuthenticated) return;
+
+    maybeRefresh(); // ВЫЗОВ ТОЛЬКО ПРИ ПЕРЕХОДЕ
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    startTokenRefreshTimer(); 
+
     return () => {
-      if (refreshTimeout.current) {
-        clearTimeout(refreshTimeout.current);
-      }
+      if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
     };
-  }, []);
+  }, [isAuthenticated]);
 }
