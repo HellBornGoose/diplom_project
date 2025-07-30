@@ -12,6 +12,7 @@ import AuthRefresher from './Hooks/AuthRefresh.js';
 
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('jwtToken')); // простой пример авторизации
+  isAuthenticated
 
   return (
     <Router>

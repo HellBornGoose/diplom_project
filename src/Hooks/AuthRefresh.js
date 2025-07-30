@@ -1,17 +1,8 @@
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { maybeRefresh } from './useAuthRefresh';
+import { useAuthRefresh } from './useAuthRefresh';
 
-const AuthRefresher = ({ isAuthenticated }) => {
-  const location = useLocation();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      maybeRefresh();
-    }
-  }, [location.pathname, isAuthenticated]);
-
+const AuthRefresh = ({ isAuthenticated }) => {
+  useAuthRefresh(isAuthenticated);
   return null;
 };
 
-export default AuthRefresher;
+export default AuthRefresh;

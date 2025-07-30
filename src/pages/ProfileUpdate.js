@@ -11,12 +11,14 @@ import FacebookDarkLogo from '../img/FacebookDarkLogo.svg';
 import TelegramDarkLogo from '../img/TelegramDarkLogo.svg';
 import UpdateStyles from '../css/ProfileUpdate.module.css';
 import { NGROK_URL } from '../Hooks/config';
+import { useAuthRefresh } from '../Hooks/useAuthRefresh';
 
 const GEO_API_KEY = 'b4c12022c2c846d6a7bdeb5e79d87424';
 
 const ProfileUpdate = () => {
   const navigate = useNavigate();
-  // const refreshTimeout = useRef(null);
+  const isAuthenticated = Boolean(localStorage.getItem('jwtToken'));
+  const { refreshJWT } = useAuthRefresh(isAuthenticated);
 
   const [profile, setProfile] = useState({
     firstName: '',
@@ -77,49 +79,6 @@ const ProfileUpdate = () => {
     setProfile(prev => ({ ...prev, location: suggestion }));
     setSuggestions([]);
   };
-
-  // Обновление JWT токена
-  // const refreshJWT = async () => {
-  //   const refreshToken = localStorage.getItem('refreshToken');
-  //   if (!refreshToken) throw new Error('No refresh token available');
-
-  //   const response = await fetch(`${NGROK_URL}/api/Auth/refresh`, {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({ refreshToken }),
-  //   });
-
-  //   if (!response.ok) throw new Error('Failed to refresh token');
-
-  //   const data = await response.json();
-  //   localStorage.setItem('jwtToken', data.jwtToken);
-  //   localStorage.setItem('refreshToken', data.refreshToken);
-  //   localStorage.setItem('expireToken', data.expires);
-
-  //   startTokenRefreshTimer();
-  // };
-
-  // // Таймер обновления токена
-  // const startTokenRefreshTimer = () => {
-  //   const expiresInStr = localStorage.getItem('expireToken');
-  //   if (!expiresInStr) return;
-
-  //   const expiresInSec = parseInt(expiresInStr, 10);
-  //   if (isNaN(expiresInSec) || expiresInSec <= 0) return;
-
-  //   const refreshBeforeSec = 120;
-  //   const timeoutMs = Math.max((expiresInSec - refreshBeforeSec) * 1000, 10000);
-
-  //   if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
-
-  //   refreshTimeout.current = setTimeout(async () => {
-  //     try {
-  //       await refreshJWT();
-  //     } catch (err) {
-  //       console.error('Error refreshing token:', err);
-  //     }
-  //   }, timeoutMs);
-  // };
 
   // Загрузка профиля с сервера
   const loadProfile = async () => {

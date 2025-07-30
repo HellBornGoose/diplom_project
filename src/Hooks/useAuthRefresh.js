@@ -1,11 +1,27 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 
 export function useAuthRefresh(isAuthenticated) {
   const location = useLocation();
   const refreshTimeout = useRef(null);
 
-  const refreshJWT = async () => {
+  const startTokenRefreshTimer = useCallback(() => {
+    const expiresStr = localStorage.getItem('tokenExpires');
+    if (!expiresStr) return;
+
+    const expiresAt = new Date(expiresStr).getTime();
+    const now = Date.now();
+    const refreshBeforeMs = 2 * 60 * 1000;
+    const timeoutMs = Math.max(expiresAt - now - refreshBeforeMs, 10000);
+
+    if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
+
+    refreshTimeout.current = setTimeout(() => {
+      refreshJWT();
+    }, timeoutMs);
+  }, []);
+
+  const refreshJWT = useCallback(async () => {
     const refreshToken = localStorage.getItem('refreshToken');
     if (!refreshToken) return;
 
@@ -25,14 +41,15 @@ export function useAuthRefresh(isAuthenticated) {
     localStorage.setItem('tokenExpires', expires);
 
     startTokenRefreshTimer();
-  };
+  }, [startTokenRefreshTimer]);
 
-  const maybeRefresh = async () => { // СКОЛЬКО ОСТАЛОСЬ ДО КОНЦА JWT
+  const maybeRefresh = useCallback(async () => {
     const expiresStr = localStorage.getItem('tokenExpires');
     if (!expiresStr) return;
 
     const now = Date.now();
     const expiresAt = new Date(expiresStr).getTime();
+
     if (expiresAt - now < 2 * 60 * 1000) {
       try {
         await refreshJWT();
@@ -40,37 +57,23 @@ export function useAuthRefresh(isAuthenticated) {
         console.error('Token refresh failed:', e);
       }
     }
-  };
-
-  const startTokenRefreshTimer = () => { //СТАРТ ТАЙМЕРА
-    const expiresStr = localStorage.getItem('tokenExpires');
-    if (!expiresStr) return;
-
-    const expiresAt = new Date(expiresStr).getTime();
-    const now = Date.now();
-    const refreshBeforeMs = 2 * 60 * 1000;
-    const timeoutMs = Math.max(expiresAt - now - refreshBeforeMs, 10000);
-
-    if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
-
-    refreshTimeout.current = setTimeout(() => {
-      refreshJWT();
-    }, timeoutMs);
-  };
+  }, [refreshJWT]);
 
   useEffect(() => {
     if (!isAuthenticated) return;
 
-    maybeRefresh(); // ВЫЗОВ ТОЛЬКО ПРИ ПЕРЕХОДЕ
-  }, [location.pathname]);
+    maybeRefresh();
+  }, [location.pathname, isAuthenticated, maybeRefresh]);
 
   useEffect(() => {
     if (!isAuthenticated) return;
 
-    startTokenRefreshTimer(); 
+    startTokenRefreshTimer();
 
     return () => {
       if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
     };
-  }, [isAuthenticated]);
+  }, [isAuthenticated, startTokenRefreshTimer]);
+
+  return { refreshJWT, maybeRefresh };
 }
