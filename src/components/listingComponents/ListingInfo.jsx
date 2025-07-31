@@ -2,14 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import styles from '../css/ListingInfo.module.css';
 import { NGROK_URL } from '../../Hooks/config';
 
-const ListingInfo = ({ onFormDataChange }) => {
+const ListingInfo = ({ initialData, onFormDataChange }) => {
   const [name, setName] = useState('The house comfort+');
   const [country, setCountry] = useState('Ukraine');
   const [countriesList, setCountriesList] = useState([]);
 
   const [housingTypeId, setHousingType] = useState('1');
-  const [location, setAddress] = useState('Pinewoods Holiday Park, NR23 1DR');
-  const [locationInput, setLocationInput] = useState('Kyiv, Ukraine');
+  const [location, setLocation] = useState('Kyiv, Ukraine');
   const [selectedParameters, setSelectedParameters] = useState(['Тераса', 'Новий ремонт', 'Зона паркування', 'Басейн']);
   const [checkIn, setCheckIn] = useState('16:00');
   const [checkOut, setCheckOut] = useState('10:00');
@@ -27,7 +26,22 @@ const ListingInfo = ({ onFormDataChange }) => {
   const timeoutRef = useRef(null);
   const apiKey = 'b4c12022c2c846d6a7bdeb5e79d87424';
 
-  // Завантаження параметрів
+  // При монтировании и изменении initialData инициализируем стейт
+  useEffect(() => {
+    if (initialData) {
+      setName(initialData.name || '');
+      setCountry(initialData.country || '');
+      setHousingType(String(initialData.houseTypeId || '1'));
+      setLocation(initialData.location || '');
+      setSelectedParameters(initialData.selectedParameters || ['Тераса', 'Новий ремонт', 'Зона паркування', 'Басейн']);
+      setCheckIn(initialData.checkInTime || '16:00');
+      setCheckOut(initialData.checkOutTime || '10:00');
+      setGuests(initialData.maxTenants || 1);
+      setPrice(initialData.priceFormatted || '0 ₴');
+    }
+  }, [initialData]);
+
+  // Загрузка параметров
   useEffect(() => {
     const fetchMainFeatures = async () => {
       try {
@@ -43,7 +57,7 @@ const ListingInfo = ({ onFormDataChange }) => {
     fetchMainFeatures();
   }, []);
 
-  // Завантаження країн з REST Countries API
+  // Загрузка стран
   useEffect(() => {
     const fetchCountries = async () => {
       try {
@@ -61,14 +75,14 @@ const ListingInfo = ({ onFormDataChange }) => {
     fetchCountries();
   }, []);
 
-  // Адреса: автопідказки
+  // Автоподсказки адреса
   useEffect(() => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    if (locationInput.trim()) {
+    if (location.trim()) {
       timeoutRef.current = setTimeout(async () => {
         setAddressLoading(true);
         try {
-          const response = await fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(locationInput)}&lang=en&limit=5&apiKey=${apiKey}`);
+          const response = await fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(location)}&lang=en&limit=5&apiKey=${apiKey}`);
           const data = await response.json();
           setSuggestions(data.features || []);
           setShowSuggestions(true);
@@ -84,11 +98,11 @@ const ListingInfo = ({ onFormDataChange }) => {
       setShowSuggestions(false);
     }
     return () => clearTimeout(timeoutRef.current);
-  }, [locationInput]);
+  }, [location]);
 
   const handleSelectSuggestion = (suggestion) => {
     const props = suggestion.properties;
-    setLocationInput(props.formatted);
+    setLocation(props.formatted);
     setAddress(props.formatted);
     if (props.country) setCountry(props.country);
     setShowSuggestions(false);
@@ -189,8 +203,8 @@ const ListingInfo = ({ onFormDataChange }) => {
           <label htmlFor='Address'>Адреса</label>
           <input
             type="text"
-            value={locationInput}
-            onChange={(e) => setLocationInput(e.target.value)}
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
             id='Address'
             autoComplete="off"
             onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}

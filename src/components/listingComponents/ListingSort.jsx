@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../css/ListingSort.module.css';
 import { NGROK_URL } from '../../Hooks/config';
+import editIcon from '../../img/OrangeEdit.svg';
+import { useNavigate } from 'react-router-dom';
 
 // Компонент для отображения сетки свойств
 const ListingSort = () => {
@@ -14,6 +16,7 @@ const ListingSort = () => {
     { id: 22, title: 'City Loft', country: 'Germany', isModerated: true, isOccupied: false, averageRating: 4.9, photoUrl: 'https://via.placeholder.com/300x200' },
   ]);
   const [sortBy, setSortBy] = useState('none'); // По умолчанию все свойства
+  const navigate = useNavigate();
 
   // Эффект для загрузки данных с сервера при монтировании компонента
   useEffect(() => {
@@ -40,7 +43,9 @@ const ListingSort = () => {
       return 'free';
     }
   };
-
+  const handleEditClick = (listingId) => {
+    navigate(`/listing/edit/${listingId}`);
+  };
   // Фильтрация свойств в зависимости от выбранной опции
   const filteredProperties = sortBy === 'none' ? properties : properties.filter(p => getStatus(p) === sortBy);
 
@@ -88,6 +93,12 @@ const ListingSort = () => {
             <div className={styles.propertyInfo}>
               <h3 className={styles.propertyName}>{property.title}</h3>
               <p className={styles.propertySubtitle}>{property.country}</p>
+            </div>
+            <div className={styles.editContainer}>
+            <button onClick={() => handleEditClick(property.id)}>
+              <img src={editIcon} alt="Редактировать" />
+            </button>
+
             </div>
           </div>
         ))}

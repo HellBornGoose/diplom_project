@@ -1,29 +1,50 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from '../css/MultiImageInput.module.css';
 import plusIcon from '../../img/plusIcon.svg';
+import axios from 'axios';
 
-const MultiImageInput = ({ images = [], setImages, onFilesChange }) => {
-  const [activeIndex, setActiveIndex] = useState(0); // 0 — пустой экран, 1..N — картинки
+const MultiImageInput = ({ initialServerImages = [], setImages, listingId }) => {
+  const [images, setLocalImages] = useState([]); // { url, file?, isServer }
+  const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef(null);
+
+  // Инициализация изначальных серверных изображений
+  useEffect(() => {
+    if (initialServerImages && initialServerImages.length > 0) {
+      const serverFormatted = initialServerImages.map(url => ({
+        url,
+        isServer: true,
+      }));
+      setLocalImages(serverFormatted);
+      setImages(serverFormatted); // Отправляем наверх
+      setActiveIndex(serverFormatted.length > 0 ? 1 : 0);
+    } else {
+      setLocalImages([]);
+      setImages([]);
+      setActiveIndex(0);
+    }
+  }, [initialServerImages, setImages]);
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
     const newImages = files.map(file => ({
       file,
       url: URL.createObjectURL(file),
+      isServer: false,
     }));
 
-    setImages(prev => [...prev, ...newImages]);
+    const updated = [...images, ...newImages];
+    setLocalImages(updated);
+    setImages(updated);
 
-    if (typeof onFilesChange === 'function') {
-      onFilesChange(files);
-    }
-
+    // Если до этого не было активного изображения, переключаем на первое новое
     if (activeIndex === 0 && newImages.length > 0) {
-      setActiveIndex(1);
+      setActiveIndex(images.length + 1);
     }
 
-    e.target.value = null; // очищаем input, чтобы можно было загрузить те же файлы снова
+    e.target.value = null;
   };
 
   const handleDotClick = (index) => {
@@ -32,6 +53,43 @@ const MultiImageInput = ({ images = [], setImages, onFilesChange }) => {
 
   const handleBigPlusClick = () => {
     inputRef.current?.click();
+  };
+
+  const handleDeleteImage = async () => {
+    const deleteIndex = activeIndex - 1;
+    if (deleteIndex < 0 || deleteIndex >= images.length) return;
+
+    const imageToDelete = images[deleteIndex];
+
+    // Удаляем с сервера, если это серверное фото и есть listingId
+    if (imageToDelete.isServer && listingId) {
+      try {
+        await axios.delete(`/api/listings/delete-photo`, {
+          params: {
+            listingId,
+            photoUrl: imageToDelete.url,
+          },
+          withCredentials: true,
+        });
+      } catch (err) {
+        console.error('Ошибка при удалении фото с сервера:', err);
+        return;
+      }
+    }
+
+    const updatedImages = [...images];
+    updatedImages.splice(deleteIndex, 1);
+    setLocalImages(updatedImages);
+    setImages(updatedImages);
+
+    // Корректируем activeIndex после удаления
+    if (updatedImages.length === 0) {
+      setActiveIndex(0);
+    } else if (activeIndex > updatedImages.length) {
+      setActiveIndex(updatedImages.length);
+    } else {
+      setActiveIndex(activeIndex);
+    }
   };
 
   return (
@@ -47,11 +105,19 @@ const MultiImageInput = ({ images = [], setImages, onFilesChange }) => {
           <img src={plusIcon} alt="Добавить изображение" className={styles.bigPlusIcon} />
         </div>
       ) : (
-        <img
-          src={images[activeIndex - 1].url}
-          alt={`Preview ${activeIndex - 1}`}
-          className={styles.image}
-        />
+        <div className={styles.imageContainer}>
+          <img
+            src={images[activeIndex - 1]?.url}
+            alt={`Preview ${activeIndex - 1}`}
+            className={styles.image}
+          />
+          <button
+            onClick={handleDeleteImage}
+            className={styles.deleteButton}
+          >
+            Удалить
+          </button>
+        </div>
       )}
 
       <input
@@ -71,7 +137,6 @@ const MultiImageInput = ({ images = [], setImages, onFilesChange }) => {
           role="button"
           tabIndex={0}
           onKeyDown={e => e.key === 'Enter' && handleDotClick(0)}
-          aria-label="Показать пустое поле с загрузкой"
         />
         {images.map((_, index) => (
           <span
@@ -81,7 +146,6 @@ const MultiImageInput = ({ images = [], setImages, onFilesChange }) => {
             role="button"
             tabIndex={0}
             onKeyDown={e => e.key === 'Enter' && handleDotClick(index + 1)}
-            aria-label={`Показать изображение ${index + 1}`}
           />
         ))}
       </div>

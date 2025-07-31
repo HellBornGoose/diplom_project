@@ -75,7 +75,7 @@
   
   .propertyInfo {
     padding: 10px;
-    text-align: center;
+    text-align: left;
   }
   
   .propertyName {
@@ -88,4 +88,15 @@
     color: #6b7280; /* Серый цвет */
     font-size: 0.9rem;
     margin: 0;
+  }
+  .editContainer{
+    position: absolute;
+    right: 20px;
+    bottom: 25px;
+  }
+  .editContainer button{
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
   }

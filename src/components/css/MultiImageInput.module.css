@@ -95,4 +95,6 @@
     background-color: #FFE8D9;
     border-radius: 3px;
   }
-  
+  .deleteButton{
+    z-index: 10;
+  }

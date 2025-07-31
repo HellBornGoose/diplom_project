@@ -17,60 +17,6 @@ const ParentComponent = () => {
   const [amenities, setAmenities] = useState([]);
   const [listingInfoData, setListingInfoData] = useState({});
 
-  // const refreshTimeout = useRef(null);
-
-  // const refreshJWT = async () => {
-  //   const refreshToken = localStorage.getItem('refreshToken');
-  //   if (!refreshToken) throw new Error('No refresh token available');
-
-  //   const response = await fetch(`${NGROK_URL}/api/Auth/refresh`, {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({ refreshToken }),
-  //   });
-
-  //   if (!response.ok) throw new Error('Failed to refresh token');
-
-  //   const data = await response.json();
-  //   const { jwtToken, refreshToken: newRefreshToken, expires } = data;
-
-  //   localStorage.setItem('jwtToken', jwtToken);
-  //   localStorage.setItem('refreshToken', newRefreshToken);
-  //   localStorage.setItem('expireToken', expires);
-
-  //   startTokenRefreshTimer();
-  // };
-
-  // const startTokenRefreshTimer = () => {
-  //   const expiresInStr = localStorage.getItem('expireToken');
-  //   if (!expiresInStr) return;
-
-  //   const expiresInSec = parseInt(expiresInStr, 10);
-  //   if (isNaN(expiresInSec) || expiresInSec <= 0) return;
-
-  //   const refreshBeforeSec = 120;
-  //   const timeoutMs = Math.max((expiresInSec - refreshBeforeSec) * 1000, 10000);
-
-  //   if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
-
-  //   refreshTimeout.current = setTimeout(async () => {
-  //     try {
-  //       await refreshJWT();
-  //     } catch (err) {
-  //       console.error('Error refreshing token:', err);
-  //     }
-  //   }, timeoutMs);
-  // };
-
-  // useEffect(() => {
-  //   refreshJWT();
-  //   return () => {
-  //     if (refreshTimeout.current) {
-  //       clearTimeout(refreshTimeout.current);
-  //     }
-  //   };
-  // }, []);
-
   const handleFormDataChange = (data) => {
     setListingInfoData(data);
   };
