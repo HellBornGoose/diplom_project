@@ -46,9 +46,9 @@ const ListingEdit = () => {
         ].filter(Boolean).join(', ');
   
         setListingInfoData({
-          name: data.name || '',
+          title: data.title || '',
           country: data.country || '',
-          price: data.perDay || '',
+          perDay: data.perDay || '',
           houseTypeId: data.houseTypeId || '',
           location: locationString || '',
           selectedParameters: data.selectedParameters || '',
