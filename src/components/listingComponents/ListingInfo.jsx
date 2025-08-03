@@ -34,11 +34,12 @@ const ListingInfo = ({ initialData, onFormDataChange }) => {
   const apiKey = 'b4c12022c2c846d6a7bdeb5e79d87424';
 
   const suggestionClickedRef = useRef(false);
+  const isInitialSet = useRef(false);
 
   // При монтировании и изменении initialData инициализируем стейт
-  useEffect(() => {
-    if (initialData) {
-      setName(initialData.name || '');
+  useState(() => {
+    if (initialData && !isInitialSet.current) {
+      setName(initialData.title || '');
       setCountry(initialData.country || '');
       setHousingType(String(initialData.houseTypeId || '1'));
       setLocation(initialData.location || '');
@@ -46,7 +47,9 @@ const ListingInfo = ({ initialData, onFormDataChange }) => {
       setCheckIn(initialData.checkInTime || '16:00');
       setCheckOut(initialData.checkOutTime || '10:00');
       setGuests(initialData.maxTenants || 1);
-      setPrice(initialData.priceFormatted || '0 ₴');
+      setPrice(initialData.perDay || '0 ₴');
+  
+      isInitialSet.current = true;
     }
   }, [initialData]);
 

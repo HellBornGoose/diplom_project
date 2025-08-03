@@ -6,7 +6,6 @@ const AmenitiesSet = ({ onAmenitiesChange, initialSelected = [] }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [allItems, setAllItems] = useState([]);
 
-  // Завантаження списку доступних опцій з бекенду
   useEffect(() => {
     let isMounted = true;
 
@@ -14,7 +13,7 @@ const AmenitiesSet = ({ onAmenitiesChange, initialSelected = [] }) => {
       try {
         const response = await fetch(`${NGROK_URL}/api/listing/amenities`);
         if (!response.ok) {
-          throw new Error('Помилка завантаження даних');
+          throw new Error('Ошибка загрузки данных');
         }
         const data = await response.json();
         const normalized = data.map(item =>
@@ -24,7 +23,7 @@ const AmenitiesSet = ({ onAmenitiesChange, initialSelected = [] }) => {
           setAllItems(normalized);
         }
       } catch (error) {
-        console.error('Помилка завантаження зручностей:', error);
+        console.error('Ошибка загрузки удобств:', error);
       }
     };
 
@@ -35,7 +34,6 @@ const AmenitiesSet = ({ onAmenitiesChange, initialSelected = [] }) => {
     };
   }, []);
 
-  // Ініціалізація вибраних опцій (тільки якщо значення реально змінились)
   useEffect(() => {
     const isEqual =
       initialSelected.length === selectedItems.length &&

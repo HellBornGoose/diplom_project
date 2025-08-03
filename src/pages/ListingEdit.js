@@ -28,21 +28,23 @@ const ListingEdit = () => {
     const fetchListing = async () => {
       try {
         const token = localStorage.getItem('jwtToken');
+  
+        // Получение основного объекта объявления
         const response = await fetch(`${NGROK_URL}/api/listing/${listingId}`, {
           method: 'GET',
           headers: { Authorization: `Bearer ${token}` },
         });
-
+  
         if (!response.ok) throw new Error('Не вдалося отримати оголошення');
-
+  
         const data = await response.json();
-
+  
         const locationString = [
-          data.street,    
-          data.city,     
-          data.country    
+          data.street,
+          data.city,
+          data.country
         ].filter(Boolean).join(', ');
-
+  
         setListingInfoData({
           name: data.name || '',
           country: data.country || '',
@@ -53,22 +55,33 @@ const ListingEdit = () => {
           checkInTime: data.checkInTime || '',
           checkOutTime: data.checkOutTime || '',
           maxTenants: data.maxTenants || '',
-
-        
         });
-
+  
         setDescription(data.description || '');
         setAmenities(data.amenities?.map(a => a.id) || []);
-        setInitialServerImages(data.photos || []); // масив URL-ів фото
+  
+        const photosResponse = await fetch(`${NGROK_URL}/api/Listing/get-all-photos/${listingId}`, {
+          method: 'GET',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        if (!photosResponse.ok) {
+          throw new Error('Не вдалося завантажити фото оголошення');
+        }
+  
+        const photosData = await photosResponse.json();
+        setInitialServerImages(photosData || []);
+        
       } catch (err) {
         setError(err.message || 'Помилка при завантаженні оголошення');
       }
     };
-
+  
     if (listingId) {
       fetchListing();
     }
   }, [listingId]);
+
 
   const uploadPhotos = async () => {
     const filesToUpload = images.map(img => img.file).filter(Boolean);
