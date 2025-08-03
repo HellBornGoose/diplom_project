@@ -4,8 +4,8 @@
     gap: 15px;
     padding: 25px;
     background-color: #FFFF;
-    border: 2px solid #E07B3B;
-    border-radius: 10px;
+    border: 2px solid #AFB06A;
+    border-radius: 25px;
     width: 940px;
     font-family: 'Myfont', sans-serif;
     padding-bottom: 50px;
@@ -263,14 +263,17 @@
     width: 663px;
     height: 253px;
     background-color: #FFFF;
-    border: 2px solid #E07B3B;
-    border-radius: 10px;
+    border: 2px solid #AFB06A;
+    border-radius: 25px;
   }
   .DescriptionInput{
     border: none;
     font-size: 18px;
     color: #221F50;
-    width: 597px;
+    border: 2px solid #AFB06A;
+    border-radius: 25px;
+    width: 613px;
+    min-height: 188px;
     font-family: 'Myfont', sans-serif;
     resize: none;
     outline: none;

@@ -28,22 +28,27 @@ const ListingEdit = () => {
     const fetchListing = async () => {
       try {
         const token = localStorage.getItem('jwtToken');
-        const response = await fetch(`${NGROK_URL}/api/listing/updateListing/${listingId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        const response = await fetch(`${NGROK_URL}/api/listing/${listingId}`, {
+          method: 'GET',
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         if (!response.ok) throw new Error('Не вдалося отримати оголошення');
 
         const data = await response.json();
 
+        const locationString = [
+          data.street,    
+          data.city,     
+          data.country    
+        ].filter(Boolean).join(', ');
+
         setListingInfoData({
           name: data.name || '',
           country: data.country || '',
           price: data.perDay || '',
           houseTypeId: data.houseTypeId || '',
-          location: data.location || '',
+          location: locationString || '',
           selectedParameters: data.selectedParameters || '',
           checkInTime: data.checkInTime || '',
           checkOutTime: data.checkOutTime || '',
@@ -109,7 +114,7 @@ const ListingEdit = () => {
 
     try {
       const token = localStorage.getItem('jwtToken');
-      const response = await fetch(`${NGROK_URL}/api/listing`, {
+      const response = await fetch(`${NGROK_URL}/api/listing/updateListing/${listingId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

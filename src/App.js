@@ -10,10 +10,10 @@ import './css/fonts.css';
 import ListingCreate from './pages/ListingCreate.js';
 import AuthRefresher from './Hooks/AuthRefresh.js';
 import ListingEdit from './pages/ListingEdit.js';
+import useIsAuthenticated from './Hooks/useIsAuthenticated.js';
 
 function App() {
-  const isAuthenticated = Boolean(localStorage.getItem('jwtToken')); // простой пример авторизации
-  isAuthenticated
+  const isAuthenticated = useIsAuthenticated();
 
   return (
     <Router>

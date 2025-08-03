@@ -8,45 +8,63 @@ const AmenitiesSet = ({ onAmenitiesChange, initialSelected = [] }) => {
 
   // Завантаження списку доступних опцій з бекенду
   useEffect(() => {
-    async function fetchAmenities() {
+    let isMounted = true;
+
+    const fetchAmenities = async () => {
       try {
         const response = await fetch(`${NGROK_URL}/api/listing/amenities`);
         if (!response.ok) {
           throw new Error('Помилка завантаження даних');
         }
         const data = await response.json();
-        // Підтримка форматів: string або { id, name }
-        setAllItems(data.map(item => typeof item === 'string' ? item : item.name));
+        const normalized = data.map(item =>
+          typeof item === 'string' ? item : item.name
+        );
+        if (isMounted) {
+          setAllItems(normalized);
+        }
       } catch (error) {
         console.error('Помилка завантаження зручностей:', error);
       }
-    }
+    };
 
     fetchAmenities();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  // Оновлення вибраних пунктів з `initialSelected` (тільки при зміні)
+  // Ініціалізація вибраних опцій (тільки якщо значення реально змінились)
   useEffect(() => {
-    setSelectedItems(initialSelected);
+    const isEqual =
+      initialSelected.length === selectedItems.length &&
+      initialSelected.every(item => selectedItems.includes(item));
+
+    if (!isEqual) {
+      setSelectedItems(initialSelected);
+      onAmenitiesChange(initialSelected);
+    }
   }, [initialSelected]);
 
   const handleSelectItem = (item) => {
     if (!selectedItems.includes(item)) {
-      const newSelectedItems = [...selectedItems, item];
-      setSelectedItems(newSelectedItems);
-      onAmenitiesChange(newSelectedItems);
+      const newSelected = [...selectedItems, item];
+      setSelectedItems(newSelected);
+      onAmenitiesChange(newSelected);
     }
   };
 
   const handleRemoveItem = (item) => {
-    const newSelectedItems = selectedItems.filter(i => i !== item);
-    setSelectedItems(newSelectedItems);
-    onAmenitiesChange(newSelectedItems);
+    const newSelected = selectedItems.filter(i => i !== item);
+    setSelectedItems(newSelected);
+    onAmenitiesChange(newSelected);
   };
 
   return (
     <div className={styles.multiSelect}>
       <label className={styles.AmenitiesLabel}>Оберіть параметри</label>
+
       <div className={styles.selectedItems}>
         {selectedItems.map((item) => (
           <span key={item} className={styles.itemTag}>
@@ -55,6 +73,7 @@ const AmenitiesSet = ({ onAmenitiesChange, initialSelected = [] }) => {
           </span>
         ))}
       </div>
+
       <div className={styles.availableItems}>
         {allItems
           .filter(item => !selectedItems.includes(item))

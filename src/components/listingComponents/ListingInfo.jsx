@@ -4,15 +4,21 @@ import { NGROK_URL } from '../../Hooks/config';
 
 const ListingInfo = ({ initialData, onFormDataChange }) => {
   const [name, setName] = useState('The house comfort+');
-  const [country, setCountry] = useState('Ukraine');
-  const [countriesList, setCountriesList] = useState([]);
 
   const [housingTypeId, setHousingType] = useState('1');
   const [location, setLocation] = useState('Kyiv, Ukraine');
+  const [city, setCity] = useState('Kyiv');
+  const [streetWithNumber, setStreet] = useState('');
+  const [countriesList, setCountriesList] = useState([]);
+  const [country, setCountry] = useState('Ukraine');
+
   const [selectedParameters, setSelectedParameters] = useState(['Тераса', 'Новий ремонт', 'Зона паркування', 'Басейн']);
+
   const [checkIn, setCheckIn] = useState('16:00');
   const [checkOut, setCheckOut] = useState('10:00');
+
   const [guests, setGuests] = useState(4);
+
   const [price, setPrice] = useState('4 800 ₴');
 
   const [showParameterSelector, setShowParameterSelector] = useState(false);
@@ -22,9 +28,12 @@ const ListingInfo = ({ initialData, onFormDataChange }) => {
 
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [hasSelectedSuggestion, setHasSelectedSuggestion] = useState(false);
 
   const timeoutRef = useRef(null);
   const apiKey = 'b4c12022c2c846d6a7bdeb5e79d87424';
+
+  const suggestionClickedRef = useRef(false);
 
   // При монтировании и изменении initialData инициализируем стейт
   useEffect(() => {
@@ -77,8 +86,15 @@ const ListingInfo = ({ initialData, onFormDataChange }) => {
 
   // Автоподсказки адреса
   useEffect(() => {
+    setHasSelectedSuggestion(false);
+
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     if (location.trim()) {
+      if (hasSelectedSuggestion) { // чтоб не подсказывал когда не просят
+        setSuggestions([]);
+        setShowSuggestions(false);
+        return;
+      }
       timeoutRef.current = setTimeout(async () => {
         setAddressLoading(true);
         try {
@@ -101,12 +117,34 @@ const ListingInfo = ({ initialData, onFormDataChange }) => {
   }, [location]);
 
   const handleSelectSuggestion = (suggestion) => {
+    suggestionClickedRef.current = true;
     const props = suggestion.properties;
+    let streetWithNumber = '';
+    if (props.street) {
+      streetWithNumber = props.street;
+    if (props.housenumber) {
+      streetWithNumber += ` ${props.housenumber}`;
+    }
+    }
     setLocation(props.formatted);
-    setAddress(props.formatted);
-    if (props.country) setCountry(props.country);
+
+    setStreet(streetWithNumber);
+
+    if (props.country) setCountry(props.country); // Ставим страну
+  
+    if (props.city) {
+      setCity(props.city); //и город
+    } else if (props.state) {
+      setCity(props.state); // или штат
+    } else if (props.town) {
+      setCity(props.town); //или поселок
+    } else if (props.village) {
+      setCity(props.village); //или деревня
+    }
+    setHasSelectedSuggestion(true);
     setShowSuggestions(false);
   };
+  
 
   const handleAddParameter = (param) => {
     if (selectedParameters.length < 5 && !selectedParameters.includes(param)) {
@@ -141,12 +179,13 @@ const ListingInfo = ({ initialData, onFormDataChange }) => {
       perWeak: null,
       perDay: parseFloat(price.replace(/[^0-9.]/g, '').replace(',', '.')),
       perMonth: null,
-      location: location,
+      location: streetWithNumber,
       model3DUrl: null,
       amenityIds: [1, 2],
       mainFeatureIds: selectedParameters.map(param => parameterIdMap[param] || 0).filter(id => id !== 0),
       mainFeatureValues: selectedParameters.map(param => parameterValueMap[param] || null),
       maxTenants: parseInt(guests),
+      city: city,
       country: country
     };
   };
@@ -154,6 +193,11 @@ const ListingInfo = ({ initialData, onFormDataChange }) => {
   useEffect(() => {
     onFormDataChange(generatePostData());
   }, [name, country, housingTypeId, location, selectedParameters, checkIn, checkOut, guests, price]);
+
+  const handleChange = (e) => {
+    setLocation(e.target.value);
+    if (hasSelectedSuggestion) setHasSelectedSuggestion(false);
+  };
 
   return (
     <div className={styles.bookingForm}>

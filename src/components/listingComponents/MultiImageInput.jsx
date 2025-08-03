@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from '../css/MultiImageInput.module.css';
 import plusIcon from '../../img/plusIcon.svg';
 import axios from 'axios';
+import trashIcon from '../../img/Trash-Icon.svg';
 
 const MultiImageInput = ({ initialServerImages = [], setImages, listingId }) => {
   const [images, setLocalImages] = useState([]); // { url, file?, isServer }
@@ -9,21 +10,21 @@ const MultiImageInput = ({ initialServerImages = [], setImages, listingId }) => 
   const inputRef = useRef(null);
 
   // Инициализация изначальных серверных изображений
-  useEffect(() => {
-    if (initialServerImages && initialServerImages.length > 0) {
-      const serverFormatted = initialServerImages.map(url => ({
-        url,
-        isServer: true,
-      }));
-      setLocalImages(serverFormatted);
-      setImages(serverFormatted); // Отправляем наверх
-      setActiveIndex(serverFormatted.length > 0 ? 1 : 0);
-    } else {
-      setLocalImages([]);
-      setImages([]);
-      setActiveIndex(0);
-    }
-  }, [initialServerImages, setImages]);
+  const [initialized, setInitialized] = useState(false);
+
+useEffect(() => {
+  if (!initialized && initialServerImages && initialServerImages.length > 0) {
+    const serverFormatted = initialServerImages.map(url => ({
+      url,
+      isServer: true,
+    }));
+    setLocalImages(serverFormatted);
+    setImages(serverFormatted); 
+    setActiveIndex(serverFormatted.length > 0 ? 1 : 0);
+    setInitialized(true);
+  }
+}, [initialServerImages, initialized]);
+
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -115,7 +116,7 @@ const MultiImageInput = ({ initialServerImages = [], setImages, listingId }) => 
             onClick={handleDeleteImage}
             className={styles.deleteButton}
           >
-            Удалить
+            <img src={trashIcon} alt='Trash icon'/>
           </button>
         </div>
       )}
