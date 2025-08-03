@@ -8,7 +8,7 @@ import RegisterLandLord from './pages/RegisterLandLord.js';
 import ListingProfile from './pages/ListingProfile.js';
 import './css/fonts.css';
 import ListingCreate from './pages/ListingCreate.js';
-import AuthRefresher from './Hooks/AuthRefresh.js';
+import AuthRefresh from './Hooks/AuthRefresh.js';
 import ListingEdit from './pages/ListingEdit.js';
 import useIsAuthenticated from './Hooks/useIsAuthenticated.js';
 
@@ -17,7 +17,7 @@ function App() {
 
   return (
     <Router>
-      <AuthRefresher isAuthenticated={isAuthenticated} />
+      <AuthRefresh isAuthenticated={isAuthenticated} />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/registerUser" element={<RegisterUser />} />
