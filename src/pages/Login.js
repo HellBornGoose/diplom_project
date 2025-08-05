@@ -28,45 +28,49 @@ function Login(){
       const response = await fetch(`${NGROK_URL}/api/Auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
-
+    
       if (!response.ok) {
         const err = await response.json();
+        console.error('Помилка при вході:', err);
         setError(err.message || 'Помилка входу');
         return;
       }
-
+    
       const data = await response.json();
-      localStorage.setItem('jwtToken', data.jwtToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      localStorage.setItem('tokenExpires', data.expires);
-      const jwt = localStorage.getItem("jwtToken");
+      const { jwtToken, refreshToken, expires } = data;
+    
+      localStorage.setItem('jwtToken', jwtToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('tokenExpires', new Date(expires).toISOString());
+
       const profileResponse = await fetch(`${NGROK_URL}/api/Profile/get`, {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${jwt}`,
+          Authorization: `Bearer ${jwtToken}`,
         },
       });
-
+    
       if (!profileResponse.ok) {
         setError('Не вдалося отримати дані профілю');
         return;
       }
-
+    
       const profileData = await profileResponse.json();
-      const roles = profileData.roles;
-      
-      const isLandLord = roles.includes("Landlord");
-
+      const roles = profileData.roles || [];
+    
+      const isLandLord = roles.includes('Landlord');
+    
       if (isLandLord) {
         navigate('/profile/Lord');
       } else {
         navigate('/profile/User');
       }
     } catch (error) {
+      console.error('Щось пішло не так при логіні:', error);
       setError('Щось пішло не так. Спробуйте ще раз.');
-    }
+    }    
     
   };
     return(

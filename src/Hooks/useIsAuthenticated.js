@@ -10,10 +10,13 @@ function useIsAuthenticated() {
       }
     };
     window.addEventListener('storage', onStorage);
+
+    setIsAuthenticated(Boolean(localStorage.getItem('jwtToken')));
+
     return () => window.removeEventListener('storage', onStorage);
   }, []);
 
   return isAuthenticated;
 }
 
-export default useIsAuthenticated
+export default useIsAuthenticated;

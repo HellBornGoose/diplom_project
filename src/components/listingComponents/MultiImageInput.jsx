@@ -3,6 +3,7 @@ import styles from '../css/MultiImageInput.module.css';
 import plusIcon from '../../img/plusIcon.svg';
 import axios from 'axios';
 import trashIcon from '../../img/Trash-Icon.svg';
+import { NGROK_URL } from '../../Hooks/config'; // Импортируем NGROK_URL
 
 const MultiImageInput = ({ initialServerImages = [], setImages, listingId }) => {
   const [images, setLocalImages] = useState([]); // { url, file?, isServer }
@@ -10,21 +11,17 @@ const MultiImageInput = ({ initialServerImages = [], setImages, listingId }) => 
   const inputRef = useRef(null);
 
   // Инициализация изначальных серверных изображений
-  const [initialized, setInitialized] = useState(false);
-
-useEffect(() => {
-  if (!initialized && initialServerImages && initialServerImages.length > 0) {
-    const serverFormatted = initialServerImages.map(url => ({
-      url,
-      isServer: true,
-    }));
-    setLocalImages(serverFormatted);
-    setImages(serverFormatted); 
-    setActiveIndex(serverFormatted.length > 0 ? 1 : 0);
-    setInitialized(true);
-  }
-}, [initialServerImages, initialized]);
-
+  useEffect(() => {
+    if (initialServerImages && initialServerImages.length > 0 && !images.length) {
+      const serverFormatted = initialServerImages.map(url => ({
+        url,
+        isServer: true,
+      }));
+      setLocalImages(serverFormatted);
+      setImages(serverFormatted); 
+      setActiveIndex(serverFormatted.length > 0 ? 1 : 0);
+    }
+  }, [initialServerImages, images.length, setImages]);
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -40,7 +37,6 @@ useEffect(() => {
     setLocalImages(updated);
     setImages(updated);
 
-    // Если до этого не было активного изображения, переключаем на первое новое
     if (activeIndex === 0 && newImages.length > 0) {
       setActiveIndex(images.length + 1);
     }
@@ -65,12 +61,12 @@ useEffect(() => {
     // Удаляем с сервера, если это серверное фото и есть listingId
     if (imageToDelete.isServer && listingId) {
       try {
-        await axios.delete(`/api/listings/delete-photo`, {
+        const photoUrl = imageToDelete.url.replace(`${NGROK_URL}/api/Listing/get-photo/`, '');
+        await axios.delete(`${NGROK_URL}/api/listings/delete-photo`, {
           params: {
             listingId,
-            photoUrl: imageToDelete.url,
-          },
-          withCredentials: true,
+            photoUrl: encodeURIComponent(photoUrl), // Кодируем путь
+          }
         });
       } catch (err) {
         console.error('Ошибка при удалении фото с сервера:', err);
@@ -83,7 +79,6 @@ useEffect(() => {
     setLocalImages(updatedImages);
     setImages(updatedImages);
 
-    // Корректируем activeIndex после удаления
     if (updatedImages.length === 0) {
       setActiveIndex(0);
     } else if (activeIndex > updatedImages.length) {
@@ -116,7 +111,7 @@ useEffect(() => {
             onClick={handleDeleteImage}
             className={styles.deleteButton}
           >
-            <img src={trashIcon} alt='Trash icon'/>
+            <img src={trashIcon} alt="Trash icon" />
           </button>
         </div>
       )}
@@ -131,7 +126,8 @@ useEffect(() => {
         style={{ display: 'none' }}
       />
 
-      <div className={styles.dots}>
+
+<div className={styles.dots}>
         <span
           onClick={() => handleDotClick(0)}
           className={`${styles.dot} ${activeIndex === 0 ? styles.dotActive : ''}`}
