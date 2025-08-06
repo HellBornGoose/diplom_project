@@ -69,9 +69,10 @@ const ParentComponent = () => {
   };
 
   const handleSubmit = async () => {
+    const amenityIds = amenities
     const allData = {
       description,
-      amenities,
+      amenityIds,
       ...listingInfoData,
     };
 

@@ -1,117 +1,114 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
+import { NGROK_URL } from './config';
 
 export function useAuthRefresh(isAuthenticated) {
   const location = useLocation();
   const refreshTimeout = useRef(null);
 
-  // Обновление JWT токена
+  // Функция обновления JWT
   const refreshJWT = useCallback(async () => {
-    const refreshToken = localStorage.getItem('refreshToken');
+    const refreshToken = localStorage.getItem('refreshToken'); //проверка на рефрештокен
     if (!refreshToken) {
       console.warn('[AuthRefresh] Нет refreshToken в localStorage');
       return;
     }
 
     try {
-      const response = await fetch('/api/Auth/refresh', {
+      const response = await fetch(`${NGROK_URL}/api/Auth/refresh`, { //запрос на рефреш
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ refreshToken }),
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to refresh, status: ${response.status}`);
+        throw new Error(`Ошибка обновления: ${response.status}`);
       }
 
       const data = await response.json();
-      const { jwtToken, refreshToken: newToken, expires } = data;
+      const { jwtToken, refreshToken: newRefreshToken } = data;
 
       localStorage.setItem('jwtToken', jwtToken);
-      localStorage.setItem('refreshToken', newToken);
-      localStorage.setItem('tokenExpires', expires);
+      localStorage.setItem('refreshToken', newRefreshToken);
 
-      console.log('Токен обновлён успешно');
-      startTokenRefreshTimer();
+      console.log('[refreshJWT] обновлён успешно');
+      startTokenRefreshTimer(); // таймер идет заново
     } catch (error) {
-      console.error('Ошибка обновления токена:', error);
+      console.error('[refreshJWT] Ошибка при обнове:', error);
     }
   }, []);
 
-  // Безопасный парсинг даты: обрезаем лишние миллисекунды
-  const getParsedExpiresAt = () => {
-    let expiresStr = localStorage.getItem('tokenExpires');
-    if (!expiresStr) return null;
-
-    expiresStr = expiresStr.replace(/(\.\d{3})\d*Z$/, '$1Z');
-
-    const expiresAt = new Date(expiresStr).getTime();
-    if (isNaN(expiresAt)) {
-      console.error('Невозможно распарсить tokenExpires:', expiresStr);
-      return null;
-    }
-
-    return expiresAt;
-  };
-
-  // Запуск таймера обновления токена
+  // Таймер обновления токена
   const startTokenRefreshTimer = useCallback(() => {
-    const expiresAt = getParsedExpiresAt();
-    if (!expiresAt) return;
-
-    const now = Date.now();
-    const refreshBeforeMs = 2 * 60 * 1000; // 2 минуты
-    const timeoutMs = Math.max(expiresAt - now - refreshBeforeMs, 10000);
+    const timeoutMs = 14 * 60 * 1000; // 14 минут, для уменьшения или увеличения- поменять значение "14" на желаемое. И столько будет минут
 
     if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
 
-    console.log(`Запуск таймера обновления токена через ${timeoutMs} мс`);
+    console.log(`[startTokenRefreshTimer] Осталось ${timeoutMs / 1000 / 60} минут до конца срока жизни JWT`);
 
-    refreshTimeout.current = setTimeout(() => {
-      console.log('Время пришло, обновляем токен...');
+    refreshTimeout.current = setTimeout(() => { //таймер истек, запуск обновления
       refreshJWT().catch(err =>
-        console.error('Ошибка при автоматическом обновлении токена:', err)
+        console.error('[startTokenRefreshTimer] Ошибка при автоматическом обновлении токена:', err)
       );
     }, timeoutMs);
   }, [refreshJWT]);
 
-  // Условное обновление, если скоро истекает
-  const maybeRefresh = useCallback(async () => {
-    const expiresAt = getParsedExpiresAt();
-    if (!expiresAt) return;
+const maybeRefresh = useCallback(async () => {
+  const jwtToken = localStorage.getItem('jwtToken');
+  if (!jwtToken) {
+    console.warn('[maybeRefresh] Нет jwtToken');
+    return;
+  }
 
-    const now = Date.now();
+  const payloadBase64 = jwtToken.split('.')[1];
+  if (!payloadBase64) {
+    console.warn('[maybeRefresh] JWT токен некорректен');
+    return;
+  }
 
-    if (expiresAt - now < 2 * 60 * 1000) {
-      console.log('Токен скоро истечёт, обновляем...');
-      try {
-        await refreshJWT();
-      } catch (e) {
-        console.error('Ошибка при условном обновлении токена:', e);
-      }
-    } else {
-      console.log('Токен ещё валиден, обновление не требуется');
+  try {
+    const payloadJson = atob(payloadBase64);
+    const payload = JSON.parse(payloadJson);
+    const exp = payload.exp;
+    if (!exp) {
+      console.warn('[maybeRefresh] Нет поля exp в токене');
+      return;
     }
-  }, [refreshJWT]);
 
-  // Обновляем при переходе по страницам, если нужно
+    const expMs = exp * 1000;
+    const nowMs = Date.now();
+    const diffMs = expMs - nowMs;
+
+    if (diffMs < 60 * 1000) {
+      console.log('[maybeRefresh] Обновляем токен, скоро истекает срок');
+      await refreshJWT();
+    } else {
+      console.log(`[maybeRefresh] Токен ещё валиден. До истечения: ${Math.round(diffMs / 1000)} сек`);
+    }
+  } catch (err) {
+    console.error('[maybeRefresh] Ошибка разбора JWT:', err);
+  }
+}, [refreshJWT]);
+
+
+  // При смене страниц- если пользователь авторизован и если мало времени осталось до конца токена- обновляем
   useEffect(() => {
     if (!isAuthenticated) return;
-    console.log('Навигация. Проверка необходимости обновления токена...');
+    console.log('[useEffect] Навигация. Проверка необходимости обновления токена...');
     maybeRefresh();
   }, [location.pathname, isAuthenticated, maybeRefresh]);
 
-  // Старт таймера при авторизации
+  // При авторизации пользователя — стартуем таймер
   useEffect(() => {
     if (!isAuthenticated) return;
 
-    console.log('Пользователь авторизован. Запускаем таймер...');
+    console.log('[useEffect] Пользователь авторизован. Запускаем таймер обновления токена...');
     startTokenRefreshTimer();
 
     return () => {
       if (refreshTimeout.current) {
         clearTimeout(refreshTimeout.current);
-        console.log('Очищен старый таймер обновления токена');
+        console.log('[useEffect] 🧹 Таймер обновления токена очищен');
       }
     };
   }, [isAuthenticated, startTokenRefreshTimer]);

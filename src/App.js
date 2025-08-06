@@ -11,6 +11,8 @@ import ListingCreate from './pages/ListingCreate.js';
 import AuthRefresh from './Hooks/AuthRefresh.js';
 import ListingEdit from './pages/ListingEdit.js';
 import useIsAuthenticated from './Hooks/useIsAuthenticated.js';
+import Search from './pages/Search.js';
+
 
 function App() {
   const isAuthenticated = useIsAuthenticated();
@@ -36,6 +38,7 @@ function App() {
         <Route path="/profile/Lord/Listing" element= {<ListingProfile />} />
         <Route path="/listing/create" element= {<ListingCreate />} />
         <Route path="/listing/edit/:listingId" element={ <ListingEdit/> } />
+        <Route path="/listing/search" element={ <Search/> } />
 
         {/* Главная или редирект */}
         <Route path="*" element={<Navigate to={isAuthenticated ? "/profile" : "/login"} replace />} />

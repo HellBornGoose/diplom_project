@@ -1,0 +1,35 @@
+body{
+    font-family: 'Myfont', sans-serif; 
+}
+.layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  .main {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+    background-color: #FFE8D9;
+    position: relative;
+  }
+  
+  .content {
+    flex-grow: 1;
+    padding: 30px;
+    
+    overflow-y: auto;
+    display: flex;
+    gap: 15px;
+    
+    left: 265px;
+    top: 100px;
+    
+  }
+  .mainContent{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  
+  

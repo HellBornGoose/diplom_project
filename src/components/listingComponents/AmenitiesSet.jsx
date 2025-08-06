@@ -10,93 +10,84 @@ const AmenitiesSet = ({ onAmenitiesChange, initialSelected = [] }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isInitialSynced, setIsInitialSynced] = useState(false);
 
-  // Загрузка данных с сервера или мок
+  // Загрузка зручностей з сервера або моку
   useEffect(() => {
     const loadData = async () => {
-      console.log('[LoadData] Начинаем загрузку данных...');
+      console.log('[LoadData] Починаємо завантаження...');
       setIsLoading(true);
       try {
         if (useMockData) {
-          console.log('[LoadData] Используем моковые данные');
+          console.log('[LoadData] Використовуємо мок');
           const mockData = [
             { id: 1, name: 'Wi-Fi', description: 'Інтернет доступ' },
             { id: 2, name: 'Басейн', description: 'Плавальний басейн' },
             { id: 3, name: 'Кондиціонер', description: 'Охолодження повітря' },
           ];
           setAllItems(mockData);
-          console.log('[LoadData] Моковые данные загружены:', mockData);
         } else {
-          console.log('[LoadData] Загружаем данные с сервера:', `${NGROK_URL}/api/listing/amenities`);
           const response = await fetch(`${NGROK_URL}/api/listing/amenities`);
-          if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
+          if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
           const data = await response.json();
-          console.log('[LoadData] Ответ сервера:', data);
           if (Array.isArray(data)) {
             setAllItems(data);
-            console.log('[LoadData] Данные успешно установлены');
+            console.log('[LoadData] Завантажено зручності:', data);
           } else {
-            console.error('[LoadData] Ожидался массив, получено:', data);
+            console.warn('[LoadData] Очікувався масив, отримано:', data);
             setAllItems([]);
           }
         }
       } catch (error) {
-        console.error('[LoadData] Ошибка при загрузке данных:', error);
+        console.error('[LoadData] Помилка завантаження:', error);
         setAllItems([]);
       } finally {
         setIsLoading(false);
-        console.log('[LoadData] Загрузка данных завершена');
       }
     };
 
     loadData();
   }, []);
 
-  // Синхронизация начального выбранного списка с загруженными элементами — выполняется один раз
-  useEffect(() => {
-    console.log('[SyncInitial] isLoading:', isLoading, 'isInitialSynced:', isInitialSynced, 'initialSelected:', initialSelected);
-    if (!isLoading && !isInitialSynced && initialSelected.length > 0) {
-      const validSelected = initialSelected
-        .map(name => {
-          const found = allItems.find(item => item.name === name);
-          if (found) {
-            console.log(`[SyncInitial] Найдено совпадение: "${name}" => id ${found.id}`);
-            return found.id;
-          } else {
-            console.warn(`[SyncInitial] Не найдено совпадение по названию: "${name}"`);
-            return null;
-          }
-        })
-        .filter(id => id !== null);
   
-      console.log('[SyncInitial] Валидные выбранные id:', validSelected);
+  useEffect(() => {
+    if (!isLoading && !isInitialSynced) {
+      let validSelected = [];
+
+      
+      if (initialSelected.length > 0 && typeof initialSelected[0] === 'string') {
+        validSelected = initialSelected
+          .map(name => {
+            const match = allItems.find(item => item.name === name);
+            if (match) {
+              console.log(`[SyncInitial] Назва "${name}" => ID ${match.id}`);
+              return match.id;
+            } else {
+              console.warn(`[SyncInitial] Не знайдено зручність з назвою "${name}"`);
+              return null;
+            }
+          })
+          .filter(id => id !== null);
+      }
+
+      
+
       setSelectedItems(validSelected);
       onAmenitiesChange(validSelected);
       setIsInitialSynced(true);
-      console.log('[SyncInitial] Синхронизация начального выбора выполнена');
     }
   }, [initialSelected, allItems, isLoading, isInitialSynced, onAmenitiesChange]);
-  
 
-  // Выбор элемента
   const handleSelectItem = (id) => {
-    console.log('[SelectItem] Выбрано ID:', id);
     if (!selectedItems.includes(id)) {
       const updated = [...selectedItems, id];
       setSelectedItems(updated);
       onAmenitiesChange(updated);
-      console.log('[SelectItem] Обновленный список выбранных:', updated);
-    } else {
-      console.log('[SelectItem] ID уже выбран');
     }
   };
 
-  // Удаление выбранного элемента
   const handleRemoveItem = (id) => {
-    console.log('[RemoveItem] Удаляем ID:', id);
     const updated = selectedItems.filter(itemId => itemId !== id);
     setSelectedItems(updated);
     onAmenitiesChange(updated);
-    console.log('[RemoveItem] Обновленный список выбранных:', updated);
   };
 
   return (
@@ -129,7 +120,6 @@ const AmenitiesSet = ({ onAmenitiesChange, initialSelected = [] }) => {
                   onClick={() => handleSelectItem(item.id)}
                 >
                   <strong>{item.name}</strong>
-                  
                 </div>
               ))}
           </div>

@@ -91,7 +91,6 @@ const ListingInfo = ({ initialData = {}, onFormDataChange }) => {
     fetchCountries();
   }, []);
 
-
   // Автоподсказки адреса
   useEffect(() => {
     setHasSelectedSuggestion(false);
@@ -158,8 +157,8 @@ const ListingInfo = ({ initialData = {}, onFormDataChange }) => {
       .filter((value, index) => mainFeatureIds[index] != null);
 
     return {
-      houseTypeId: parseInt(housingTypeId) || 1,
       title: name,
+      houseTypeId: parseInt(housingTypeId) || 1,
       checkInTime: checkIn,
       checkOutTime: checkOut,
       perDay: parseFloat(price.replace(/[^0-9.]/g, '') || '0') || 0,
@@ -172,6 +171,7 @@ const ListingInfo = ({ initialData = {}, onFormDataChange }) => {
       maxTenants: parseInt(guests) || 1,
       city,
       country,
+      selectedParameters, // Добавляем selectedParameters в возвращаемые данные
     };
   };
 
@@ -179,7 +179,6 @@ const ListingInfo = ({ initialData = {}, onFormDataChange }) => {
   useEffect(() => {
     onFormDataChange(generatePostData());
   }, [name, country, housingTypeId, location, selectedParameters, checkIn, checkOut, guests, price, city, streetWithNumber]);
-
 
   return (
     <div className={styles.bookingForm}>
@@ -291,7 +290,7 @@ const ListingInfo = ({ initialData = {}, onFormDataChange }) => {
                     <label key={param.id} className={styles.parameterLabel}>
                       <input
                         type="checkbox"
-
+                        checked={selectedParameters.includes(param.name)}
                         onChange={() => handleAddParameter(param.name)}
                         disabled={selectedParameters.length >= 5}
                       />

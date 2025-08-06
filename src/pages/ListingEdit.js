@@ -30,8 +30,8 @@ const ListingEdit = () => {
   const [maxTenants, setMaxTenants] = useState(1);
   const [initialServerImages, setInitialServerImages] = useState([]);
   const [allParameters, setAllParameters] = useState([]);
-  const [isDataLoaded, setIsDataLoaded] = useState(false); // Флаг загрузки данных для ListingInfo
-  const [areImagesLoaded, setAreImagesLoaded] = useState(false); // Флаг загрузки изображений
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [areImagesLoaded, setAreImagesLoaded] = useState(false);
 
   const isEditMode = !!listingId;
 
@@ -47,6 +47,7 @@ const ListingEdit = () => {
           name: item.name,
           value: item.value || null,
         })));
+        console.log('Fetched allParameters:', data); // Отладка
       } catch (err) {
         console.error('Error fetching main features:', err);
         setAllParameters([]);
@@ -74,7 +75,13 @@ const ListingEdit = () => {
         const data = await response.json();
         console.log('Fetched listing data:', data);
 
-        const selectedParameters = (data.mainFeatures || []).map(feature =>
+        // Ждем загрузки allParameters
+        if (allParameters.length === 0) {
+          console.log('allParameters not loaded yet, retrying...');
+          return;
+        }
+
+        const selectedParams = (data.mainFeatures || []).map(feature =>
           allParameters.find(p => p.id === feature.id)?.name || feature.name
         ).filter(Boolean);
 
@@ -84,15 +91,14 @@ const ListingEdit = () => {
         setLocation(data.location || '');
         setPerDay(data.price?.toString() || '0');
         setHouseTypeId(String(data.houseType || '1'));
-        setSelectedParameters(selectedParameters);
+        setSelectedParameters(selectedParams || []);
         setCheckInTime(data.checkInTime || '16:00');
         setCheckOutTime(data.checkOutTime || '10:00');
         setMaxTenants(data.maxTenants || 1);
         setDescription(data.description || '');
         setAmenities(data.amenities || []);
-
         setIsDataLoaded(true);
-
+        console.log('Initial selectedParameters:', selectedParams); // Отладка
 
         const photosResponse = await fetch(`${NGROK_URL}/api/Listing/get-all-photos/${listingId}`, {
           method: 'GET',
@@ -105,7 +111,6 @@ const ListingEdit = () => {
 
         const photosData = await photosResponse.json();
         console.log('Initial server images data:', photosData.photoUrls || []);
-        // Формируем полный URL с эндпоинтом и кодированием
         const formattedImages = (photosData.photoUrls || []).map(url =>
           `${NGROK_URL}/api/Listing/get-photo/${encodeURIComponent(url)}`
         );
@@ -127,10 +132,11 @@ const ListingEdit = () => {
     setLocation(data.location || '');
     setPerDay(data.perDay?.toString() || '0');
     setHouseTypeId(String(data.houseTypeId || '1'));
-    setSelectedParameters(data.selectedParameters || []);
+    setSelectedParameters(data.selectedParameters || []); // Обновляем selectedParameters
     setCheckInTime(data.checkInTime || '16:00');
     setCheckOutTime(data.checkOutTime || '10:00');
     setMaxTenants(data.maxTenants || 1);
+    console.log('Updated selectedParameters from ListingInfo:', data.selectedParameters); // Отладка
   };
 
   const uploadPhotos = async (id) => {
@@ -176,21 +182,44 @@ const ListingEdit = () => {
       const token = localStorage.getItem('jwtToken');
       if (!token) throw new Error('Токен авторизації відсутній');
 
+      console.log('Current selectedParameters:', selectedParameters); // Отладка перед маппингом
+      const mainFeatureIds = allParameters
+        .filter(param => selectedParameters.includes(param.name))
+        .map(param => param.id);
+
+      const mainFeatureValues = allParameters
+        .filter(param => selectedParameters.includes(param.name))
+        .map(param => param.value || null);
+
+      // Альтернативный маппинг для объектов
+      if (selectedParameters.length > 0 && selectedParameters[0]?.id) {
+        mainFeatureIds.push(...selectedParameters.map(param => param.id));
+        mainFeatureValues.push(...selectedParameters.map(param => param.value || null));
+      }
+
+      console.log('mainFeatureIds:', mainFeatureIds);
+      console.log('mainFeatureValues:', mainFeatureValues);
+
+      const amenityIds = amenities;
+
       const allData = {
         id: listingId,
         description,
-        amenities,
+        amenityIds,
         title,
         country,
         city,
         location,
         perDay: parseFloat(perDay.replace(/[^0-9.]/g, '')) || 0,
         houseTypeId: parseInt(houseTypeId),
-        selectedParameters,
+        MainFeatureIds: mainFeatureIds,
+        MainFeatureValues: mainFeatureValues,
         checkInTime,
         checkOutTime,
         maxTenants,
       };
+
+      console.log('allData:', allData);
 
       const endpoint = isEditMode
         ? `${NGROK_URL}/api/listing/updateListing/${listingId}`
@@ -215,7 +244,6 @@ const ListingEdit = () => {
       const newListingId = isEditMode ? listingId : responseData.id;
 
       await uploadPhotos(newListingId);
-
 
       alert(`Оголошення успішно ${isEditMode ? 'оновлено' : 'створено'}!`);
       navigate(isEditMode ? `/profile/Lord/Listing` : `/listing/edit/${newListingId}`);
@@ -247,7 +275,7 @@ const ListingEdit = () => {
           <section className={styles.content}>
             {areImagesLoaded && (
               <MultiImageInput
-                initialServerImages={initialServerImages} // Передаем загруженные изображения
+                initialServerImages={initialServerImages}
                 setImages={setImages}
                 listingId={listingId}
               />
@@ -272,7 +300,7 @@ const ListingEdit = () => {
           </section>
           <section className={styles.content}>
             <AmenitiesSet
-              initialSelected={amenities} // Передаем загруженные amenities
+              initialSelected={amenities}
               onAmenitiesChange={setAmenities}
             />
             <ListingDescription
