@@ -55,6 +55,13 @@ const ProfileUpdateLord = () => {
     setProfile(prev => ({ ...prev, phone: newPhone }));
   };
 
+  // Синхронизация location с profile при изменении
+  const handleLocationChange = (newLocation) => {
+    setLocation(newLocation);
+    setProfile(prev => ({ ...prev, location: newLocation }));
+    setHasSelectedSuggestion(false); // Сбрасываем флаг при ручном вводе
+  };
+
   // Обновление локации и подсказки из Geoapify
   useEffect(() => {
     if (hasSelectedSuggestion) return;
@@ -86,9 +93,12 @@ const ProfileUpdateLord = () => {
 
   const handleSelectSuggestion = (suggestion) => {
     const props = suggestion.properties;
-    setLocation(props.formatted || '');
+    const newLocation = props.formatted || '';
+    setLocation(newLocation);
+    setProfile(prev => ({ ...prev, location: newLocation })); // Синхронизация с profile
     setHasSelectedSuggestion(true);
     setShowSuggestions(false);
+    console.log('Selected location:', newLocation); // Отладка
   };
 
   // Загрузка профиля с сервера
@@ -125,6 +135,7 @@ const ProfileUpdateLord = () => {
         languages: data.languages?.map(lang => lang.code) || [],
       });
 
+      setLocation(data.location || ''); // Синхронизация начального location
       setPhotoUrl(data.photoUrl || '');
     } catch (err) {
       console.error('Error loading profile:', err);
@@ -142,7 +153,7 @@ const ProfileUpdateLord = () => {
       return;
     }
 
-    const { firstName, lastName, surname, gender, phone, location, email, dateOfBirth, instagram, facebook, telegram, languages } = profile;
+    const { firstName, lastName, surname, gender, phone, location, dateOfBirth, instagram, facebook, telegram, languages } = profile;
 
     const dateOfBirthStr = `${dateOfBirth.year}-${dateOfBirth.month.padStart(2, '0')}-${dateOfBirth.day.padStart(2, '0')}`;
 
@@ -153,7 +164,6 @@ const ProfileUpdateLord = () => {
       gender,
       phone,
       location,
-      email,
       dateOfBirth: dateOfBirthStr,
       instagram,
       facebook,
@@ -162,9 +172,11 @@ const ProfileUpdateLord = () => {
       photoUrl,
     };
 
+    console.log('Payload:', payload); // Отладка
+
     try {
       const response = await fetch(`${NGROK_URL}/api/Profile/update`, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -177,10 +189,9 @@ const ProfileUpdateLord = () => {
         setErrorMsg(error.message || 'Помилка оновлення профілю');
         return;
       }
-    await refreshJWT(); // Ждём обновления токена, ведь если таки имейл будет поменян, то работать не будет(
+      await refreshJWT(); // Ждём обновления токена
 
-    
-    const newToken = localStorage.getItem('jwtToken'); // Берём обновлённый токен из localStorage
+      const newToken = localStorage.getItem('jwtToken'); // Берём обновлённый токен из localStorage
       // После обновления профиля повторно получить данные для проверки ролей
       const profileRes = await fetch(`${NGROK_URL}/api/Profile/get`, {
         headers: { Authorization: `Bearer ${newToken}` },
@@ -211,219 +222,202 @@ const ProfileUpdateLord = () => {
 
   return (
     <div className={styles.layout}>
-        <Header />
-        
-
-        <main className={styles.main}>
-            <aside className={styles.sidebar}>
-                <Navigation/>
-            </aside>
-            <div className={styles.mainContent}>
-            <h1 className={styles.h1}>Редагування профілю</h1>
-            <section className={styles.content}>
+      <Header />
+      <main className={styles.main}>
+        <aside className={styles.sidebar}>
+          <Navigation />
+        </aside>
+        <div className={styles.mainContent}>
+          <h1 className={styles.h1}>Редагування профілю</h1>
+          <section className={styles.content}>
             <form onSubmit={handleSubmit} className={UpdateStyles.form}>
-          <div className={`${UpdateStyles.formGroup}, ${UpdateStyles.firstColumn}`}>
-            <AvatarChange serverFilePath={photoUrl} onPhotoUrlChange={handlePhotoUrlChange} />
-          </div>
-          <div className={UpdateStyles.secondColumn}>
-        <div className={UpdateStyles.names}>
-          <div className={UpdateStyles.formGroup}>
-            <label htmlFor="firstName">Ім'я <span className={UpdateStyles.star}>*</span></label>
-            <input
-              id="firstName"
-              type="text"
-              value={profile.firstName}
-              onChange={e => setProfile(prev => ({ ...prev, firstName: e.target.value }))}
-              required
-            />
-          </div>
-
-          <div className={UpdateStyles.formGroup}>
-            <label htmlFor="lastName">Прізвище <span className={UpdateStyles.star}>*</span></label>
-            <input
-              id="lastName"
-              type="text"
-              value={profile.lastName}
-              onChange={e => setProfile(prev => ({ ...prev, lastName: e.target.value }))}
-              required
-            />
-          </div>
-
-          <div className={UpdateStyles.formGroup}>
-            <label htmlFor="surname">По-батькові</label>
-            <input
-              id="surname"
-              type="text"
-              value={profile.surname}
-              onChange={e => setProfile(prev => ({ ...prev, surname: e.target.value }))}
-            />
-          </div>
-          </div>
-          <div className={UpdateStyles.formGroup}>
-            <label htmlFor="gender">Стать</label>
-            <select
-            className={UpdateStyles.gender}
-              id="gender"
-              value={profile.gender}
-              onChange={e => setProfile(prev => ({ ...prev, gender: e.target.value }))}
-            >
-              <option value="">Виберіть стать</option>
-              <option value="Male">Чоловіча</option>
-              <option value="Female">Жіноча</option>
-              <option value="Other">Інша</option>
-            </select>
-          </div>
-
-          <div className={UpdateStyles.formGroup}>
-            <label>Дата народження <span className={UpdateStyles.star}>*</span></label>
-            <div className={UpdateStyles.dateOfBirth}>
-              <input
-                type="number"
-                placeholder="День"
-                min="1"
-                max="31"
-                value={profile.dateOfBirth.day}
-                onChange={e =>
-                  setProfile(prev => ({
-                    ...prev,
-                    dateOfBirth: { ...prev.dateOfBirth, day: e.target.value },
-                  }))
-                }
-              />
-              <input
-                type="number"
-                placeholder="Місяць"
-                min="1"
-                max="12"
-                value={profile.dateOfBirth.month}
-                onChange={e =>
-                  setProfile(prev => ({
-                    ...prev,
-                    dateOfBirth: { ...prev.dateOfBirth, month: e.target.value },
-                  }))
-                }
-              />
-              <input
-                type="number"
-                placeholder="Рік"
-                min="1900"
-                max={new Date().getFullYear()}
-                value={profile.dateOfBirth.year}
-                onChange={e =>
-                  setProfile(prev => ({
-                    ...prev,
-                    dateOfBirth: { ...prev.dateOfBirth, year: e.target.value },
-                  }))
-                }
-              />
-            </div>
-          </div>
-          <div className={UpdateStyles.Adress} style={{ position: 'relative' }}>
-            <label htmlFor='Address'>Країна або регіон <span className={UpdateStyles.star}>*</span></label>
-          <input
-            type="text"
-            value={location}
-            placeholder=""
-            onChange={(e) => {
-              setLocation(e.target.value);
-              setHasSelectedSuggestion(false);
-            }}
-            id="Address"
-            autoComplete="off"
-            onFocus={() => {
-              if (!hasSelectedSuggestion && suggestions.length > 0) {
-                setShowSuggestions(true);
-              }
-            }}
-            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-            disabled={addressLoading}
-          />
-          {showSuggestions && suggestions.length > 0 && (
-            <ul className={UpdateStyles.suggestionsList}>
-              {suggestions.map((sugg, index) => (
-                <li
-                  key={index}
-                  className={UpdateStyles.suggestionItem}
-                  onMouseDown={() => handleSelectSuggestion(sugg)}
-                >
-                  {sugg.properties.formatted}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-          <div className={UpdateStyles.formGroup}>
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              value={profile.email}
-              onChange={e => setProfile(prev => ({ ...prev, email: e.target.value }))}
-              readOnly
-            />
-          </div>
-          <div className={`${UpdateStyles.formGroup}, ${UpdateStyles.phoneInput}`}>
-            <label>Номер телефону</label>
-            <CustomPhoneInput value={profile.phone} onChange={handlePhoneChange} defaultCountry="UA" />
-          </div>
-          </div>
-        <div className={UpdateStyles.thirdColumn}>
-          <div className={UpdateStyles.snGroup}>
-            <label htmlFor="instagram">Посилання на соціальні мережі</label>
-            <input
-              id="instagram"
-              type="text"
-              value={profile.instagram}
-              onChange={e => setProfile(prev => ({ ...prev, instagram: e.target.value }))}
-            />
-            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className={UpdateStyles.iconLink}>
-              <img className={UpdateStyles.instIcon} src={InstDarkLogo} alt="Instagram" />
-            </a>
-          </div>
-
-          <div className={UpdateStyles.snGroup}>
-            <input
-              id="facebook"
-              type="text"
-              value={profile.facebook}
-              onChange={e => setProfile(prev => ({ ...prev, facebook: e.target.value }))}
-            />
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className={UpdateStyles.iconLink}>
-              <img className={UpdateStyles.fbIcon} src={FacebookDarkLogo} alt="Facebook" />
-            </a>
-          </div>
-
-          <div className={UpdateStyles.snGroup}>
-            <input
-              id="telegram"
-              type="text"
-              value={profile.telegram}
-              onChange={e => setProfile(prev => ({ ...prev, telegram: e.target.value }))}
-            />
-            <a href="https://web.telegram.org" target="_blank" rel="noopener noreferrer" className={UpdateStyles.iconLink}>
-              <img className={UpdateStyles.tgIcon} src={TelegramDarkLogo} alt="Telegram" />
-            </a>
-          </div>
-
-          <div className={UpdateStyles.languages}>
-            <label>Мови</label>
-            <LanguageSelector selectedLanguages={profile.languages} onChange={(langs) => setProfile(prev => ({ ...prev, languages: langs }))} />
-          </div>
-          </div>
-          
-        </form>
-        
+              <div className={`${UpdateStyles.formGroup}, ${UpdateStyles.firstColumn}`}>
+                <AvatarChange serverFilePath={photoUrl} onPhotoUrlChange={handlePhotoUrlChange} />
+              </div>
+              <div className={UpdateStyles.secondColumn}>
+                <div className={UpdateStyles.names}>
+                  <div className={UpdateStyles.formGroup}>
+                    <label htmlFor="firstName">Ім'я <span className={UpdateStyles.star}>*</span></label>
+                    <input
+                      id="firstName"
+                      type="text"
+                      value={profile.firstName}
+                      onChange={e => setProfile(prev => ({ ...prev, firstName: e.target.value }))}
+                      required
+                    />
+                  </div>
+                  <div className={UpdateStyles.formGroup}>
+                    <label htmlFor="lastName">Прізвище <span className={UpdateStyles.star}>*</span></label>
+                    <input
+                      id="lastName"
+                      type="text"
+                      value={profile.lastName}
+                      onChange={e => setProfile(prev => ({ ...prev, lastName: e.target.value }))}
+                      required
+                    />
+                  </div>
+                  <div className={UpdateStyles.formGroup}>
+                    <label htmlFor="surname">По-батькові</label>
+                    <input
+                      id="surname"
+                      type="text"
+                      value={profile.surname}
+                      onChange={e => setProfile(prev => ({ ...prev, surname: e.target.value }))}
+                    />
+                  </div>
+                </div>
+                <div className={UpdateStyles.formGroup}>
+                  <label htmlFor="gender">Стать</label>
+                  <select
+                    className={UpdateStyles.gender}
+                    id="gender"
+                    value={profile.gender}
+                    onChange={e => setProfile(prev => ({ ...prev, gender: e.target.value }))}
+                  >
+                    <option value="">Виберіть стать</option>
+                    <option value="Male">Чоловіча</option>
+                    <option value="Female">Жіноча</option>
+                    <option value="Other">Інша</option>
+                  </select>
+                </div>
+                <div className={UpdateStyles.formGroup}>
+                  <label>Дата народження <span className={UpdateStyles.star}>*</span></label>
+                  <div className={UpdateStyles.dateOfBirth}>
+                    <input
+                      type="number"
+                      placeholder="День"
+                      min="1"
+                      max="31"
+                      value={profile.dateOfBirth.day}
+                      onChange={e =>
+                        setProfile(prev => ({
+                          ...prev,
+                          dateOfBirth: { ...prev.dateOfBirth, day: e.target.value },
+                        }))
+                      }
+                    />
+                    <input
+                      type="number"
+                      placeholder="Місяць"
+                      min="1"
+                      max="12"
+                      value={profile.dateOfBirth.month}
+                      onChange={e =>
+                        setProfile(prev => ({
+                          ...prev,
+                          dateOfBirth: { ...prev.dateOfBirth, month: e.target.value },
+                        }))
+                      }
+                    />
+                    <input
+                      type="number"
+                      placeholder="Рік"
+                      min="1900"
+                      max={new Date().getFullYear()}
+                      value={profile.dateOfBirth.year}
+                      onChange={e =>
+                        setProfile(prev => ({
+                          ...prev,
+                          dateOfBirth: { ...prev.dateOfBirth, year: e.target.value },
+                        }))
+                      }
+                    />
+                  </div>
+                </div>
+                <div className={UpdateStyles.Adress} style={{ position: 'relative' }}>
+                  <label htmlFor="Address">Країна або регіон <span className={UpdateStyles.star}>*</span></label>
+                  <input
+                    type="text"
+                    value={location}
+                    placeholder=""
+                    onChange={(e) => handleLocationChange(e.target.value)}
+                    id="Address"
+                    autoComplete="off"
+                    onFocus={() => {
+                      if (!hasSelectedSuggestion && suggestions.length > 0) {
+                        setShowSuggestions(true);
+                      }
+                    }}
+                    onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                    disabled={addressLoading}
+                  />
+                  {showSuggestions && suggestions.length > 0 && (
+                    <ul className={UpdateStyles.suggestionsList}>
+                      {suggestions.map((sugg, index) => (
+                        <li
+                          key={index}
+                          className={UpdateStyles.suggestionItem}
+                          onMouseDown={() => handleSelectSuggestion(sugg)}
+                        >
+                          {sugg.properties.formatted}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                <div className={UpdateStyles.formGroup}>
+                  <label htmlFor="email">Email</label>
+                  <input
+                    id="email"
+                    type="email"
+                    value={profile.email}
+                    onChange={e => setProfile(prev => ({ ...prev, email: e.target.value }))}
+                    readOnly
+                  />
+                </div>
+                <div className={`${UpdateStyles.formGroup}, ${UpdateStyles.phoneInput}`}>
+                  <label>Номер телефону</label>
+                  <CustomPhoneInput value={profile.phone} onChange={handlePhoneChange} defaultCountry="UA" />
+                </div>
+              </div>
+              <div className={UpdateStyles.thirdColumn}>
+                <div className={UpdateStyles.snGroup}>
+                  <label htmlFor="instagram">Посилання на соціальні мережі</label>
+                  <input
+                    id="instagram"
+                    type="text"
+                    value={profile.instagram}
+                    onChange={e => setProfile(prev => ({ ...prev, instagram: e.target.value }))}
+                  />
+                  <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className={UpdateStyles.iconLink}>
+                    <img className={UpdateStyles.instIcon} src={InstDarkLogo} alt="Instagram" />
+                  </a>
+                </div>
+                <div className={UpdateStyles.snGroup}>
+                  <input
+                    id="facebook"
+                    type="text"
+                    value={profile.facebook}
+                    onChange={e => setProfile(prev => ({ ...prev, facebook: e.target.value }))}
+                  />
+                  <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className={UpdateStyles.iconLink}>
+                    <img className={UpdateStyles.fbIcon} src={FacebookDarkLogo} alt="Facebook" />
+                  </a>
+                </div>
+                <div className={UpdateStyles.snGroup}>
+                  <input
+                    id="telegram"
+                    type="text"
+                    value={profile.telegram}
+                    onChange={e => setProfile(prev => ({ ...prev, telegram: e.target.value }))}
+                  />
+                  <a href="https://web.telegram.org" target="_blank" rel="noopener noreferrer" className={UpdateStyles.iconLink}>
+                    <img className={UpdateStyles.tgIcon} src={TelegramDarkLogo} alt="Telegram" />
+                  </a>
+                </div>
+                <div className={UpdateStyles.languages}>
+                  <label>Мови</label>
+                  <LanguageSelector languages={profile.languages} setLanguages={(langs) => setProfile(prev => ({ ...prev, languages: langs }))} />
+                </div>
+              </div>
+            </form>
+            <button type="submit" className={UpdateStyles.submitBtn} onClick={handleSubmit}>Зберегти</button>
             </section>
-            <button type="submit" className={UpdateStyles.submitBtn}>Зберегти</button>
-            </div>
-            
+          </div>
         </main>
-
-    
-    <Footer />
-</div>
-  );
+        <Footer />
+      </div>
+    );
 };
 
 export default ProfileUpdateLord;

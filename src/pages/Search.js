@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import SearchBar from '../components/searchComponents/searchBar';
@@ -9,32 +9,18 @@ import styles from '../css/SearchPage.module.css';
 const Search = () => {
   const [listings, setListings] = useState([]);
   const navigate = useNavigate();
-  const location = useLocation();
-  const [searchParams, setSearchParams] = useState({
-    country: '',
-    city: '',
-    guests: 0,
-    checkIn: '',
-    checkOut: '',
-  });
 
-  // Извлекаем параметры из URL при загрузке
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const params = {
-      country: queryParams.get('country') || '',
-      city: queryParams.get('city') || '',
-      guests: parseInt(queryParams.get('guests')) || 0,
-      checkIn: queryParams.get('checkIn') || '',
-      checkOut: queryParams.get('checkOut') || '',
-    };
-    setSearchParams(params);
-  }, [location.search]);
+  const handleSearch = async (searchParams) => {
+    const { country, city, guests, checkIn, checkOut } = searchParams;
 
-  const handleSearch = async (newParams) => {
-    setSearchParams(newParams);
+    const queryParams = new URLSearchParams({
+      country: country || '',
+      city: city || '',
+      guests: guests || '0',
+      checkIn: checkIn || '',
+      checkOut: checkOut || '',
+    }).toString();
 
-    const queryParams = new URLSearchParams(newParams).toString();
     const apiUrl = `http://localhost:5197/api/Listing/search?${queryParams}`;
 
     try {
@@ -64,7 +50,7 @@ const Search = () => {
       <main className={styles.main}>
         <div className={styles.mainContent}>
           <section className={styles.content}>
-            <ListingsDisplay listings={listings} searchParams={searchParams} />
+            <ListingsDisplay listings={listings} />
           </section>
         </div>
       </main>

@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../css/ListingView.module.css';
 
+
 const ListingsDisplay = ({ listings }) => {
   const navigate = useNavigate();
 
@@ -15,8 +16,13 @@ const ListingsDisplay = ({ listings }) => {
     const queryParams = urlParams.toString();
 
     // Формируем новый маршрут с listingId и query-параметрами
-    const listingId = listing.title.replace(/\s+/g, '-') + '-' + listing.country.replace(/\s+/g, '-'); // Уникальный ID на основе title и country
-    navigate(`/listing/search/${listingId}?${queryParams}`);
+    navigate(`/listing/search/${listing.id}?${queryParams}`);
+  };
+
+  // Функция для формирования URL изображения
+  const getImageUrl = (photoPath) => {
+    if (!photoPath) return 'path/to/default-image.jpg'; // Заглушка, если фото нет
+    return `http://localhost:5197/api/Listing/get-photo/${encodeURIComponent(photoPath)}`;
   };
 
   return (
@@ -28,9 +34,10 @@ const ListingsDisplay = ({ listings }) => {
           onClick={() => handleCardClick(listing)}
         >
           <img
-            src={listing.photos.length > 0 ? listing.photos[0] : 'path/to/default-image.jpg'}
+            src={listing.photos.length > 0 ? getImageUrl(listing.photos[0]) : 'path/to/default-image.jpg'}
             alt={listing.title}
             className={styles.listingImage}
+            onError={(e) => { e.target.src = 'path/to/default-image.jpg'; }} // Заглушка при ошибке загрузки
           />
           <div className={styles.listingDetails}>
             <h3 className={styles.listingTitle}>{listing.title}</h3>

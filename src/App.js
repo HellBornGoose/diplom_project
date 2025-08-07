@@ -35,7 +35,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/profile/Lord" element={<LandLordProfile />} />
         <Route path="/profile/Lord/edit" element={<ProfileUpdateLord />} />
-        <Route path="/profile/User" element={isAuthenticated ? <UserProfile /> : <Navigate to="/login" replace />} />
+        <Route path="/profile/User" element={<UserProfile />} />
         <Route path="/profile/User/edit" element={<ProfileUpdateUser />} />
         <Route path="/profile/Lord/Listing" element= {<ListingProfile />} />
         <Route path="/listing/create" element= {<ListingCreate />} />

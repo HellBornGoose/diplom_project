@@ -9,7 +9,7 @@ import styles from '../css/SearchPage.module.css';
 import ListingDetails from '../components/searchComponents/ListingDetails';
 
 const ListingLook = () => {
-    const { listingId } = useParams(); // Извлекаем ID из URL
+    const { id } = useParams(); // Извлекаем ID из URL
     const location = useLocation();
     const searchParams = location.state?.searchParams || {}; // Извлекаем параметры из state
 

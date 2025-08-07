@@ -56,13 +56,17 @@ function LanguageSelector({ languages = [], setLanguages }) {
   }, []);
 
   const toggleLanguage = (code) => {
-    if (!Array.isArray(languages) || typeof setLanguages !== 'function') return;
-
-    if (languages.includes(code)) {
-      setLanguages(languages.filter(c => c !== code));
-    } else {
-      setLanguages([...languages, code]);
+    if (!Array.isArray(languages) || typeof setLanguages !== 'function') {
+      console.error('Invalid languages or setLanguages prop:', { languages, setLanguages });
+      return;
     }
+
+    const updatedLanguages = languages.includes(code)
+      ? languages.filter(c => c !== code)
+      : [...languages, code];
+
+    console.log('Toggling language:', { code, updatedLanguages }); // Отладка
+    setLanguages(updatedLanguages);
   };
 
   if (loading) return <p>Загрузка языков...</p>;
@@ -80,7 +84,7 @@ function LanguageSelector({ languages = [], setLanguages }) {
     <div ref={dropdownRef} style={{ position: 'relative', width: 470, userSelect: 'none' }}>
       <div
         onClick={() => setIsOpen(prev => !prev)}
-        style={{ border: '3px solid #5D589A', borderRadius:"10px", backgroundColor:"#FFF", padding: '8px', cursor: 'pointer', color:"#5D589A" }}
+        style={{ border: '3px solid #5D589A', borderRadius: '10px', backgroundColor: '#FFF', padding: '8px', cursor: 'pointer', color: '#5D589A' }}
       >
         {selectedText}
       </div>

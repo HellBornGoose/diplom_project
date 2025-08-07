@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import styles from '../css/SearchBar.module.css';
 import LocationIcon from '../../img/LocationIcon.svg';
 import DataIcon from '../../img/DataIcon.svg';
@@ -10,17 +11,22 @@ import { uk } from 'date-fns/locale';
 import searchArrow from '../../img/searchArrow.svg';
 
 const SearchBar = ({ onSearch }) => {
-  const [location, setLocation] = useState('');
-  const [city, setCity] = useState('');
-  const [country, setCountry] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [location, setLocation] = useState(searchParams.get('location') || '');
+  const [city, setCity] = useState(searchParams.get('city') || '');
+  const [country, setCountry] = useState(searchParams.get('country') || '');
   const [addressLoading, setAddressLoading] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [hasSelectedSuggestion, setHasSelectedSuggestion] = useState(false);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(
+    searchParams.get('checkIn') ? new Date(searchParams.get('checkIn')) : null
+  );
+  const [endDate, setEndDate] = useState(
+    searchParams.get('checkOut') ? new Date(searchParams.get('checkOut')) : null
+  );
   const [showCalendar, setShowCalendar] = useState(false);
-  const [adults, setAdults] = useState(1);
+  const [adults, setAdults] = useState(parseInt(searchParams.get('guests')) || 1);
   const [children, setChildren] = useState(0);
   const [showPeopleMenu, setShowPeopleMenu] = useState(false);
 
@@ -28,8 +34,8 @@ const SearchBar = ({ onSearch }) => {
   const calendarRef = useRef(null);
   const apiKey = 'b4c12022c2c846d6a7bdeb5e79d87424';
 
-  // Устанавливаем минимальную дату как текущую (7 августа 2025)
-  const today = new Date('2025-08-07T03:35:00Z'); // Текущая дата и время (CEST)
+  // Устанавливаем минимальную дату как текущую (7 августа 2025, 08:40 AM CEST)
+  const today = new Date('2025-08-07T06:40:00Z'); // Пересчитано на UTC для соответствия CEST
 
   const handleDateClick = () => {
     setShowCalendar(true);
@@ -57,6 +63,20 @@ const SearchBar = ({ onSearch }) => {
       checkOut: formattedEndDate,
     });
   };
+
+  // Синхронизация состояния с URL
+  useEffect(() => {
+    const params = {
+      location,
+      city,
+      country,
+      checkIn: startDate ? startDate.toISOString().split('T')[0] : '',
+      checkOut: endDate ? endDate.toISOString().split('T')[0] : '',
+      guests: (adults + children).toString(),
+    };
+    const newSearchParams = new URLSearchParams(params).toString();
+    setSearchParams(newSearchParams);
+  }, [location, city, country, startDate, endDate, adults, children, setSearchParams]);
 
   useEffect(() => {
     if (hasSelectedSuggestion) return;
@@ -213,7 +233,7 @@ const SearchBar = ({ onSearch }) => {
         </div>
       </div>
       <button className={styles.submitButton} onClick={handleSearch}>
-        <img src={searchArrow} className={styles.arrowIcon}/>
+        <img src={searchArrow} className={styles.arrowIcon} />
       </button>
     </div>
   );

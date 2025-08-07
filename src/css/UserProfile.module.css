@@ -56,5 +56,12 @@ body{
     margin-bottom: 30px;
     margin-left: 1230px;
   }
+  .editIcon {
+    position: absolute;
+    top: 160px;
+    right: 700px;
+    cursor: pointer;
+    z-index: 100;
+  }
   
   
