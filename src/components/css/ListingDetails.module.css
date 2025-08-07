@@ -22,7 +22,6 @@
     color: #221F50;
   }
   
-  
   .searchParams {
     display: flex;
     justify-content: right;
@@ -49,6 +48,8 @@
   }
   
   .listingImage {
+    width: 661px;
+    height: 427px;
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 15px;

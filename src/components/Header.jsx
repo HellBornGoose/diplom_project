@@ -1,7 +1,8 @@
 import React from "react";
 import './css/Header.css';
-import logo2x from '../img/logo2x.png'
-import ukrainianFlag from '../img/UKRflag.svg'
+import logo2x from '../img/logo2x.png';
+import ukrainianFlag from '../img/UKRflag.svg';
+import { Link } from "react-router-dom";
 
 function Header(){
     return(
@@ -12,7 +13,7 @@ function Header(){
         <nav className="header-nav">
           <a href="#">Головна</a>
           <a href="#">Про нас</a>
-          <a href="#">Житло</a>
+          <Link to={"/listing/search"}>Житло</Link>
           <a href="#">Новини</a>
           <a href="#">Контакти</a>
         <div className="flag" >

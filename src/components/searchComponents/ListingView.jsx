@@ -11,7 +11,7 @@ const ListingsDisplay = ({ listings }) => {
   }
 
   const handleCardClick = (listing) => {
-    // Извлекаем текущие параметры поиска из URL
+    console.log('Listing ID:', listing.id);
     const urlParams = new URLSearchParams(window.location.search);
     const queryParams = urlParams.toString();
 
@@ -31,13 +31,12 @@ const ListingsDisplay = ({ listings }) => {
         <div
           key={listing.title + listing.country + listing.city}
           className={styles.listingCard}
-          onClick={() => handleCardClick(listing)}
         >
           <img
             src={listing.photos.length > 0 ? getImageUrl(listing.photos[0]) : 'path/to/default-image.jpg'}
             alt={listing.title}
             className={styles.listingImage}
-            onError={(e) => { e.target.src = 'path/to/default-image.jpg'; }} // Заглушка при ошибке загрузки
+            onError={(e) => { e.target.src = 'path/to/default-image.jpg'; }} 
           />
           <div className={styles.listingDetails}>
             <h3 className={styles.listingTitle}>{listing.title}</h3>
@@ -61,7 +60,7 @@ const ListingsDisplay = ({ listings }) => {
               ))}
             </div>
           </div>
-          <button className={styles.bookButton}>Обрати</button>
+          <button className={styles.bookButton} onClick={() => handleCardClick(listing)}>Обрати</button>
         </div>
       ))}
     </div>
