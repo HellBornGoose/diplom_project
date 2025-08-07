@@ -3,7 +3,8 @@ import Login from './pages/Login.js';
 import RegisterUser from './pages/RegisterUser.js';
 import LandLordProfile from './pages/LandLordProfileView.js'
 import UserProfile from './pages/UserProfileView.js'
-import ProfileUpdate from './pages/ProfileUpdate.js';
+import ProfileUpdateLord from './pages/ProfileUpdateLord.js';
+import ProfileUpdateUser from './pages/ProfileUpdateUser.js';
 import RegisterLandLord from './pages/RegisterLandLord.js';
 import ListingProfile from './pages/ListingProfile.js';
 import './css/fonts.css';
@@ -12,6 +13,8 @@ import AuthRefresh from './Hooks/AuthRefresh.js';
 import ListingEdit from './pages/ListingEdit.js';
 import useIsAuthenticated from './Hooks/useIsAuthenticated.js';
 import Search from './pages/Search.js';
+import ListingLook from './pages/ListingLook.js';
+
 
 
 function App() {
@@ -27,18 +30,18 @@ function App() {
         
 
         {/* Защищённые маршруты */}
-        <Route
-          path="/profile/edit"
-          element={isAuthenticated ? <ProfileUpdate /> : <Navigate to="/login" replace />}
-        />
+        
           
         <Route path="/" element={<Login />} />
         <Route path="/profile/Lord" element={<LandLordProfile />} />
+        <Route path="/profile/Lord/edit" element={<ProfileUpdateLord />} />
         <Route path="/profile/User" element={isAuthenticated ? <UserProfile /> : <Navigate to="/login" replace />} />
+        <Route path="/profile/User/edit" element={<ProfileUpdateUser />} />
         <Route path="/profile/Lord/Listing" element= {<ListingProfile />} />
         <Route path="/listing/create" element= {<ListingCreate />} />
         <Route path="/listing/edit/:listingId" element={ <ListingEdit/> } />
         <Route path="/listing/search" element={ <Search/> } />
+        <Route path="/listing/search/:listingId" element={<ListingLook />} />
 
         {/* Главная или редирект */}
         <Route path="*" element={<Navigate to={isAuthenticated ? "/profile" : "/login"} replace />} />

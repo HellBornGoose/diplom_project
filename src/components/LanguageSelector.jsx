@@ -77,10 +77,10 @@ function LanguageSelector({ languages = [], setLanguages }) {
   const selectedText = selectedNames.length > 0 ? selectedNames.join(', ') : 'Выберите языки';
 
   return (
-    <div ref={dropdownRef} style={{ position: 'relative', width: 250, userSelect: 'none' }}>
+    <div ref={dropdownRef} style={{ position: 'relative', width: 470, userSelect: 'none' }}>
       <div
         onClick={() => setIsOpen(prev => !prev)}
-        style={{ border: '1px solid #ccc', padding: '8px', cursor: 'pointer' }}
+        style={{ border: '3px solid #5D589A', borderRadius:"10px", backgroundColor:"#FFF", padding: '8px', cursor: 'pointer', color:"#5D589A" }}
       >
         {selectedText}
       </div>

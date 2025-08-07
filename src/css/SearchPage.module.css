@@ -5,9 +5,17 @@ body{
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background-color: #FFE8D9;
   }
+  .searchBar{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
   .main {
     display: flex;
+    justify-content: center;
     flex-grow: 1;
     overflow: hidden;
     background-color: #FFE8D9;
@@ -29,6 +37,21 @@ body{
   .mainContent{
     display: flex;
     flex-direction: column;
+  }
+  .Adress{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+  }
+  .Adress input{
+    color: #5D589A;
+    width: 371px;
+    height: 47px;
+    border: 1px solid #5D589A;
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: 'Myfont', sans-serif;
+    padding: 8px;
   }
   
   

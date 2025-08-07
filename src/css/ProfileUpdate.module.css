@@ -6,3 +6,124 @@ body{
     height: 200px;
     border-radius: 50%;
 }
+.form{
+    position: relative;
+    display: flex;
+    gap: 20px;
+}
+.form input{
+    padding-left: 20px;
+    font-family: 'Myfont', sans-serif;
+    font-size: 18px;
+    color: #5D589A;
+    border-color: #5D589A;
+}
+.form select{
+    border-color: #5D589A;
+}
+.phoneInput input{
+    padding-left: 110px;
+}
+.form label{
+    font-size: 15px;
+    color: #221F50;
+}
+.submitBtn{
+    position: absolute;
+    font-family: 'Myfont', sans-serif;
+    width: 253px;
+    height: 52px;
+    background: none;
+    border: none;
+    background-color: #E07B3B;
+    border-radius: 45px;
+    color: #FFF;
+    font-size: 28px;
+    right: 120px;
+    bottom: 25px;
+}
+.names{
+    display: flex;
+    gap: 10px;
+}
+.names div{
+    width: 215px;
+}
+.star{
+    color: #E07B3B;
+}
+.dateOfBirth{
+    display: flex;
+    gap: 10px;
+}
+.dateOfBirth div{
+    width: 215px;
+}
+.Adress {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    
+  }
+  .suggestionsList {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .suggestionItem {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-family: 'Myfont', sans-serif;
+    color: #5D589A;
+  }
+  
+  .suggestionItem:hover {
+    background-color: #f0f0f0;
+  }
+  .thirdColumn{
+    width: 470px;
+  }
+  .snGroup{
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .iconLink img{
+    position: absolute;
+  }
+  .fbIcon{
+    left: 10px;
+    bottom: 3px;
+  }
+  .tgIcon{
+    left: 10px;
+    bottom: 7px;
+  }
+  .instIcon{
+    left: 10px;
+    bottom: 6px;
+  }
+  .gender{
+    background: none;
+    border: none;
+    width: 100%;
+    border: 3px solid #E07B3B;
+    height: 44px;
+    background-color: #FFF;
+    border-radius: 10px;
+    font-family: 'Myfont', sans-serif;
+    font-size: 18px;
+    color: #5D589A;
+    padding-left: 20px;
+  }
+  .languages{
+    width: 470px;
+  }

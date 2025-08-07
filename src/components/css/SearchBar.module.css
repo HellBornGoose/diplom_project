@@ -7,8 +7,14 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 1346px;
     height: 79px;
+    border-radius: 45px;
+    font-family: 'Myfont', sans-serif;
+    position: relative;
   }
-  
+.searchBar input{
+    visibility: hidden;
+    height: 0;
+}
   .searchInput {
     display: flex;
     align-items: center;
@@ -17,25 +23,68 @@
     border-radius: 4px;
     padding: 5px 10px;
     margin-right: 10px;
+    width: 518px;
+    height: 64px;
+    border-radius: 45px;
   }
   
   .searchIcon {
-    margin-right: 5px;
+    margin-left: 25px;
     color: #666;
   }
   
+  .Adress {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+  }
+  
   .searchInput input {
+    visibility: inherit;
+    display: flex;
     border: none;
     background: none;
     outline: none;
-    font-size: 14px;
-    width: 150px;
+    font-size: 21px;
+    width: 371px;
+    height: 47px;
+    border-radius: 10px;
+    color: #5D589A;
+    font-family: 'Myfont', sans-serif;
+    padding: 8px;
+  }
+  
+  .suggestionsList {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .suggestionItem {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-family: 'Myfont', sans-serif;
+    color: #5D589A;
+  }
+  
+  .suggestionItem:hover {
+    background-color: #f0f0f0;
   }
   
   .filterButtons {
     display: flex;
-    gap: 10px;
+    gap: 30px;
     margin-right: 10px;
+    margin-left: 30px;
   }
   
   .filterButton {
@@ -47,10 +96,95 @@
     padding: 5px 10px;
     font-size: 14px;
     cursor: pointer;
+    position: relative;
+  }
+  .filterButton span{
+    color: #5D589A;
+    font-size: 21px;
+    margin-left: 15px;
   }
   
   .filterIcon {
-    margin-right: 5px;
+    margin-left: 10px;
+  }
+  
+  .dataButton {
+    width: 244px;
+    height: 64px;
+    border-radius: 45px;
+  }
+  
+  .calendarWrapper {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+  }
+  
+  .peopleButton {
+    width: 318px;
+    height: 64px;
+    position: relative;
+    border-radius: 45px;
+  }
+  
+  .peopleMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    z-index: 10;
+    width: 318px;
+  }
+  
+  .peopleMenu div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .peopleType {
+    width: 130px;
+    display: flex;
+    justify-content: left;
+    font-size: 25px;
+    color: #5D589A;
+    font-family: 'Myfont', sans-serif;
+  }
+  
+  .increment {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: none;
+    font-size: 38px;
+    color: #5D589A;
+    display: flex;
+    margin-bottom: 12px;
+  }
+  
+  .decrement {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: none;
+    font-size: 38px;
+    color: #5D589A;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .peopleText {
+    font-size: 30px;
+    margin-right: 10px;
+    margin-bottom: 9px;
+    font-family: 'Myfont', sans-serif;
+    color: #5D589A;
   }
   
   .submitButton {
@@ -59,14 +193,27 @@
     justify-content: center;
     background-color: #ff8c42;
     border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    border-radius: 45px;
     cursor: pointer;
     color: white;
-    font-size: 18px;
+    position: absolute;
+    right: 10px;
+    width: 87px;
+    height: 60px;
   }
   
   .arrowIcon {
     display: inline-block;
+    
+  }
+
+  .airbnbDatePicker {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Myfont', sans-serif;
+    color: #5D589A;
+  }
+  .react-datepicker__input-container input{
+    display: none;
   }

@@ -12,13 +12,20 @@ import TelegramDarkLogo from '../img/TelegramDarkLogo.svg';
 import UpdateStyles from '../css/ProfileUpdate.module.css';
 import { NGROK_URL } from '../Hooks/config';
 import { useAuthRefresh } from '../Hooks/useAuthRefresh';
+import NavigationLord from "../components/profileComponents/NavigationLord";
+import styles from "../css/UserProfile.module.css";
 
 const GEO_API_KEY = 'b4c12022c2c846d6a7bdeb5e79d87424';
 
-const ProfileUpdate = () => {
+const ProfileUpdateLord = () => {
   const navigate = useNavigate();
   const isAuthenticated = Boolean(localStorage.getItem('jwtToken'));
   const { refreshJWT } = useAuthRefresh(isAuthenticated);
+  const [location, setLocation] = useState('');
+  const [addressLoading, setAddressLoading] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [hasSelectedSuggestion, setHasSelectedSuggestion] = useState(false);
 
   const [profile, setProfile] = useState({
     firstName: '',
@@ -37,7 +44,8 @@ const ProfileUpdate = () => {
 
   const [photoUrl, setPhotoUrl] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
+  const timeoutRef = useRef(null);
+  const apiKey = 'b4c12022c2c846d6a7bdeb5e79d87424';
 
   // Обновление фото
   const handlePhotoUrlChange = (newUrl) => setPhotoUrl(newUrl);
@@ -48,36 +56,39 @@ const ProfileUpdate = () => {
   };
 
   // Обновление локации и подсказки из Geoapify
-  const handleLocationInput = async (e) => {
-    const query = e.target.value.trim();
-    setProfile(prev => ({ ...prev, location: query }));
-
-    if (query.length < 2) {
+  useEffect(() => {
+    if (hasSelectedSuggestion) return;
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    if (location.trim()) {
+      timeoutRef.current = setTimeout(async () => {
+        setAddressLoading(true);
+        try {
+          const response = await fetch(
+            `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(location)}&lang=en&limit=5&types=city,town,village&apiKey=${apiKey}`
+          );
+          if (!response.ok) throw new Error(`Geoapify API error: ${response.status}`);
+          const data = await response.json();
+          setSuggestions(data.features || []);
+          setShowSuggestions(true);
+        } catch (err) {
+          console.error('Error fetching address suggestions:', err);
+          setSuggestions([]);
+        } finally {
+          setAddressLoading(false);
+        }
+      }, 1000);
+    } else {
       setSuggestions([]);
-      return;
+      setShowSuggestions(false);
     }
+    return () => clearTimeout(timeoutRef.current);
+  }, [location]);
 
-    try {
-      const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(query)}&lang=uk&limit=5&apiKey=${GEO_API_KEY}`;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error('Failed to fetch location suggestions');
-      const data = await res.json();
-
-      const newSuggestions = data.features.map(feature => {
-        const { country = '', state = '', county = '', region = '', formatted = '' } = feature.properties;
-        const regionName = state || county || region;
-        return country && regionName ? `${country}, ${regionName}` : formatted;
-      });
-      setSuggestions(newSuggestions);
-    } catch (err) {
-      console.error('Error fetching location suggestions:', err);
-    }
-  };
-
-  // Обработка выбора подсказки локации
-  const handleSuggestionClick = (suggestion) => {
-    setProfile(prev => ({ ...prev, location: suggestion }));
-    setSuggestions([]);
+  const handleSelectSuggestion = (suggestion) => {
+    const props = suggestion.properties;
+    setLocation(props.formatted || '');
+    setHasSelectedSuggestion(true);
+    setShowSuggestions(false);
   };
 
   // Загрузка профиля с сервера
@@ -195,32 +206,43 @@ const ProfileUpdate = () => {
 
   // Инициализация при монтировании компонента
   useEffect(() => {
-    // refreshJWT();
     loadProfile();
-
-    // return () => {
-    //   if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
-    // };
   }, []);
+const landLordStyle = {
+    color: '#E07B3B',
+    borderColor: '#E07B3B',
+    fill: '#E07B3B',
+};
+const landLordBorderStyle = {
+    borderColor: '#E07B3B',
+}
+const landLordPhoneIconStyle = {
+    stroke: '#E07B3B',
+}
+const landLordNavigationStyle = {
+    backgroundColor: '#E07B3B',
+}
 
   return (
-    <div className={UpdateStyles.profileUpdateContainer}>
-      <Header />
-      <main>
-        <h1>Редагування профілю</h1>
+    <div className={styles.layout}>
+        <Header />
+        
 
-        {errorMsg && <p className={UpdateStyles.errorMsg}>{errorMsg}</p>}
-
-        <form onSubmit={handleSubmit} className={UpdateStyles.form}>
-          <div className={UpdateStyles.formGroup}>
-            <label htmlFor="avatar" className="text-sm font-medium mb-1">
-              Аватарка:
-            </label>
+        <main className={styles.main}>
+            <aside className={styles.sidebar}>
+                <NavigationLord landLordNavigationStyle={landLordNavigationStyle}/>
+            </aside>
+            <div className={styles.mainContent}>
+            <h1 className={styles.h1} style={landLordStyle}>Редагування профілю</h1>
+            <section className={styles.content}>
+            <form onSubmit={handleSubmit} className={UpdateStyles.form}>
+          <div className={`${UpdateStyles.formGroup}, ${UpdateStyles.firstColumn}`}>
             <AvatarChange serverFilePath={photoUrl} onPhotoUrlChange={handlePhotoUrlChange} />
           </div>
-
+          <div className={UpdateStyles.secondColumn}>
+        <div className={UpdateStyles.names}>
           <div className={UpdateStyles.formGroup}>
-            <label htmlFor="firstName">Ім'я*</label>
+            <label htmlFor="firstName">Ім'я <span className={UpdateStyles.star}>*</span></label>
             <input
               id="firstName"
               type="text"
@@ -231,7 +253,7 @@ const ProfileUpdate = () => {
           </div>
 
           <div className={UpdateStyles.formGroup}>
-            <label htmlFor="lastName">Прізвище*</label>
+            <label htmlFor="lastName">Прізвище <span className={UpdateStyles.star}>*</span></label>
             <input
               id="lastName"
               type="text"
@@ -250,10 +272,11 @@ const ProfileUpdate = () => {
               onChange={e => setProfile(prev => ({ ...prev, surname: e.target.value }))}
             />
           </div>
-
+          </div>
           <div className={UpdateStyles.formGroup}>
             <label htmlFor="gender">Стать</label>
             <select
+            className={UpdateStyles.gender}
               id="gender"
               value={profile.gender}
               onChange={e => setProfile(prev => ({ ...prev, gender: e.target.value }))}
@@ -266,7 +289,7 @@ const ProfileUpdate = () => {
           </div>
 
           <div className={UpdateStyles.formGroup}>
-            <label>Дата народження*</label>
+            <label>Дата народження <span className={UpdateStyles.star}>*</span></label>
             <div className={UpdateStyles.dateOfBirth}>
               <input
                 type="number"
@@ -309,44 +332,59 @@ const ProfileUpdate = () => {
               />
             </div>
           </div>
+          <div className={UpdateStyles.Adress} style={{ position: 'relative' }}>
+            <label htmlFor='Address'>Країна або регіон <span className={UpdateStyles.star}>*</span></label>
+          <input
+            type="text"
+            value={location}
+            placeholder=""
+            onChange={(e) => {
+              setLocation(e.target.value);
+              setHasSelectedSuggestion(false);
+            }}
+            id="Address"
+            autoComplete="off"
+            onFocus={() => {
+              if (!hasSelectedSuggestion && suggestions.length > 0) {
+                setShowSuggestions(true);
+              }
+            }}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+            disabled={addressLoading}
+          />
+          {showSuggestions && suggestions.length > 0 && (
+            <ul className={UpdateStyles.suggestionsList}>
+              {suggestions.map((sugg, index) => (
+                <li
+                  key={index}
+                  className={UpdateStyles.suggestionItem}
+                  onMouseDown={() => handleSelectSuggestion(sugg)}
+                >
+                  {sugg.properties.formatted}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
           <div className={UpdateStyles.formGroup}>
-            <label>Телефон</label>
-            <CustomPhoneInput value={profile.phone} onChange={handlePhoneChange} defaultCountry="UA" />
-          </div>
-
-          <div className={UpdateStyles.formGroup}>
-            <label htmlFor="location">Країна або регіон</label>
-            <input
-              id="location"
-              type="text"
-              value={profile.location}
-              onChange={handleLocationInput}
-              autoComplete="off"
-            />
-            {suggestions.length > 0 && (
-              <ul className={UpdateStyles.suggestionsList}>
-                {suggestions.map((suggestion, idx) => (
-                  <li key={idx} onClick={() => handleSuggestionClick(suggestion)}>
-                    {suggestion}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <div className={UpdateStyles.formGroup}>
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">Email <span className={UpdateStyles.star}>*</span></label>
             <input
               id="email"
               type="email"
               value={profile.email}
               onChange={e => setProfile(prev => ({ ...prev, email: e.target.value }))}
+              required
             />
           </div>
-
-          <div className={UpdateStyles.formGroup}>
-            <label htmlFor="instagram">Instagram</label>
+          <div className={`${UpdateStyles.formGroup}, ${UpdateStyles.phoneInput}`}>
+            <label>Номер телефону <span className={UpdateStyles.star}>*</span></label>
+            <CustomPhoneInput value={profile.phone} onChange={handlePhoneChange} defaultCountry="UA" />
+          </div>
+          </div>
+        <div className={UpdateStyles.thirdColumn}>
+          <div className={UpdateStyles.snGroup}>
+            <label htmlFor="instagram">Посилання на соціальні мережі</label>
             <input
               id="instagram"
               type="text"
@@ -354,12 +392,11 @@ const ProfileUpdate = () => {
               onChange={e => setProfile(prev => ({ ...prev, instagram: e.target.value }))}
             />
             <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className={UpdateStyles.iconLink}>
-              <img src={InstDarkLogo} alt="Instagram" />
+              <img className={UpdateStyles.instIcon} src={InstDarkLogo} alt="Instagram" />
             </a>
           </div>
 
-          <div className={UpdateStyles.formGroup}>
-            <label htmlFor="facebook">Facebook</label>
+          <div className={UpdateStyles.snGroup}>
             <input
               id="facebook"
               type="text"
@@ -367,12 +404,11 @@ const ProfileUpdate = () => {
               onChange={e => setProfile(prev => ({ ...prev, facebook: e.target.value }))}
             />
             <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className={UpdateStyles.iconLink}>
-              <img src={FacebookDarkLogo} alt="Facebook" />
+              <img className={UpdateStyles.fbIcon} src={FacebookDarkLogo} alt="Facebook" />
             </a>
           </div>
 
-          <div className={UpdateStyles.formGroup}>
-            <label htmlFor="telegram">Telegram</label>
+          <div className={UpdateStyles.snGroup}>
             <input
               id="telegram"
               type="text"
@@ -380,21 +416,28 @@ const ProfileUpdate = () => {
               onChange={e => setProfile(prev => ({ ...prev, telegram: e.target.value }))}
             />
             <a href="https://web.telegram.org" target="_blank" rel="noopener noreferrer" className={UpdateStyles.iconLink}>
-              <img src={TelegramDarkLogo} alt="Telegram" />
+              <img className={UpdateStyles.tgIcon} src={TelegramDarkLogo} alt="Telegram" />
             </a>
           </div>
 
-          <div className={UpdateStyles.formGroup}>
+          <div className={UpdateStyles.languages}>
             <label>Мови</label>
             <LanguageSelector selectedLanguages={profile.languages} onChange={(langs) => setProfile(prev => ({ ...prev, languages: langs }))} />
           </div>
-
-          <button type="submit" className={UpdateStyles.submitBtn}>Оновити</button>
+          </div>
+          
         </form>
-      </main>
-      <Footer />
-    </div>
+        
+            </section>
+            <button type="submit" className={UpdateStyles.submitBtn}>Зберегти</button>
+            </div>
+            
+        </main>
+
+    
+    <Footer />
+</div>
   );
 };
 
-export default ProfileUpdate;
+export default ProfileUpdateLord;

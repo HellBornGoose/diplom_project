@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import UpdateStyles from '../css/ProfileUpdate.module.css';
 import defaultAvatar from '../img/default-avatar.jpg';
 import { NGROK_URL } from '../Hooks/config';
+import styles from './css/AvatarChange.module.css';
+import plusIcon from '../img/plusIcon.svg';
 
 function AvatarChange({ serverFilePath, onPhotoUrlChange }) {
   const [localFile, setLocalFile] = useState(null);
   const [localPreview, setLocalPreview] = useState(null);
   const [error, setError] = useState(null);
   const [uploading, setUploading] = useState(false);
+
+  const inputRef = useRef(null);
 
   // Создаем превью локального файла
   useEffect(() => {
@@ -81,28 +85,63 @@ function AvatarChange({ serverFilePath, onPhotoUrlChange }) {
       setUploading(false);
     }
   };
+  const handleBigPlusClick = () => {
+    inputRef.current?.click();
+  };
 
   return (
-    <div>
+    <div className={styles.avatarWrapper}>
       {(localPreview || serverImageUrl) && (
-        <img
-          src={localPreview || serverImageUrl || defaultAvatar}
-          alt="Аватар"
-          className={UpdateStyles.Preview}
-          style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '50%' }}
-        />
-      )}
+  <div
+    className={styles.avatarHoverWrapper}
+    onClick={handleBigPlusClick}
+    role="button"
+    tabIndex={0}
+    onKeyDown={e => e.key === 'Enter' && handleBigPlusClick()}
+  >
+    <img
+      src={localPreview || serverImageUrl || defaultAvatar}
+      alt="Аватар"
+      className={UpdateStyles.Preview}
+      style={{
+        width: '160px',
+        height: '160px',
+        objectFit: 'cover',
+        borderRadius: '50%',
+        cursor: 'pointer',
+      }}
+    />
+    <img
+      src={plusIcon}
+      alt="Изменить изображение"
+      className={styles.hoverPlusIcon}
+    />
+  </div>
+)}
 
-      {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
+
+      {/* {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>} */}
       {uploading && <div style={{ marginTop: '10px' }}>Загрузка...</div>}
+      {!localPreview && !serverImageUrl && (
+  <div
+    className={styles.emptyState}
+    onClick={handleBigPlusClick}
+    role="button"
+    tabIndex={0}
+    onKeyDown={e => e.key === 'Enter' && handleBigPlusClick()}
+  >
+    <img src={plusIcon} alt="Добавить изображение" className={styles.bigPlusIcon} />
+  </div>
+)}
 
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        disabled={uploading}
-        style={{ marginTop: '10px' }}
-      />
+<input
+  ref={inputRef}
+  type="file"
+  accept="image/*"
+  onChange={handleFileChange}
+  disabled={uploading}
+  style={{ display: 'none' }} // 👈 скрываем input
+/>
     </div>
   );
 }

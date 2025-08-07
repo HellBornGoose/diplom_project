@@ -4,7 +4,7 @@ import ProfileInfo from "../components/profileComponents/ProfileInfo";
 import Header from "../components/Header";
 import WalletCard from "../components/profileComponents/Wallet";
 import Footer from '../components/Footer';
-import styles from "../css/UserProfile.module.css"
+import styles from "../css/UserProfile.module.css";
 import NavigationLord from "../components/profileComponents/NavigationLord";
 import { NGROK_URL } from '../Hooks/config';
 
