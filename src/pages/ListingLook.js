@@ -71,7 +71,8 @@ const ListingLook = () => {
         <div className={styles.mainContent}>
           <section className={styles.content}>
             <ListingDetails searchParams={searchParams} listing={listing} />
-            <SearchDescription/>
+            <SearchDescription onDescriptionChange={setDescription}
+              initialValue={description}/>
           </section>
         </div>
       </main>
