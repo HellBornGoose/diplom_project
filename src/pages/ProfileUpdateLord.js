@@ -368,18 +368,18 @@ const landLordNavigationStyle = {
         </div>
 
           <div className={UpdateStyles.formGroup}>
-            <label htmlFor="email">Email <span className={UpdateStyles.star}>*</span></label>
+            <label htmlFor="email">Email</label>
             <input
               id="email"
               type="email"
               value={profile.email}
               onChange={e => setProfile(prev => ({ ...prev, email: e.target.value }))}
-              required
+              readOnly
             />
           </div>
           <div className={`${UpdateStyles.formGroup}, ${UpdateStyles.phoneInput}`}>
-            <label>Номер телефону <span className={UpdateStyles.star}>*</span></label>
-            <CustomPhoneInput value={profile.phone} onChange={handlePhoneChange} defaultCountry="UA" />
+            <label>Номер телефону</label>
+            <CustomPhoneInput value={profile.phone} onChange={handlePhoneChange} defaultCountry="UA" readOnly/>
           </div>
           </div>
         <div className={UpdateStyles.thirdColumn}>
