@@ -169,8 +169,8 @@ input:focus {
 .error {
     color: red;
     text-align: left;
-    opacity: 0;
-    padding-left: 35px;
+    /* opacity: 0; */
+    padding-left: 30px;
     font-size: 15px;
 }
 
@@ -195,6 +195,9 @@ input:focus {
 }
 
 @media (max-width: 830px){
+    .error{
+        padding-left: 25px;
+    }
     .logincontainer{
         height: 487px;
         width: 305px;

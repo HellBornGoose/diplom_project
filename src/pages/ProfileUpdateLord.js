@@ -105,7 +105,7 @@ const ProfileUpdateLord = () => {
   const loadProfile = async () => {
     const token = localStorage.getItem('jwtToken');
     if (!token) {
-      //navigate('/login');
+      navigate('/login');
       return;
     }
 
@@ -153,7 +153,7 @@ const ProfileUpdateLord = () => {
       return;
     }
 
-    const { firstName, lastName, surname, gender, phone, location, dateOfBirth, instagram, facebook, telegram, languages } = profile;
+    const { firstName, lastName, surname, gender, phone, location, email, dateOfBirth, instagram, facebook, telegram, languages } = profile;
 
     const dateOfBirthStr = `${dateOfBirth.year}-${dateOfBirth.month.padStart(2, '0')}-${dateOfBirth.day.padStart(2, '0')}`;
 
@@ -163,6 +163,7 @@ const ProfileUpdateLord = () => {
       surname,
       gender,
       phone,
+      email,
       location, // Теперь должно быть заполнено
       dateOfBirth: dateOfBirthStr,
       instagram,

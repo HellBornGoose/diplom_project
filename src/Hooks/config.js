@@ -1,1 +1,1 @@
-export const NGROK_URL = 'http://localhost:5197';
+export const NGROK_URL = 'https://mm678t4f-7157.euw.devtunnels.ms';

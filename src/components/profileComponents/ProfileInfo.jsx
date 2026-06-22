@@ -15,8 +15,8 @@ const ProfileInfo = ({landLordStyle, landLordPhoneIconStyle}) => {
   });
 
   const {
-    firstName, surname, phone, email, location, instagram, facebook,
-    telegram, dateOfBirth, photoUrl
+    firstName, lastName, surname, phone, email, location, instagram, facebook,
+    telegram, dateOfBirth, photoUrl, languages
   } = profile;
 
   const avatarUrl = photoUrl && photoUrl !== defaultAvatar
@@ -69,7 +69,7 @@ const ProfileInfo = ({landLordStyle, landLordPhoneIconStyle}) => {
         <img src={avatarUrl || defaultAvatar} alt="Profile avatar" />
       </div>
       <div className={style.profileInfo}>
-        <h2>{`${firstName} ${surname}`}</h2>
+        <h2>{`${firstName} ${lastName} ${surname}`}</h2>
         <p className={style.birthdate} style={landLordStyle}>{dateOfBirth?.day && dateOfBirth?.month && dateOfBirth?.year
             ? `${dateOfBirth.day}.${dateOfBirth.month}.${dateOfBirth.year}`
             : ''}</p>

@@ -19,7 +19,29 @@ const RegisterUser = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   
+  async function check(){
+    const token = localStorage.getItem('jwtToken');
+    if(token){
+      const profileGet = await fetch(`${NGROK_URL}/api/Profile/get`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      const profileData = await profileGet.json();
+      const roles = profileData.roles || [];
+    
+      const isLandLord = roles.includes('Landlord');
+      if(isLandLord){
+        navigate('/profile/Lord');
+      }
+      else{
+        navigate('/profile/User');
+      }
+    }
+  }
   useEffect(() => {
+    check();
     const regex = /^[A-Za-z0-9]*$/;
     if (password === '') {
       setErrorMessage('');
@@ -66,11 +88,6 @@ const RegisterUser = () => {
         setErrorMessage(error.message || 'Помилка реєстрації');
         return;
       }
-
-      const data = await response.json();
-      localStorage.setItem('jwtToken', data.jwtToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      localStorage.setItem('tokenExpires', data.expires);
 
       navigate('/login');
     } catch (error) {

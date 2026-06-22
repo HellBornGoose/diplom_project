@@ -67,11 +67,6 @@ const RegisterUser = () => {
         return;
       }
 
-      const data = await response.json();
-      localStorage.setItem('jwtToken', data.jwtToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      localStorage.setItem('tokenExpires', data.expires);
-
       navigate('/login');
     } catch (error) {
       setErrorMessage('Серверна помилка');
