@@ -3,20 +3,20 @@
   display: flex;
   align-items: center;
   background: #FFF;
-  border-radius: 16px;
-  padding: 20px;
-  padding-top: 0px;
-  width: 940px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border-radius: 1em;
+  padding: 1.2em;
+  padding-top: 0;
+  width: 60em;
+  box-shadow: 0 0.2em 0.6em rgba(0, 0, 0, 0.05);
   font-family: 'MyFont', sans-serif;
-  height: 260px;
+  height: 16em;
   border: #5D589A 1px solid;
   }
   
   .editIcon {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: 0.7em;
+    right: 0.7em;
     cursor: pointer;
   }
   .editLink svg{
@@ -30,18 +30,18 @@
 
   .profileImage{
     flex-shrink: 0;
-    padding-top: 20px;
+    padding-top: 1.2em;
   }
 
   .profileImage img {
-    width: 160px;
-    height: 160px;
+    width: 10em;
+    height: 10em;
     border-radius: 50%;
     object-fit: cover;
   }
   
   .profileInfo {
-    margin-left: 20px;
+    margin-left: 1.2em;
     display: flex;
     flex-direction: column;
     color: #2e1b3f; 
@@ -49,53 +49,53 @@
   
   .profileInfo h2 {
     margin: 0;
-    font-size: 28px;
+    font-size: 1.75em;
     font-weight: bold;
     color: #221F50;
   }
   
   .birthdate,
   .location {
-    font-size: 18px;
+    font-size: 1.1em;
     color: #5D589A;
     font-weight: 500;
-    margin: 2px 0;
+    margin: 0.1em 0;
   }
   
   .role {
     color: #E07B3B;
     font-weight: 500;
-    margin: 4px 0 12px;
-    font-size: 18px;
+    margin: 0.1em 0 0.7em;
+    font-size: 1.1em;
   }
   
   .contact {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    font-size: 18px;
-    margin-bottom: 50px;
+    gap: 0.3em;
+    font-size: 1.1em;
+    margin-bottom: 3em;
   }
   
   .contact div {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 0.3em;
     font-weight: 500;
     color: #5D589A; 
     
   }
   .email{
     position: absolute;
-    bottom: 35px;
+    bottom: 1.1em;
   }
   .email svg{
     fill: #5D589A;
   }
   .phone{
     position: absolute;
-    bottom: 35px;
-    left: 455px;
+    bottom: 1.1em;
+    left: 29em;
   }
   .phone svg{
     stroke: #5D589A;
@@ -103,14 +103,14 @@
   
   .social {
     display: flex;
-    gap: 16px;
-    margin-top: 12px;
+    gap: 1em;
+    margin-top: 0.7em;
     color: #f26522;
     cursor: pointer;
     
     position: absolute;
-    bottom: 30px;
-    right: 30px;
+    bottom: 2em;
+    right: 2em;
   }
   
   .social a img:hover {
@@ -119,7 +119,7 @@
     opacity: 0.8;
   }
   .FacebookIcon{
-    width: 33px;
+    width: 2em;
   }
   
   

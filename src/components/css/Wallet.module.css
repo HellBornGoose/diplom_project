@@ -3,15 +3,15 @@
     justify-content: space-between;
     align-items: center;
     background: #FFF;
-    border-radius: 16px;
-    padding: 24px;
-    max-width: 504px;
-    height: 280px;
+    border-radius: 1em;
+    padding: 1.5em;
+    max-width: 31.5em;
+    height: 17.5em;
     font-family: 'MyFont', sans-serif;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0.2em 0.6em rgba(0, 0, 0, 0.05);
     color: #221F50;
     position: relative;
-    border: #5D589A 1px solid;
+    border: #5D589A 0.06em solid;
   }
   
   /* Левая часть */
@@ -22,55 +22,55 @@
   
   .walletLeft h2 {
     margin: 0;
-    font-size: 28px;
+    font-size: 1.75em;
     font-weight: 700;
     
   }
   
   .cardLabel {
-    font-size: 18px;
+    font-size: 1.1em;
     color: #5D589A;
   }
   
   .cardNumber {
-    margin-top: 5px;
+    margin-top: 0.3em;
     background: #fcd3c9;
-    padding: 6px 12px;
-    border-radius: 12px;
-    font-size: 15px;
+    padding: 0.3em 0.7em;
+    border-radius: 0.7em;
+    font-size: 1em;
     color: #5D589A;
     width: fit-content;
   }
   
   .balanceLabel {
-    margin-top: 25px;
-    font-size: 18px;
+    margin-top: 1.4em;
+    font-size: 1.1em;
     color: #5D589A;
   }
   
   .balance {
-    font-size: 28px;
+    font-size: 1.75em;
     font-weight: 700;
     color: #5D589A;
   }
   
   .currency {
-    font-size: 28px;
+    font-size: 1.75em;
   }
   
   /* Кнопка */
   .topUpBtn {
-    margin-top: 30px;
+    margin-top: 1.5em;
     background: #f26522;
     color: white;
     border: none;
-    padding: 8px 20px;
-    border-radius: 8px;
+    padding: 0.4em 1.1em;
+    border-radius: 0.4em;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 1.1em;
     cursor: pointer;
-    width: 140px;
-    height: 35px;
+    width: 8em;
+    height: 2em;
   }
   .topUpBtn:hover {
     scale: 1.05;
@@ -83,18 +83,18 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 12px;
-    margin-left: 15px;
-    margin-bottom: 35px;
+    gap: 0.7em;
+    margin-left: 1em;
+    margin-bottom: 2.2em;
   }
   
   .payIcons {
     display: flex;
-    gap: 10px;
+    gap: 0.6em;
   }
   
   .purseImg {
     height: auto;
-    margin-right: 24px;
+    margin-right: 1.5em;
   }
   

@@ -1,9 +1,9 @@
 .avatarWrapper{
-    width: 252px;
-    height: 232px;
-    border: 1px solid #5D589A;
+    width: 15.75em;
+    height: 14.5em;
+    border: 0.06em solid #5D589A;
     background-color: #FFF;
-    border-radius: 25px;
+    border-radius: 1.5em;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -11,8 +11,8 @@
 .avatarHoverWrapper {
     position: relative;
     display: inline-block;
-    width: 160px;
-    height: 160px;
+    width: 10em;
+    height: 10em;
   }
   
   .hoverPlusIcon {
@@ -22,8 +22,8 @@
     transform: translate(-50%, -50%);
     opacity: 0;
     transition: opacity 0.3s ease;
-    width: 80px;
-    height: 80px;
+    width: 5em;
+    height: 5em;
     pointer-events: none;
   }
   

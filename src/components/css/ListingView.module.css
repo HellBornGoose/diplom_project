@@ -1,32 +1,32 @@
 .listingsContainer {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    width: 1210px;
-    min-height: 450px;
+    gap: 1.2em;
+    width: 76em;
+    min-height: 28em;
     background-color: #FFF;
-    padding: 15px 10px 30px 10px;
-    border-radius: 25px;
-    border: 1px solid #5D589A;
+    padding: 1em 0.6em 2em 0.6em;
+    border-radius: 1.6em;
+    border: 0.06em solid #5D589A;
   }
   
   .listingCard {
     position: relative;
     display: flex;
     align-items: center;
-    padding: 10px;
-    border: 1px solid #FFE8D9;
-    border-radius: 8px;
+    padding: 0.6em;
+    border: 0.06em solid #FFE8D9;
+    border-radius: 0.5em;
     background: #fff;
-    height: 213px;
+    height: 13em;
   }
   
   .listingImage {
-    width: 253px;
-    height: 191px;
+    width: 16em;
+    height: 12em;
     object-fit: cover;
-    margin-right: 15px;
-    border-radius: 4px;
+    margin-right: 1em;
+    border-radius: 0.2em;
   }
   
   .listingDetails {
@@ -34,25 +34,25 @@
   }
   
   .listingTitle {
-    margin: 0 0 5px;
-    font-size: 35px;
+    margin: 0 0 0.3em;
+    font-size: 2.2em;
     color: #221F50;
   }
   
   .listingLocation {
-    margin: 0 0 5px;
-    margin-bottom: 45px;
+    margin: 0 0 0.3em;
+    margin-bottom: 3em;
     color: #221F50;
   }
   
   .listingDistance {
-    margin: 0 0 5px;
+    margin: 0 0 0.3em;
     color: #6b7280;
   }
   
   .listingPrice {
-    margin: 0 0 5px;
-    font-size: 35px;
+    margin: 0 0 0.3em;
+    font-size: 2.2em;
     font-weight: bold;
     color: #5D589A;
   }
@@ -60,38 +60,38 @@
   .ratingContainer {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 0.3em;
   }
   .listingType{
     position: absolute;
     display: flex;
-    border-radius: 10px;
+    border-radius: 0.6em;
     font-family: 'Myfont', sans-serif;
     font-weight: 100;
-    top: 15px;
-    left: 20px;
-    width: 96px;
-    height: 27px;
+    top: 1em;
+    left: 1.2em;
+    width: 6em;
+    height: 1.7em;
     background-color: #5D589A;
     color: #FFF;
     justify-content: center;
   }
   .listingTenants{
-    font-size: 15px;
+    font-size: 1em;
     color: #5D589A;
   }
   .bookButton {
     position: absolute;
-    right: 15px;
-    bottom: 10px;
-    width: 127px;
-    height: 31px;
+    right: 1em;
+    bottom: 0.6em;
+    width: 8em;
+    height: 2em;
     background-color: #E07B3B;
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 0.6em;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 1.1em;
   }
   
   .bookButton:hover {
@@ -101,31 +101,31 @@
   .noListings {
     text-align: center;
     color: #6b7280;
-    padding: 20px;
+    padding: 1.2em;
   }
   .listingRating{
     position: absolute;
-    right: 20px;
-    top: 25px;
+    right: 1.2em;
+    top: 1.6em;
   }
   .ratingName{
     position: absolute;
     color: #221F50;
-    font-size: 15px;
-    right: 80px;
-    top: 23px;
+    font-size: 1em;
+    right: 5em;
+    top: 1.5em;
   }
   .ratingStar{
     position: absolute;
-    right: 0px;
-    top: 0px;
+    right: 0;
+    top: 0;
     z-index: 0;
   }
   .rating{
     position: absolute;
-    right: 16px;
-    top: 21px;
-    font-size: 28px;
+    right: 1em;
+    top: 1.3em;
+    font-size: 1.75em;
     color: #FFF;
     z-index: 1;
   }

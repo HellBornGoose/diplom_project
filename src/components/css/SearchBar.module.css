@@ -2,12 +2,12 @@
     display: flex;
     align-items: center;
     background-color: #FFFF;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 1346px;
-    height: 79px;
-    border-radius: 45px;
+    padding: 0.6em;
+    border-radius: 0.5em;
+    box-shadow: 0 0.1em 0.2em rgba(0, 0, 0, 0.1);
+    width: 85em;
+    height: 5em;
+    border-radius: 2.8em;
     font-family: 'Myfont', sans-serif;
     position: relative;
   }
@@ -19,17 +19,17 @@
     display: flex;
     align-items: center;
     background-color: #f0f0f0;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 5px 10px;
-    margin-right: 10px;
-    width: 518px;
-    height: 64px;
-    border-radius: 45px;
+    border: 0.06em solid #ddd;
+    border-radius: 0.2em;
+    padding: 0.3em 0.6em;
+    margin-right: 0.6em;
+    width: 33em;
+    height: 4em;
+    border-radius: 3em;
   }
   
   .searchIcon {
-    margin-left: 25px;
+    margin-left: 1.5em;
     color: #666;
   }
   
@@ -37,7 +37,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    margin-left: 20px;
+    margin-left: 1.2em;
   }
   
   .searchInput input {
@@ -46,13 +46,13 @@
     border: none;
     background: none;
     outline: none;
-    font-size: 21px;
-    width: 371px;
-    height: 47px;
-    border-radius: 10px;
+    font-size: 1.3em;
+    width: 24em;
+    height: 3em;
+    border-radius: 0.6em;
     color: #5D589A;
     font-family: 'Myfont', sans-serif;
-    padding: 8px;
+    padding: 0.5em;
   }
   
   .suggestionsList {
@@ -62,15 +62,15 @@
     right: 0;
     z-index: 10;
     background: white;
-    border: 1px solid #ccc;
+    border: 0.06em solid #ccc;
     border-top: none;
-    max-height: 200px;
+    max-height: 12.5em;
     overflow-y: auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.1);
   }
   
   .suggestionItem {
-    padding: 8px 12px;
+    padding: 0.5em 0.7em;
     cursor: pointer;
     font-family: 'Myfont', sans-serif;
     color: #5D589A;
@@ -82,36 +82,36 @@
   
   .filterButtons {
     display: flex;
-    gap: 30px;
-    margin-right: 10px;
-    margin-left: 30px;
+    gap: 2em;
+    margin-right: 0.6em;
+    margin-left: 2rem;
   }
   
   .filterButton {
     display: flex;
     align-items: center;
     background-color: #f0f0f0;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 5px 10px;
-    font-size: 14px;
+    border: 0.06em solid #ddd;
+    border-radius: 0.2em;
+    padding: 0.3em 0.6em;
+    font-size: 0.9em;
     cursor: pointer;
     position: relative;
   }
   .filterButton span{
     color: #5D589A;
-    font-size: 21px;
-    margin-left: 15px;
+    font-size: 1.3em;
+    margin-left: 0.7em;
   }
   
   .filterIcon {
-    margin-left: 10px;
+    margin-left: 0.6em;
   }
   
   .dataButton {
-    width: 244px;
-    height: 64px;
-    border-radius: 45px;
+    width: 15em;
+    height: 4em;
+    border-radius: 3em;
   }
   
   .calendarWrapper {
@@ -122,10 +122,10 @@
   }
   
   .peopleButton {
-    width: 318px;
-    height: 64px;
+    width: 20em;
+    height: 4em;
     position: relative;
-    border-radius: 45px;
+    border-radius: 3em;
   }
   
   .peopleMenu {
@@ -133,56 +133,48 @@
     top: 100%;
     left: 0;
     background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 10px;
+    border: 0.06em solid #ddd;
+    border-radius: 0.2em;
+    padding: 0.6em;
     z-index: 10;
-    width: 318px;
+    width: 20em;
   }
   
   .peopleMenu div {
     display: flex;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 0.3em;
   }
   
   .peopleType {
-    width: 130px;
+    width: 8em;
     display: flex;
     justify-content: left;
-    font-size: 25px;
+    font-size: 1.6em;
     color: #5D589A;
     font-family: 'Myfont', sans-serif;
   }
   
-  .increment {
-    width: 40px;
-    height: 40px;
+  .increment, .decrement  {
+    width: 1em;
+    height: 1em;
     border: none;
     background: none;
-    font-size: 38px;
+    font-size: 2.5em;
     color: #5D589A;
     display: flex;
-    margin-bottom: 12px;
+    margin-bottom: 0.3em;
   }
   
   .decrement {
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: none;
-    font-size: 38px;
-    color: #5D589A;
-    margin-bottom: 12px;
-    display: flex;
     justify-content: center;
     align-items: center;
   }
   
   .peopleText {
-    font-size: 30px;
-    margin-right: 10px;
-    margin-bottom: 9px;
+    font-size: 2em;
+    margin-right: 0.3em;
+    margin-bottom: 0.3em;
     font-family: 'Myfont', sans-serif;
     color: #5D589A;
   }
@@ -197,9 +189,9 @@
     cursor: pointer;
     color: white;
     position: absolute;
-    right: 10px;
-    width: 87px;
-    height: 60px;
+    right: 0.6em;
+    width: 5.5em;
+    height: 4em;
   }
   
   .arrowIcon {
@@ -208,9 +200,9 @@
   }
 
   .airbnbDatePicker {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 0.06em solid #ddd;
+    border-radius: 0.5em;
+    box-shadow: 0 0.1em 0.2em rgba(0, 0, 0, 0.1);
     font-family: 'Myfont', sans-serif;
     color: #5D589A;
   }

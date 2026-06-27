@@ -1,17 +1,16 @@
 .sidebar {
-    width: 260px;
+    width: 16em;
     background-color: #5D589A;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-  height: 100%;
-  font-family: 'MyFont', sans-serif;
+    margin: 2em 0;
+    border-top-right-radius: 1.2em;
+    border-bottom-right-radius: 1.2em;
+    height: 100%;
+    font-family: 'MyFont', sans-serif;
 }
 .sidelink li{
     display: flex;
     color: white;
-    margin-top: 30px;
+    margin-top: 2em;
     list-style-type: none;
 }
 .sidelink li:hover{
@@ -23,13 +22,9 @@
     text-decoration: none;
 }
 .links{
-    margin-left: 90px;
-}
-.links{
-    margin-top: 40px;
+    margin: 2.5em 0 0 5.6em;
 }
 .navigationLink{
-    margin-top: 3px;
-    margin-right: 15px;
+    margin: 0.2em 1em 0 0;
 }
   

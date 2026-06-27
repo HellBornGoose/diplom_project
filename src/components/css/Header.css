@@ -11,11 +11,11 @@
     position: relative;
     display: flex;
     align-items: center;
-    padding: 21px 32px;
+    padding: 1.3em 2em;
     background-color: #ffffff;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 0.1em solid #e0e0e0;
     justify-content: flex-start;
-    min-width: 400px;
+    min-width: 25em;
   }
   .logo {
     display: flex;
@@ -26,21 +26,21 @@
     
   }
   .logo-icon {
-    margin-right: 8px;
-    max-width: 304px;
-    max-height: 56px;
+    margin-right: 0.5em;
+    max-width: 19em;
+    max-height: 3.5em;
   }
   .header-nav {
     display: flex;
     align-items: center;
-    gap: 80px;
+    gap: 5em;
     flex-wrap: wrap;
-    margin-left: 115px;
+    margin-left: 7.2em;
   }
   .header-nav a {
   text-decoration: none;
   color: #5D589A;
-  font-size: 18px;
+  font-size: 1.1em;
   font-weight: 500;
   transition: color 0.2s ease;
   }
@@ -50,7 +50,7 @@
   .flag{
     position: absolute;
     right: 10%;
-    top: 15px;
+    top: 1em;
   }
   @media (max-width: 1440px) {
       header {

@@ -1,14 +1,14 @@
 .bookingForm {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    padding: 25px;
+    gap: 1em;
+    padding: 1.6em;
     background-color: #FFFF;
-    border: 2px solid #AFB06A;
-    border-radius: 25px;
-    width: 940px;
+    border: 0.1em solid #AFB06A;
+    border-radius: 1.6em;
+    width: 60em;
     font-family: 'Myfont', sans-serif;
-    padding-bottom: 50px;
+    padding-bottom: 3.1em;
   }
   
   .headerSection {
@@ -23,31 +23,31 @@
     flex-direction: column;
   }
   .title input{
-    width: 645px;
-    height: 47px;
-    border: 1px solid #5D589A;
-    border-radius: 10px;
+    width: 40em;
+    height: 3em;
+    border: 0.06em solid #5D589A;
+    border-radius: 0.6em;
     color: #5D589A;
-    font-size: 18px;
+    font-size: 1.1em;
     font-family: 'Myfont', sans-serif;
-    padding: 8px;
-    padding-left: 20px;
+    padding: 0.5em;
+    padding-left: 1.2em;
   }
   .typeDropdown {
     
     display: flex;
     flex-direction: column;
-    margin-left: 15px;
+    margin-left: 1em;
   }
   .typeDropdown select{
     color: #5D589A;
-    width: 232px;
-    height: 47px;
-    border: 1px solid #5D589A;
-    border-radius: 10px;
-    font-size: 18px;
+    width: 14.5em;
+    height: 3em;
+    border: 0.06em solid #5D589A;
+    border-radius: 0.6em;
+    font-size: 1.1em;
     font-family: 'Myfont', sans-serif;
-    padding: 8px;
+    padding: 0.5em;
   }
   
   .addressSection {
@@ -64,31 +64,31 @@
   }
   
   .selectedParameters {
-    width: 645px; 
-    height: 59px;
-    border: 1px solid #5D589A;
-    border-radius: 10px;
-    font-size: 18px;
+    width: 40em; 
+    height: 3.75em; /* TODO: adapt to amount of selected params*/
+    border: 0.06em solid #5D589A;
+    border-radius: 0.6em;
+    font-size: 1.1em;
     font-family: 'Myfont', sans-serif;
-    padding: 8px;
+    padding: 0.5em;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 0.3em;
     overflow-x: auto;
   }
   .selectedParameters::-webkit-scrollbar {
-    height: 8px;
+    height: 0.5em;
   }
   
   .selectedParameters::-webkit-scrollbar-track {
     background: #f1f1f1;
-    border-radius: 4px;
+    border-radius: 0.2em;
   }
   
   .selectedParameters::-webkit-scrollbar-thumb {
     background: #888;
-    border-radius: 4px;
+    border-radius: 0.2em;
   }
   
   .selectedParameters::-webkit-scrollbar-thumb:hover {
@@ -97,14 +97,14 @@
   .parameterTag {
     background-color: #E07B3B;
     color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 0.3em 0.6em;
+    border-radius: 0.3em;
     display: flex;
     align-items: center;
   }
   
   .parameterTag button {
-    margin-left: 5px;
+    margin-left: 0.3em;
     background: none;
     border: none;
     color: white;
@@ -112,37 +112,37 @@
   }
   
   .addParameterButton {
-    padding: 5px 10px;
+    padding: 0.3em 0.6em;
     background-color: #E07B3B;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 0.3em;
     cursor: pointer;
   }
   
   .parameterSelector {
     position: absolute;
     background: white;
-    border: 1px solid #ccc;
-    padding: 10px;
+    border: 0.06em solid #ccc;
+    padding: 0.6em;
     z-index: 10;
-    max-height: 200px;
+    max-height: 12.5em;
     overflow-y: auto;
   }
   
   .parameterLabel {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 0.3em;
   }
   .ParameterButton{
     border: none;
     background-color: #E07B3B;
     color: #FFFF;
     font-family: 'Myfont';
-    font-size: 18px;
+    font-size: 1.1em;
     cursor: pointer;
-    padding: 4px;
-    border-radius: 7px;
+    padding: 0.2em;
+    border-radius: 0.5em;
   }
   .ParameterButton:hover{
     scale: 1.1;
@@ -154,135 +154,102 @@
     justify-content: space-between;
   }
   
-  .timeGroup {
-    width: 313px;
-    height: 47px;
+  .timeGroup, .timeGroupRight {
+    width: 20em;
+    height: 3em;
     display: flex;
     flex-direction: column;
   }
   .timeGroup input{
     color: #5D589A;
-    border: 1px solid #5D589A;
-    border-radius: 10px;
-    font-size: 18px;
+    border: 0.06em solid #5D589A;
+    border-radius: 0.6em;
+    font-size: 1.1em;
     font-family: 'Myfont', sans-serif;
-    padding: 8px;
+    padding: 0.5em;
   }
   .timeGroupRight {
-    width: 313px;
-    height: 47px;
-    display: flex;
-    flex-direction: column;
-    margin-left: 20px;
+    margin-left: 1.2em;
   }
   .timeGroupRight input{
     color: #5D589A;
-    border: 1px solid #5D589A;
-    border-radius: 10px;
-    font-size: 18px;
+    border: 0.06em solid #5D589A;
+    border-radius: 0.6em;
+    font-size: 1.1em;
     font-family: 'Myfont', sans-serif;
-    padding: 8px;
+    padding: 0.5em;
   }
   .rightSide{
     display: flex;
   }
   .priceCapacitySection {
-    /* grid-column: 1 / 3; */
     display: flex;
     justify-content: space-between;
   }
   
-  .priceGroup {
-    
-    margin-left: 15px;
+  .priceGroup, .capacityGroup {
+    margin-left: 1em;
     display: flex;
     flex-direction: column;
   }
-  .capacityGroup{
-    
-    margin-left: 15px;
-    display: flex;
-    flex-direction: column;
-  }
-  .capacityGroup input{
+  .capacityGroup input, .priceGroup input, .Adress input{
     color: #5D589A;
-    width: 232px;
-    height: 47px;
-    border: 1px solid #5D589A;
-    border-radius: 10px;
-    font-size: 18px;
+    width: 14.5em;
+    height: 3em;
+    border: 0.06em solid #5D589A;
+    border-radius: 0.6em;
+    font-size: 1.1em;
     font-family: 'Myfont', sans-serif;
-    padding: 8px;
-    padding-left: 15px;
+    padding: 0.5em;
+    padding-left: 1em;
     
-  }
-  .priceGroup input{
-    color: #5D589A;
-    width: 232px;
-    height: 47px;
-    border: 1px solid #5D589A;
-    border-radius: 10px;
-    font-size: 18px;
-    font-family: 'Myfont', sans-serif;
-    padding: 8px;
-    padding-left: 15px;
   }
   .Country select{
     color: #5D589A;
-    width: 255px;
-    height: 47px;
-    border: 1px solid #5D589A;
-    border-radius: 10px;
-    font-size: 18px;
+    width: 16em;
+    height: 3em;
+    border: 0.06em solid #5D589A;
+    border-radius: 0.6em;
+    font-size: 1.1em;
     font-family: 'Myfont', sans-serif;
-    padding: 8px;
-    padding-left: 15px;
+    padding: 0.5em;
+    padding-left: 1em;
     display: flex;
     flex-direction: column;
   }
   .Adress{
     display: flex;
     flex-direction: column;
-    margin-left: 20px;
-  }
-  .Adress input{
-    color: #5D589A;
-    width: 371px;
-    height: 47px;
-    border: 1px solid #5D589A;
-    border-radius: 10px;
-    font-size: 18px;
-    font-family: 'Myfont', sans-serif;
-    padding: 8px;
+    margin-left: 1.2em;
   }
   
   label {
     font-weight: bold;
   }
   .DescriptionContainer{
-    width: 663px;
-    height: 253px;
+    width: 41em;
+    height: 16em;
     background-color: #FFFF;
-    border: 2px solid #AFB06A;
-    border-radius: 25px;
+    border: 0.1em solid #AFB06A;
+    border-radius: 1.6em;
   }
   .DescriptionInput{
     border: none;
-    font-size: 18px;
+    font-size: 1.1em;
     color: #221F50;
-    border: 2px solid #AFB06A;
-    border-radius: 25px;
-    width: 613px;
-    min-height: 188px;
+    border: 0.1em solid #AFB06A;
+    border-radius: 1.6em;
+    width: 38em;
+    min-height: 12em;
     font-family: 'Myfont', sans-serif;
     resize: none;
     outline: none;
-    margin-left: 30px;
+    margin-left: 1.9em;
   }
   .DescriptionLabel{
-    font-size: 28px;
-    margin-top: 10px;
-    margin-left: 35px;
+    font-size: 1.75em;
+    margin-top: 0.6em;
+    margin-left: 2.2em;
   }
 
   .suggestionsList {
@@ -292,15 +259,15 @@
     right: 0;
     z-index: 10;
     background: white;
-    border: 1px solid #ccc;
+    border: 0.06em solid #ccc;
     border-top: none;
-    max-height: 200px;
+    max-height: 12.5em;
     overflow-y: auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.1);
   }
   
   .suggestionItem {
-    padding: 8px 12px;
+    padding: 0.5em 0.7em;
     cursor: pointer;
   }
   

@@ -1,24 +1,24 @@
 .detailContainer {
-    width: 1346px;
+    width: 84.1em;
     margin: 0 auto;
-    padding: 20px;
+    padding: 1.2em;
     background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5em;
+    box-shadow: 0 0.1em 0.2em rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 1.25em;
     position: relative;
   }
   
   .detailContainer h1 {
-    font-size: 35px;
+    font-size: 2.2em;
     font-weight: 600;
     color: #221F50;
-    margin: 0 0 10px;
+    margin: 0 0 0.6em;
   }
   .detailContainer p{
-    font-size: 15px;
+    font-size: 1em;
     color: #221F50;
   }
   
@@ -26,13 +26,13 @@
     display: flex;
     justify-content: right;
     position: absolute;
-    right: 15px;
-    bottom: 20px;
+    right: 1em;
+    bottom: 1.2em;
   }
   
   .searchParams p {
     font-weight: 500;
-    margin-bottom: 5px;
+    margin-bottom: 0.3em;
     color: #333333;
   }
   
@@ -42,28 +42,28 @@
   }
   
   .searchParams li {
-    padding: 5px 0;
+    padding: 0.3em 0;
     color: #666666;
-    font-size: 14px;
+    font-size: 0.9em;
   }
   
   .listingImage {
-    width: 661px;
-    height: 427px;
+    width: 41.25em;
+    height: 27em;
     object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 15px;
+    border-radius: 0.5em;
+    margin-bottom: 16em;
   }
   
   .bookButton {
-    width: 253px;
-    height: 52px;
-    border-radius: 45px;
-    padding: 10px 20px;
+    width: 16em;
+    height: 3.25em;
+    border-radius: 2.8em;
+    padding: 0.6em 1.2em;
     background-color: #E07B3B; /* Оранжевый цвет кнопки */
     color: white;
     border: none;
-    font-size: 28px;
+    font-size: 1.75em;
     font-weight: 700;
     cursor: pointer;
     align-self: flex-start;
@@ -75,45 +75,45 @@
   .listingType{
     position: absolute;
     display: flex;
-    border-radius: 10px;
+    border-radius: 0.6em;
     font-family: 'Myfont', sans-serif;
     font-weight: 100;
-    top: 15px;
-    left: 20px;
-    width: 96px;
-    height: 27px;
+    top: 1em;
+    left: 1.2em;
+    width: 6em;
+    height: 1.7em;
     background-color: #5D589A;
     color: #FFF;
     justify-content: center;
   }
   .photoCarousel {
-    width: 661px;
-    height: 427px;
+    width: 41.25em;
+    height: 27em;
     position: relative;
     text-align: center;
   }
   
   .dots {
-    margin-top: 10px;
+    margin-top: 0.6em;
   }
   
   .dot {
-    height: 12px;
-    width: 35px;
-    margin: 0 4px;
+    height: 0.7em;
+    width: 2.2em;
+    margin: 0 0.2em;
     background-color: #FFF;
-    border-radius: 25px;
+    border-radius: 1.6em;
     display: inline-block;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    border: 1px solid #E07B3B;
+    border: 0.06em solid #E07B3B;
   }
   
   .activeDot {
     background-color: #E07B3B;
   }
   .price strong{
-    font-size: 35px;
+    font-size: 2.2em;
     color: #5D589A;
   }
   
