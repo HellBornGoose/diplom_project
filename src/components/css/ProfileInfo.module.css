@@ -1,5 +1,5 @@
 .profileCard {
-    position: relative;
+  position: relative;
   display: flex;
   align-items: center;
   background: #FFF;
@@ -15,9 +15,10 @@
   
   .editIcon {
     position: absolute;
-    top: 0.7em;
-    right: 0.7em;
+    top: 1em;
+    right: 1em;
     cursor: pointer;
+    z-index: 100;
   }
   .editLink svg{
     fill: #5D589A;
@@ -109,7 +110,7 @@
     cursor: pointer;
     
     position: absolute;
-    bottom: 2em;
+    bottom: 0.75em;
     right: 2em;
   }
   

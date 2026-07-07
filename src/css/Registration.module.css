@@ -9,7 +9,7 @@ body {
 } 
 
 .maincontent {
-    margin-top: 60px;
+    margin-top: 3.75em;
     flex: 1;
     display: flex;
     justify-content: center;
@@ -21,55 +21,55 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    padding: 55px 40px 40px 40px;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    width: 1115px;
-    height: 700px;
+    padding: 3.5em 2.5em 2.5em 2.5em;
+    border-radius: 1.2em;
+    box-shadow: 0 0.2em 1.2em rgba(0, 0, 0, 0.1);
+    width: 70em;
+    height: 45em;
     text-align: center;
     position: relative;
     z-index: 1;
 }
 
 .formbar{
-    margin-top: 30px;
+    margin-top: 2em;
 }
 
 h1 {
     font-weight: 700;
     color: #1a1a3d;
-    margin-bottom: 10px;
+    margin-bottom: 0.15em;
     text-align: left;
-    margin-left: 30px;
-    font-size: 64px;
+    margin-left: 0.5em;
+    font-size: 4em;
 }
 .ph1{
     font-weight: 800;
     color: #1a1a3d;
-    margin-left: 30px;
+    margin-left: 0.8em;
     text-align: left;
-    font-size: 35px;
+    font-size: 2.2em;
 }
 .inputgroup {
-    margin-left: 30px;
-    margin-bottom: 20px;
+    margin-left: 2em;
+    margin-bottom: 1.2em;
     text-align: left;
-    max-width: 390px;
+    max-width: 25em;
 }
 
 label {
     display: block;
-    font-size: 15px;
+    font-size: 1em;
     color: #1a1a3d;
-    margin-bottom: 5px;
+    margin-bottom: 0.3em;
 }
 
 input {
     width: 100%;
-    padding: 10px 10px 10px 60px;
+    padding: 0.6em 0.6em 0.6em 3.75em;
     font-size: 1rem;
-    border: 3px solid #E07B3B;
-    border-radius: 10px;
+    border: 0.2em solid #E07B3B;
+    border-radius: 0.6em;
     outline: none;
     transition: border-color 0.3s;
 }
@@ -79,8 +79,8 @@ input::placeholder{
 
 .formiconregistration{
     position: absolute;
-    padding-top: 7px;
-    padding-left: 10px;
+    padding-top: 0.4em;
+    padding-left: 0.6em;
 }
 
 input:focus {
@@ -90,33 +90,33 @@ input:focus {
 .checkboxgroup {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 1.2em;
 }
 
 .checkboxgroup input {
     width: auto;
-    margin-right: 10px;
+    margin-right: 0.6em;
 }
 
 .checkboxgroup label {
-    font-size: 15px;
+    font-size: 1em;
     margin-bottom: 0;
 }
 
 .buttoncontainer {
     display: flex;
     justify-content: flex-start;
-    margin-left: 30px;
-    margin-top: 55px;
+    margin-left: 2em;
+    margin-top: 3.3em;
 }
 .buttoncontainer button{
-    width: 390px;
-    padding: 12px;
+    width: 15.5em;
+    padding: 0.5em;
     background-color: #ff934f;
     border: none;
-    border-radius: 10px;
+    border-radius: 0.4em;
     color: white;
-    font-size: 25px;
+    font-size: 1.5em;
     font-weight: 700;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -127,14 +127,14 @@ input:focus {
 }
 
 .ownerlink {
-    margin-top: 15px;
+    margin-top: 1em;
     display: flex;
     text-align: left;
-    margin-left: 115px;
+    margin-left: 7.2em;
 }
 
 .ownerlink a {
-    font-size: 15px;
+    font-size: 1em;
     color: black;
     font-weight: 500;
     text-decoration: none;
@@ -145,14 +145,14 @@ input:focus {
 }
 
 .loginlink {
-    margin-top: 15px;
+    margin-top: 1em;
     display: flex;
     text-align: left;
-    margin-left: 150px;
+    margin-left: 7.2em;
 }
 
 .loginlink a {
-    font-size: 15px;
+    font-size: 1em;
     color: black;
     font-weight: 500;
     text-decoration: none;
@@ -169,27 +169,26 @@ input:focus {
 .error {
     color: red;
     text-align: left;
-    /* opacity: 0; */
-    padding-left: 30px;
-    font-size: 15px;
+    padding-left: 2em;
+    font-size: 1em;
 }
 
 .passwordtoggle {
     position: absolute;
-    right: 10px;
+    right: 0.6em;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1em;
 }
 .PhoneInputInput::before {
   content: '';
   position: absolute;
-  left: 10px;
+  left: 0.6em;
   top: 50%;
   transform: translateY(-50%);
-  width: 24px;
-  height: 16px;
+  width: 1.5em;
+  height: 1em;
   background-size: contain;
   background-repeat: no-repeat;
 }

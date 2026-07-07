@@ -1,19 +1,19 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './pages/Login.js';
-import RegisterUser from './pages/RegisterUser.js';
-import LandLordProfile from './pages/LandLordProfileView.js'
-import UserProfile from './pages/UserProfileView.js'
-import ProfileUpdateLord from './pages/ProfileUpdateLord.js';
-import ProfileUpdateUser from './pages/ProfileUpdateUser.js';
-import RegisterLandLord from './pages/RegisterLandLord.js';
-import ListingProfile from './pages/ListingProfile.js';
+import Login from './pages/Login.jsx';
+import RegisterUser from './pages/RegisterUser.jsx';
+import LandLordProfile from './pages/LandLordProfileView.jsx'
+import UserProfile from './pages/UserProfileView.jsx'
+import ProfileUpdateLord from './pages/ProfileUpdateLord.jsx';
+import ProfileUpdateUser from './pages/ProfileUpdateUser.jsx';
+import RegisterLandLord from './pages/RegisterLandLord.jsx';
+import ListingProfile from './pages/ListingProfile.jsx';
 import './css/fonts.css';
-import ListingCreate from './pages/ListingCreate.js';
-import AuthRefresh from './Hooks/AuthRefresh.js';
-import ListingEdit from './pages/ListingEdit.js';
-import useIsAuthenticated from './Hooks/useIsAuthenticated.js';
-import Search from './pages/Search.js';
-import ListingLook from './pages/ListingLook.js';
+import ListingCreate from './pages/ListingCreate.jsx';
+import AuthRefresh from './Hooks/AuthRefresh.jsx';
+import ListingEdit from './pages/ListingEdit.jsx';
+import useIsAuthenticated from './Hooks/useIsAuthenticated.jsx';
+import Search from './pages/Search.jsx';
+import ListingLook from './pages/ListingLook.jsx';
 
 
 

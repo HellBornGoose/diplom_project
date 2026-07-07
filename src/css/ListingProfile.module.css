@@ -12,29 +12,29 @@ body {
 
 .h1 {
   color: #5D589A;
-  font-size: 74px;
-  margin-top: 20px;
-  line-height: 90px;
+  font-size: 4.6em;
+  margin-top: 0.6em;
+  line-height: 1.2em;
   font-weight: 800;
 }
 
 .topUpBtn {
   display: flex;
   justify-content: center;
-  padding-top: 3px;
+  padding-top: 0.1em;
   text-decoration: none;
-  margin-top: 30px;
+  margin-top: 1.1em;
   color: #AFB06A;
-  border-radius: 30px;
+  border-radius: 1.1em;
   font-weight: 600;
-  font-size: 28px;
+  font-size: 1.75em;
   cursor: pointer;
-  width: 253px;
-  height: 52px;
-  border: 3px #AFB06A solid;
+  width: 9em;
+  height: 2em;
+  border: 0.1em #AFB06A solid;
   position: absolute;
-  right: 230px;
-  top: 18px;
+  right: 8em;
+  top: 0.6em;
 }
 
 .topUpBtn:hover {
@@ -55,29 +55,28 @@ body {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  width: 250px; /* Фиксированная ширина для предсказуемого макета */
+  width: 15em;
 }
 
 .mainContent {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  padding: 20px; /* Уменьшен отступ для компактности */
+  padding: 1.3em;
 }
 
 .content {
   flex-grow: 1;
-  padding: 30px;
+  padding: 2em;
   overflow-y: auto;
   display: flex;
-  gap: 15px;
-  /* Убрано абсолютное позиционирование, теперь управляется Flexbox */
+  gap: 1em;
 }
 
 .calendarContainer {
-  margin: 20px 0;
+  margin: 1.3em 0;
   width: 100%;
-  position: relative; /* Относительное позиционирование для изоляции */
+  position: relative; 
 }
 
 /* Прижатие Footer к низу */

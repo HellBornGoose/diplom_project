@@ -1,48 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
+import ISO6391 from 'iso-639-1';
 
 function LanguageSelector({ languages = [], setLanguages }) {
-  const [languagesList, setLanguagesList] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [languagesList] = useState(() =>{
+    const allCodes = ISO6391.getAllCodes();
+    return ISO6391.getLanguages(allCodes).map(lang =>({
+      code: lang.code,
+      name: lang.name
+    }))
+  });
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  useEffect(() => {
-    async function fetchLanguages() {
-      try {
-        const response = await fetch('https://restcountries.com/v3.1/all?fields=languages');
-        if (!response.ok) throw new Error('Ошибка при загрузке языков');
-
-        const countries = await response.json();
-
-        // Собираем пары {code, name}
-        const langsWithCodes = countries.flatMap(country => {
-          if (!country.languages) return [];
-          return Object.entries(country.languages).map(([code, name]) => ({ code, name }));
-        });
-
-        // Уникальные по коду
-        const uniqueLangsMap = new Map();
-        langsWithCodes.forEach(({ code, name }) => {
-          if (!uniqueLangsMap.has(code)) {
-            uniqueLangsMap.set(code, name);
-          }
-        });
-
-        // Массив объектов {code, name}, отсортированный по имени
-        const uniqueLangs = Array.from(uniqueLangsMap, ([code, name]) => ({ code, name }))
-          .sort((a, b) => a.name.localeCompare(b.name));
-
-        setLanguagesList(uniqueLangs);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchLanguages();
-  }, []);
 
   // Закрытие дропдауна при клике вне
   useEffect(() => {
@@ -65,12 +34,9 @@ function LanguageSelector({ languages = [], setLanguages }) {
       ? languages.filter(c => c !== code)
       : [...languages, code];
 
-    console.log('Toggling language:', { code, updatedLanguages }); // Отладка
+    console.log('Toggling language:', { code, updatedLanguages });
     setLanguages(updatedLanguages);
   };
-
-  if (loading) return <p>Загрузка языков...</p>;
-  if (error) return <p style={{ color: 'red' }}>Ошибка: {error}</p>;
 
   // Для отображения выбраны названия, а не коды
   const selectedNames = languages.map(code => {
@@ -101,12 +67,12 @@ function LanguageSelector({ languages = [], setLanguages }) {
           zIndex: 1000
         }}>
           {languagesList.map(({ code, name }) => (
-            <label key={code} style={{ display: 'block', padding: '4px 8px' }}>
+            <label key={code} style={{ display: 'block', padding: '0.2em 0.5em' }}>
               <input
                 type="checkbox"
                 checked={languages.includes(code)}
                 onChange={() => toggleLanguage(code)}
-                style={{ marginRight: 8 }}
+                style={{display: 'inline-block', padding: '0.2em 0.5em', marginRight: 8 }}
               />
               {name}
             </label>

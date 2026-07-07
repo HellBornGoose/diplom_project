@@ -10,7 +10,7 @@ body{
   .searchBar{
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 1.2em;
   }
   
   .main {
@@ -24,14 +24,14 @@ body{
   
   .content {
     flex-grow: 1;
-    padding: 30px;
+    padding: 2em;
     
     overflow-y: auto;
     display: flex;
-    gap: 15px;
+    gap: 1em;
     
-    left: 265px;
-    top: 100px;
+    left: 17em;
+    top: 6.25em;
     
   }
   .mainContent{
@@ -41,17 +41,17 @@ body{
   .Adress{
     display: flex;
     flex-direction: column;
-    margin-left: 20px;
+    margin-left: 1.2em;
   }
   .Adress input{
     color: #5D589A;
-    width: 371px;
-    height: 47px;
-    border: 1px solid #5D589A;
-    border-radius: 10px;
-    font-size: 18px;
+    width: 20.6em;
+    height: 2.6em;
+    border: 0.05em solid #5D589A;
+    border-radius: 0.55em;
+    font-size: 1.1em;
     font-family: 'Myfont', sans-serif;
-    padding: 8px;
+    padding: 0.4em;
   }
   
   

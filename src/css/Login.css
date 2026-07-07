@@ -15,7 +15,7 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
-    margin-top: 60px;
+    margin-top: 3.75em;
 }
 .login-container {
     background: rgba(255, 255, 255, 0.95);
@@ -23,49 +23,47 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    padding: 80px 40px 40px 40px;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    width: 1115px;
-    height: 700px;
+    padding: 5em 2.5em 2.5em 2.5em;
+    border-radius: 1.3em;
+    box-shadow: 0 0.2em 1.3em rgba(0, 0, 0, 0.1);
+    width: 70em;
+    height: 45em;
     text-align: center;
     position: relative;
     z-index: 1;
 }
 
 .form-bar{
-    margin-top: 70px;
+    margin-top: 4.5em;
 }
 
 .h1 {
     font-weight: 700;
     color: #1a1a3d;
-    margin-bottom: 10px;
-    text-align: center;
-    margin-right: 630px;
-    font-size: 64px;
+    margin-bottom: 0.6em;
+    font-size: 4em;
 }
 
 .input-group {
-    margin-left: 30px;
-    margin-bottom: 20px;
+    margin-left: 2em;
+    margin-bottom: 1.3em;
     text-align: left;
-    max-width: 390px;
+    max-width: 25em;
 }
 
 label {
     display: block;
     font-size: 0.9rem;
     color: #1a1a3d;
-    margin-bottom: 5px;
+    margin-bottom: 0.3em;
 }
 
 input {
     width: 100%;
-    padding: 10px 10px 10px 60px;
-    font-size: 1rem;
-    border: 3px solid #E07B3B;
-    border-radius: 10px;
+    padding: 0.6em 0.6em 0.6em 3.75em;
+    font-size: 1em;
+    border: 0.2em solid #E07B3B;
+    border-radius: 0.6em;
     outline: none;
     transition: border-color 0.3s;
 }
@@ -75,8 +73,8 @@ input::placeholder{
 
 .form-icon{
     position: absolute;
-    margin-top: 7px;
-    margin-left: 10px;
+    margin-top: 0.5em;
+    margin-left: 0.6em;
 }
 
 input:focus {
@@ -86,33 +84,33 @@ input:focus {
 .checkbox-group {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 1.3em;
 }
 
 .checkbox-group input {
     width: auto;
-    margin-right: 10px;
+    margin-right: 0.6em;
 }
 
 .checkbox-group label {
-    font-size: 15px;
+    font-size: 1em;
     margin-bottom: 0;
 }
 
 .button-container {
     display: flex;
     justify-content: flex-start;
-    margin-left: 30px;
-    margin-top: 10px;
+    margin-left: 2em;
+    margin-top: 0.6em;
 }
 .button-container button{
-    width: 390px;
-    padding: 12px;
+    width: 15.6em;
+    padding: 0.5em;
     background-color: #ff934f;
     border: none;
-    border-radius: 10px;
+    border-radius: 0.4em;
     color: white;
-    font-size: 25px;
+    font-size: 1.5em;
     font-weight: 700;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -123,14 +121,14 @@ input:focus {
 }
 
 .forgot-password {
-    margin-top: 15px;
+    margin-top: 1em;
     display: flex;
     text-align: left;
-    margin-left: 170px;
+    margin-left: 10.6em;
 }
 
 .forgot-password a {
-    font-size: 15px;
+    font-size: 1em;
     color: black;
     font-weight: 500;
     text-decoration: none;
@@ -141,14 +139,14 @@ input:focus {
 }
 
 .registration-link {
-    margin-top: 15px;
+    margin-top: 1em;
     display: flex;
     text-align: left;
-    margin-left: 130px;
+    margin-left: 7.5em;
 }
 
 .registration-link a {
-    font-size: 15px;
+    font-size: 1em;
     color: black;
     font-weight: 500;
     text-decoration: none;
@@ -165,18 +163,17 @@ input:focus {
     color: red;
     text-align: left;
     opacity: 100;
-    padding-left: 34px;
-    font-size: 15px;
-
+    padding-left: 2.2em;
+    font-size: 1em;
 }
 
 .password-toggle {
     position: absolute;
-    right: 10px;
+    right: 0.6em;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1em;
 }
 @media (max-width: 1010px) {
     .h1{
