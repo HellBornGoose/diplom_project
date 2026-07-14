@@ -52,11 +52,11 @@ const AmenitiesSet = ({ onAmenitiesChange, initialSelected = [] }) => {
     if (!isLoading && !isInitialSynced) {
       let validSelected = [];
 
-      
       if (initialSelected.length > 0 && typeof initialSelected[0] === 'string') {
         validSelected = initialSelected
           .map(name => {
-            const match = allItems.find(item => item.name === name);
+            const match = allItems.find(
+                item => item.name.trim().toLowerCase() === name.trim().toLowerCase());
             if (match) {
               console.log(`[SyncInitial] Назва "${name}" => ID ${match.id}`);
               return match.id;
@@ -67,9 +67,9 @@ const AmenitiesSet = ({ onAmenitiesChange, initialSelected = [] }) => {
           })
           .filter(id => id !== null);
       }
-
-      
-
+      else if (typeof initialSelected[0] === 'number') { //if server sent IDs
+          validSelected = initialSelected;
+      }
       setSelectedItems(validSelected);
       onAmenitiesChange(validSelected);
       setIsInitialSynced(true);

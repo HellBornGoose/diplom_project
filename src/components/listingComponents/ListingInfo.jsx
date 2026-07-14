@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from '../css/ListingInfo.module.css';
 import { NGROK_URL } from '../../Hooks/config';
+import countries from 'world-countries';
 
 const ListingInfo = ({ initialData = {}, onFormDataChange }) => {
   const [name, setName] = useState('');
-  const [housingTypeId, setHousingType] = useState('1');
+  const [houseTypeId, setHouseType] = useState('1');
   const [location, setLocation] = useState('');
   const [city, setCity] = useState('');
   const [streetWithNumber, setStreet] = useState('');
@@ -31,12 +32,30 @@ const ListingInfo = ({ initialData = {}, onFormDataChange }) => {
   useEffect(() => {
     if (initialData && !isInitialSet.current) {
       console.log('Initializing with initialData:', initialData); // Отладка
+      const houseTypeMap = {
+        'квартира': '1',
+        'будинок': '2',
+        'вілла': '3',
+        'готель': '4'
+      };
+      let finalHouseTypeId = '1'; // Default value
+      if (initialData.houseTypeId) {
+        const incomingValue = String(initialData.houseTypeId).trim().toLowerCase();
+        
+        // If houseType from server is number - keep number
+        //If houseType is word- mapping from our dictionary
+        if (houseTypeMap[incomingValue]) {
+          finalHouseTypeId = houseTypeMap[incomingValue];
+        } else if (!isNaN(incomingValue)) {
+          finalHouseTypeId = incomingValue;
+        }
+      }
       setName(initialData.title || '');
       setCountry(initialData.country || '');
-      setHousingType(String(initialData.houseTypeId || '1'));
+      setHouseType(finalHouseTypeId);
       setLocation(initialData.location || '');
       setCity(initialData.city || '');
-      setStreet(initialData.location || ''); // Временное решение
+      setStreet(initialData.location || '');
       setCheckIn(initialData.checkInTime || '16:00');
       setCheckOut(initialData.checkOutTime || '10:00');
       setGuests(initialData.maxTenants || 1);
@@ -50,7 +69,7 @@ const ListingInfo = ({ initialData = {}, onFormDataChange }) => {
     }
   }, [initialData, onFormDataChange]);
 
-  // Загрузка параметров
+  // Main Features loading
   useEffect(() => {
     const fetchMainFeatures = async () => {
       try {
@@ -72,26 +91,16 @@ const ListingInfo = ({ initialData = {}, onFormDataChange }) => {
     fetchMainFeatures();
   }, []);
 
-  // Загрузка стран
+  // Countries loading
   useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const res = await fetch('https://restcountries.com/v3.1/all?fields=name'); 
-        if (!res.ok) throw new Error(`Failed to fetch countries: ${res.status}`);
-        const data = await res.json();
-        const sorted = data
-          .map(c => c.name?.common)
-          .filter(Boolean)
-          .sort((a, b) => a.localeCompare(b));
-        setCountriesList(sorted);
-      } catch (err) {
-        console.error('Error fetching countries:', err);
-      }
-    };
-    fetchCountries();
+    const sortedCountries = countries
+    .map(c => c.name?.common)
+    .filter(Boolean)
+    .sort((a, b) => a.localeCompare(b));
+    setCountriesList(sortedCountries);
   }, []);
 
-  // Автоподсказки адреса
+  // Auto-suggetion of adress
   useEffect(() => {
     setHasSelectedSuggestion(false);
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -120,7 +129,7 @@ const ListingInfo = ({ initialData = {}, onFormDataChange }) => {
     return () => clearTimeout(timeoutRef.current);
   }, [location]);
 
-  // Обработка выбора адреса
+  // Processing adress
   const handleSelectSuggestion = (suggestion) => {
     const props = suggestion.properties;
     let street = props.street || '';
@@ -134,7 +143,7 @@ const ListingInfo = ({ initialData = {}, onFormDataChange }) => {
     onFormDataChange(generatePostData());
   };
 
-  // Управление параметрами
+  // Params updating
   const handleAddParameter = (paramName) => {
     if (selectedParameters.length < 5 && !selectedParameters.includes(paramName)) {
       setSelectedParameters([...selectedParameters, paramName]);
@@ -147,7 +156,7 @@ const ListingInfo = ({ initialData = {}, onFormDataChange }) => {
     onFormDataChange(generatePostData());
   };
 
-  // Формирование данных для отправки
+  // Forming data to send
   const generatePostData = () => {
     const mainFeatureIds = selectedParameters
       .map(paramName => allParameters.find(p => p.name === paramName)?.id || null)
@@ -158,7 +167,7 @@ const ListingInfo = ({ initialData = {}, onFormDataChange }) => {
 
     return {
       title: name,
-      houseTypeId: parseInt(housingTypeId) || 1,
+      houseTypeId: parseInt(houseTypeId, 10) || 1,
       checkInTime: checkIn,
       checkOutTime: checkOut,
       perDay: parseFloat(price.replace(/[^0-9.]/g, '') || '0') || 0,
@@ -171,14 +180,14 @@ const ListingInfo = ({ initialData = {}, onFormDataChange }) => {
       maxTenants: parseInt(guests) || 1,
       city,
       country,
-      selectedParameters, // Добавляем selectedParameters в возвращаемые данные
+      selectedParameters, 
     };
   };
 
-  // Обновление данных формы при изменении
+  // Updating data form
   useEffect(() => {
     onFormDataChange(generatePostData());
-  }, [name, country, housingTypeId, location, selectedParameters, checkIn, checkOut, guests, price, city, streetWithNumber]);
+  }, [name, country, houseTypeId, location, selectedParameters, checkIn, checkOut, guests, price, city, streetWithNumber]);
 
   return (
     <div className={styles.bookingForm}>
@@ -193,11 +202,11 @@ const ListingInfo = ({ initialData = {}, onFormDataChange }) => {
           />
         </div>
         <div className={styles.typeDropdown}>
-          <label htmlFor='HousingType'>Тип житла</label>
+          <label htmlFor='HouseType'>Тип житла</label>
           <select
-            value={housingTypeId}
-            onChange={(e) => setHousingType(e.target.value)}
-            id='HousingType'
+            value={houseTypeId}
+            onChange={(e) => setHouseType(e.target.value)}
+            id='HouseType'
           >
             <option value="1">Квартира</option>
             <option value="2">Будинок</option>

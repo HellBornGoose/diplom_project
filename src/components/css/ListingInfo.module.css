@@ -18,12 +18,11 @@
   }
   
   .title{
-    
     display: flex;
     flex-direction: column;
   }
   .title input{
-    width: 40em;
+    width: 37em;
     height: 3em;
     border: 0.06em solid #5D589A;
     border-radius: 0.6em;
@@ -64,7 +63,7 @@
   }
   
   .selectedParameters {
-    width: 40em; 
+    width: 35.5em; 
     height: 3.75em; /* TODO: adapt to amount of selected params*/
     border: 0.06em solid #5D589A;
     border-radius: 0.6em;
@@ -194,7 +193,7 @@
   }
   .capacityGroup input, .priceGroup input, .Adress input{
     color: #5D589A;
-    width: 14.5em;
+    width: 16em;
     height: 3em;
     border: 0.06em solid #5D589A;
     border-radius: 0.6em;
@@ -227,8 +226,8 @@
     font-weight: bold;
   }
   .DescriptionContainer{
-    width: 41em;
-    height: 16em;
+    width: 45em;
+    height: 18em;
     background-color: #FFFF;
     border: 0.1em solid #AFB06A;
     border-radius: 1.6em;
@@ -245,6 +244,7 @@
     resize: none;
     outline: none;
     margin-left: 1.9em;
+    padding: 0.6em;
   }
   .DescriptionLabel{
     font-size: 1.75em;
@@ -254,7 +254,7 @@
 
   .suggestionsList {
     position: absolute;
-    top: 100%; /* появляется под инпутом */
+    top: 100%;
     left: 0;
     right: 0;
     z-index: 10;

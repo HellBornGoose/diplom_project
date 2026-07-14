@@ -7,14 +7,7 @@ import { useNavigate } from 'react-router-dom';
 // Компонент для отображения сетки свойств
 const ListingSort = () => {
   // Состояние для хранения списка свойств
-  const [properties, setProperties] = useState([
-    { id: 17, title: 'The house comfort+', country: 'The United Kingdom', isModerated: false, isOccupied: null, averageRating: null, photoUrl: null },
-    { id: 18, title: 'Villa Sereno', country: 'Italy', isModerated: true, isOccupied: false, averageRating: 4.5, photoUrl: 'https://via.placeholder.com/300x200' },
-    { id: 19, title: 'Chalet Alpine', country: 'Switzerland', isModerated: true, isOccupied: true, averageRating: 4.7, photoUrl: 'https://via.placeholder.com/300x200' },
-    { id: 20, title: 'Beach Haven', country: 'Spain', isModerated: true, isOccupied: null, averageRating: 4.2, photoUrl: 'https://via.placeholder.com/300x200' },
-    { id: 21, title: 'Mountain Retreat', country: 'Austria', isModerated: false, isOccupied: true, averageRating: null, photoUrl: 'https://via.placeholder.com/300x200' },
-    { id: 22, title: 'City Loft', country: 'Germany', isModerated: true, isOccupied: false, averageRating: 4.9, photoUrl: 'https://via.placeholder.com/300x200' },
-  ]);
+  const [properties, setProperties] = useState([]);
   const [sortBy, setSortBy] = useState('none'); // По умолчанию все свойства
   const navigate = useNavigate();
 

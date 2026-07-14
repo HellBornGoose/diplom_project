@@ -24,6 +24,7 @@ function App() {
     <Router>
       <AuthRefresh isAuthenticated={isAuthenticated} />
       <Routes>
+        <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registerUser" element={<RegisterUser />} />
         <Route path="/registerLord" element={<RegisterLandLord />} />
@@ -31,8 +32,6 @@ function App() {
 
         {/* Защищённые маршруты */}
         
-          
-        <Route path="/" element={<Login />} />
         <Route path="/profile/Lord" element={<LandLordProfile />} />
         <Route path="/profile/Lord/edit" element={<ProfileUpdateLord />} />
         <Route path="/profile/User" element={<UserProfile />} />

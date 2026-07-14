@@ -23,7 +23,7 @@ const ListingEdit = () => {
   const [city, setCity] = useState('');
   const [location, setLocation] = useState('');
   const [perDay, setPerDay] = useState('0');
-  const [houseTypeId, setHouseTypeId] = useState('1');
+  const [houseTypeId, setHouseTypeId] = useState('');
   const [selectedParameters, setSelectedParameters] = useState([]);
   const [checkInTime, setCheckInTime] = useState('16:00');
   const [checkOutTime, setCheckOutTime] = useState('10:00');
@@ -81,9 +81,8 @@ const ListingEdit = () => {
           return;
         }
 
-        const selectedParams = (data.mainFeatures || []).map(feature =>
-          allParameters.find(p => p.id === feature.id)?.name || feature.name
-        ).filter(Boolean);
+        const selectedParametrs = (data.mainFeatures || []).map(feature =>
+          allParameters.find(p => p.id === feature.id)?.name || feature.name).filter(Boolean);
 
         setTitle(data.title || '');
         setCountry(data.country || '');
@@ -91,14 +90,15 @@ const ListingEdit = () => {
         setLocation(data.location || '');
         setPerDay(data.price?.toString() || '0');
         setHouseTypeId(String(data.houseType || '1'));
-        setSelectedParameters(selectedParams || []);
+        setSelectedParameters(selectedParametrs || []);
         setCheckInTime(data.checkInTime || '16:00');
         setCheckOutTime(data.checkOutTime || '10:00');
         setMaxTenants(data.maxTenants || 1);
         setDescription(data.description || '');
         setAmenities(data.amenities || []);
         setIsDataLoaded(true);
-        console.log('Initial selectedParameters:', selectedParams); // Отладка
+        console.log('Initial selectedParameters:', selectedParametrs); // Отладка
+
 
         const photosResponse = await fetch(`${NGROK_URL}/api/Listing/get-all-photos/${listingId}`, {
           method: 'GET',
@@ -211,7 +211,7 @@ const ListingEdit = () => {
         city,
         location,
         perDay: parseFloat(perDay.replace(/[^0-9.]/g, '')) || 0,
-        houseTypeId: parseInt(houseTypeId),
+        houseTypeId: parseInt(houseTypeId, 10) || 1,
         MainFeatureIds: mainFeatureIds,
         MainFeatureValues: mainFeatureValues,
         checkInTime,
@@ -280,7 +280,7 @@ const ListingEdit = () => {
                 listingId={listingId}
               />
             )}
-            {isDataLoaded && (
+            {(!isEditMode || isDataLoaded) && (
               <ListingInfo
                 onFormDataChange={handleFormDataChange}
                 initialData={{
@@ -299,14 +299,18 @@ const ListingEdit = () => {
             )}
           </section>
           <section className={styles.content}>
-            <AmenitiesSet
-              initialSelected={amenities}
-              onAmenitiesChange={setAmenities}
-            />
-            <ListingDescription
-              onDescriptionChange={setDescription}
-              initialValue={description}
-            />
+            {(!isEditMode || isDataLoaded) && (
+              <AmenitiesSet
+                initialSelected={amenities}
+                onAmenitiesChange={setAmenities}
+              />
+            )}
+            {(!isEditMode || isDataLoaded) && (
+              <ListingDescription
+                onDescriptionChange={setDescription}
+                initialValue={description}
+              />
+            )}
           </section>
           <button
             className={styles.ListingButton}
